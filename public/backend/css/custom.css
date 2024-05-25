@@ -1,0 +1,78 @@
+
+#profile-user{
+  position: absolute ;
+  inset: 0px 0px auto auto !important;
+  margin: 0px !important;
+  transform: translate(0px, 55px) !important;
+}
+
+#profile-search{
+  position: absolute !important;
+  inset: 0px 0px auto auto !important;
+  margin: 0px !important;
+}
+
+.dropdown-menu.header-search::before {
+  content: "";
+  width: 0px !important;
+  height: 0px !important;
+  background: #fff;
+  position: absolute;
+  inset-block-start: -7px;
+  inset-inline-start: 28px;
+  transform: rotate(45deg);
+  border-block-start: 1px solid #e9edf4;
+  border-inline-start: 1px solid #e9edf4;
+}
+
+#header-logo{
+  display: block;
+}
+
+@media only screen and (max-width: 990px) {
+  #header-logo {
+    display: none; /* Hide the logo */
+  } 
+
+}
+
+.container .row .col-md-4 {
+  padding: 3px;
+}
+
+.container .row .col-md-4 .card {
+  height: 100%; /* Set a fixed height */
+}
+
+.container .row .col-md-4 .card .card-body {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center content vertically and horizontally */
+  height: 100%; /* Ensure the body takes up full height of the card */
+}
+
+#pos{
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-inline-end: 2.8rem;
+  padding-inline-start: 0.75rem;
+}
+
+#pos-logo{
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-inline-start: 1.8rem;
+}
+
+.pos{
+  padding-inline-end: 0.8rem;
+}
+
+
+.dark-mode .dropdown-menu {
+  background-color: #242526 !important;
+ 
+}
+

@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+class AuthenticatedSessionController extends Controller
+{
+    /**
+     * Display the login view.
+     */
+    public function create(): View
+    {
+        return view('auth.login');
+    }
+
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        if ($request->user()->role === 'admin' && $request->user()->status === 'inactive') {
+            Auth::logout(); // Logout the user
+            $notification = array(
+                'message' => 'Your account is inactive. Please contact the administrator.',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('admin.login')->with($notification);
+        }
+
+
+        // Check if the user is an employee and inactive
+        if ($request->user()->role === 'employee' && $request->user()->status === 'inactive') {
+            Auth::logout(); // Logout the user
+            $notification = array(
+                'message' => 'Your account is inactive. Please contact the administrator.',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('employee.login')->with($notification);
+        }
+
+        if ($request->user()->role === 'user' && $request->user()->status === 'inactive') {
+            Auth::logout(); // Logout the user
+            $notification = array(
+                'message' => 'Your account is inactive. Please contact the administrator.',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('login')->with($notification);
+        }
+
+        $url = '';
+        if ($request->user()->role === 'admin') {
+            $url = 'admin/dashboard';
+        } elseif ($request->user()->role === 'employee') {
+            $url = 'employee/page';
+        } elseif ($request->user()->role === 'user') {
+            $url = '/dashboard';
+        }
+
+        return redirect()->intended($url);
+    }
+
+    /**
+     * Destroy an authenticated session.
+     */
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+}
