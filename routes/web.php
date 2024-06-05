@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminEmployeeController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDashboardController;
+use App\Http\Controllers\BrandController;
 
 use App\Http\Controllers\Frontend\FrontendController;
 
@@ -89,6 +90,16 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::controller(AdminUserController::class)->group(function(){
         Route::get('/admin/users', 'AllAdminUser')->name('all.admin.user');
         Route::get('/add/admin/users', 'AddAdminUser')->name('add.admin.user');
+        Route::post('/store/admin/users',  'StoreAdminUser')->name('store.admin.user');
+        Route::get('/edit/admin/users/{id}' ,  'EditAdminUser')->name('edit.admin.user');
+        Route::post('/update/admin/users/{id}',  'UpdateAdminUser')->name('update.admin.user');
+        Route::get('/delete/admin/users/{id}' ,  'DeleteAdminUser')->name('delete..admin.user');
+    });
+
+    // Backend Brand routes
+    Route::controller(BrandController::class)->group(function(){
+        Route::get('/backend/brand', 'AllBrand')->name('all.brand');
+        Route::get('/backend/brand/add', 'AddBrand')->name('add.brand');
         Route::post('/store/admin/users',  'StoreAdminUser')->name('store.admin.user');
         Route::get('/edit/admin/users/{id}' ,  'EditAdminUser')->name('edit.admin.user');
         Route::post('/update/admin/users/{id}',  'UpdateAdminUser')->name('update.admin.user');
