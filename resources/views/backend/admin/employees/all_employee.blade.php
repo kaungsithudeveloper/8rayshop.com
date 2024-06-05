@@ -82,15 +82,6 @@
                                                         </div>
                                                     </td>
 
-                                                    <td>
-                                                        <div class="d-flex">
-                                                            <div class="mt-0 mt-sm-3 d-block">
-                                                                <a href="{{ route('edit.employee.salary', $employee->id) }}">
-                                                                    <h6 class="mb-0 fs-14 fw-semibold"> {{ $employee->total_salary }} </h6>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
 
                                                     <td>
                                                         <div class="d-flex">

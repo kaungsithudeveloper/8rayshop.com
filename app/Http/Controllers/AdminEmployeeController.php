@@ -11,7 +11,7 @@ use App\Models\EmployeeInfo;
 use App\Models\Salary;
 
 use Illuminate\Support\Facades\Hash;
-use Image;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -32,19 +32,6 @@ class AdminEmployeeController extends Controller
         $allemployee = User::where('role', 'employee')->whereHas('roles', function ($query) use ($rolesToExclude) {
             $query->whereNotIn('role_id', $rolesToExclude);
         })->with('salary')->get();
-
-        // Calculate total salary for each employee
-        foreach ($allemployee as $employee) {
-            $employee->total_salary =   $employee->salary->basic_salary +
-                                        $employee->salary->time_bonus +
-                                        $employee->salary->day_bonus +
-                                        $employee->salary->yearly_bonus +
-                                        $employee->salary->grat_bonus +
-                                        $employee->salary->movie_bonus +
-                                        $employee->salary->daily_movie_bonus +
-                                        $employee->salary->pocket_money +
-                                        $employee->salary->extra_money;
-        }
 
         return view('backend.admin.employees.all_employee', compact('allemployee'));
     }

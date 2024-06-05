@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->integer('date')->nullable();
             $table->integer('basic_salary')->nullable();
-            $table->integer('time_bonus')->nullable();
-            $table->integer('day_bonus')->nullable();
-            $table->integer('yearly_bonus')->nullable();
+            $table->integer('on_time')->nullable();
+            $table->integer('no_day_off')->nullable();
             $table->integer('company_bonus')->nullable();
             $table->integer('movie_bonus')->nullable();
             $table->integer('daily_movie_bonus')->nullable();
             $table->integer('pocket_money')->nullable();
+            $table->integer('yearly_bonus')->nullable();
             $table->integer('extra_money')->nullable();
             $table->timestamps();
 

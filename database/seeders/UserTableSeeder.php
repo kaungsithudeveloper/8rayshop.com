@@ -77,13 +77,13 @@ class UserTableSeeder extends Seeder
         if ($assistantManager) {
             $assistantManager->salary()->create([
                 'basic_salary' => 5000,
-                'time_bonus' => 200,
-                'day_bonus' => 150,
-                'yearly_bonus' => 1000,
-                'company_bonus' => 300,
-                'movie_bonus' => 250,
-                'daily_movie_bonus' => 50,
-                'pocket_money' => 100,
+                'on_time' => 200,
+                'no_day_off' => 150,
+                'company_bonus' => 1000,
+                'movie_bonus' => 300,
+                'daily_movie_bonus' => 250,
+                'pocket_money' => 50,
+                'yearly_bonus' => 100,
                 'extra_money' => 150,
             ]);
         }
@@ -92,13 +92,13 @@ class UserTableSeeder extends Seeder
         if ($seniorSaleAssistant) {
             $seniorSaleAssistant->salary()->create([
                 'basic_salary' => 4500,
-                'time_bonus' => 150,
-                'day_bonus' => 100,
-                'yearly_bonus' => 800,
-                'company_bonus' => 250,
-                'movie_bonus' => 200,
-                'daily_movie_bonus' => 40,
-                'pocket_money' => 80,
+                'on_time' => 150,
+                'no_day_off' => 100,
+                'company_bonus' => 800,
+                'movie_bonus' => 250,
+                'daily_movie_bonus' => 200,
+                'pocket_money' => 40,
+                'yearly_bonus' => 80,
                 'extra_money' => 120,
             ]);
         }
