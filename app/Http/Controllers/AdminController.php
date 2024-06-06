@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Image;
+use Intervention\Image\Facades\Image;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Rules\UsernameRule;

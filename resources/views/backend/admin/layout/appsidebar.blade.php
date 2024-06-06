@@ -66,7 +66,6 @@
                     <ul class="slide-menu">
                         <li class="side-menu-label1"><a href="javascript:void(0)">Brand Management</a></li>
                         <li><a href="{{ route('all.brand') }}" class="slide-item"> All Brand </a></li>
-                        <li><a href="{{ route('add.brand') }}" class="slide-item"> Add Brand </a></li>
                     </ul>
                 </li>
 

@@ -100,10 +100,10 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::controller(BrandController::class)->group(function(){
         Route::get('/backend/brand', 'AllBrand')->name('all.brand');
         Route::get('/backend/brand/add', 'AddBrand')->name('add.brand');
-        Route::post('/store/admin/users',  'StoreAdminUser')->name('store.admin.user');
-        Route::get('/edit/admin/users/{id}' ,  'EditAdminUser')->name('edit.admin.user');
-        Route::post('/update/admin/users/{id}',  'UpdateAdminUser')->name('update.admin.user');
-        Route::get('/delete/admin/users/{id}' ,  'DeleteAdminUser')->name('delete..admin.user');
+        Route::post('/backend/brand/store',  'StoreBrand')->name('store.brand');
+        Route::get('/backend/brand/edit/{slug}', 'EditBrand')->name('edit.brand');
+        Route::post('/backend/brand/update', 'UpdateBrand')->name('update.brand');
+        Route::get('/backend/brand/delete/{id}' ,  'DestoryBrand')->name('delete.brand');
     });
 
     // Backend Role routes

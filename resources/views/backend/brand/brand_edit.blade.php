@@ -12,11 +12,11 @@
 
                 <!-- PAGE-HEADER -->
                 <div class="page-header">
-                    <h1 class="page-title">All Brand</h1>
+                    <h1 class="page-title">Edit Brand</h1>
                     <div>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Brand</li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit Brand</li>
                         </ol>
                     </div>
                 </div>
@@ -28,15 +28,16 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="card">
-                            <form id="myForm" method="post" action="{{ route('store.brand') }}" enctype="multipart/form-data">
+                            <form id="myForm" method="post" action="{{ route('update.brand') }}" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" name="id" value="{{ $brand->id }}">
                                 <div class="card-header">
-                                    <h4 class="card-title">Add Brand</h4>
+                                    <h4 class="card-title">Edit Brand</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Brand Name :</label>
-                                        <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Brand Name" value="{{ old('brand_name') }}" required autofocus>
+                                        <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Brand Name" value="{{ old('brand_name', $brand->brand_name) }}" required autofocus>
                                     </div>
 
                                     <div class="form-group">
@@ -55,7 +56,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-primary">Create Brand</button>
+                                        <button type="submit" class="btn btn-primary">Update Brand</button>
                                     </div>
                                 </div>
                             </form>
@@ -88,12 +89,10 @@
                                                     </td>
 
                                                     <td>
-
                                                         <div class="d-flex">
                                                             <img src="{{ !empty($brand->brand_image) ? url('upload/brand_images/' . $brand->brand_image) : url('upload/profile.jpg') }}"
                                                                 alt="Admin" style="width:70%; height: 70%;">
                                                         </div>
-
                                                     </td>
 
                                                     <td>
