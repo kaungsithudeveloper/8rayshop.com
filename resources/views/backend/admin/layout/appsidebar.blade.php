@@ -46,6 +46,7 @@
                         <li><a href="{{ route('add.employee') }}" class="slide-item"> Add Employee </a></li>
                     </ul>
                 </li>
+
                 <li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
                         <i class="side-menu__icon fe fe-users"></i>
@@ -59,14 +60,24 @@
                 </li>
 
                 <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                        <i class="side-menu__icon fe fe-layers"></i>
+                        <span class="side-menu__label">Product Categories</span>
+                        <i class="angle fe fe-chevron-right"></i></a>
+                    <ul class="slide-menu">
+                        <li class="side-menu-label1"><a href="javascript:void(0)">Product Categories</a></li>
+                        <li><a href="{{ route('all.product.categories') }}" class="slide-item"> Product Categories </a></li>
+                        <li><a href="{{ route('all.product.sub_categories') }}" class="slide-item"> Product Subcategories </a></li>
+                    </ul>
+                </li>
+
+                <li class="slide">
                     <a class="side-menu__item has-link"
                         data-bs-toggle="slide" href="{{ route('all.brand') }}">
                         <i class="side-menu__icon fe fe-award"></i>
                         <span class="side-menu__label">Brand Management</span>
                     </a>
                 </li>
-
-
 
                 <li class="sub-category">
                     <h3>Role & Permission</h3>

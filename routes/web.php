@@ -12,6 +12,8 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDashboardController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductSubCategoryController;
 
 use App\Http\Controllers\Frontend\FrontendController;
 
@@ -99,12 +101,30 @@ Route::middleware(['auth','role:admin'])->group(function () {
     // Backend Brand routes
     Route::controller(BrandController::class)->group(function(){
         Route::get('/backend/brand', 'AllBrand')->name('all.brand');
-        Route::get('/backend/brand/add', 'AddBrand')->name('add.brand');
         Route::post('/backend/brand/store',  'StoreBrand')->name('store.brand');
         Route::get('/backend/brand/edit/{slug}', 'EditBrand')->name('edit.brand');
         Route::post('/backend/brand/update', 'UpdateBrand')->name('update.brand');
         Route::get('/backend/brand/delete/{id}' ,  'DestoryBrand')->name('delete.brand');
     });
+
+    // Backend Brand routes
+    Route::controller(ProductCategoryController::class)->group(function(){
+        Route::get('/backend/product/categories', 'AllProductCategories')->name('all.product.categories');
+        Route::post('/backend/product/categories/store',  'StoreProductCategories')->name('store.product.categories');
+        Route::get('/backend/product/categories/edit/{slug}', 'EditProductCategories')->name('edit.product.categories');
+        Route::post('/backend/product/categories/update', 'UpdateProductCategories')->name('update.product.categories');
+        Route::get('/backend/product/categories/delete/{id}' ,  'DestoryProductCategories')->name('delete.product.categories');
+    });
+
+    Route::controller(ProductSubCategoryController::class)->group(function(){
+        Route::get('/backend/product/sub_categories', 'AllProductSubCategories')->name('all.product.sub_categories');
+        Route::get('/backend/product/sub_categories/add', 'AddProductSubCategories')->name('add.product.sub_categories');
+        Route::post('/backend/product/sub_categories/store',  'StoreProductSubCategories')->name('store.product.sub_categories');
+        Route::get('/backend/product/sub_categories/edit/{slug}', 'EditProductSubCategories')->name('edit.product.sub_categories');
+        Route::post('/backend/product/sub_categories/update', 'UpdateProductSubCategories')->name('update.product.sub_categories');
+        Route::get('/backend/product/sub_categories/delete/{id}' ,  'DestoryProductSubCategories')->name('delete.product.sub_categories');
+    });
+
 
     // Backend Role routes
     Route::controller(RoleController::class)->group(function(){
@@ -173,8 +193,6 @@ Route::middleware(['auth','role:employee'])->group(function () {
 Route::middleware(['auth'],['role'=>'admin','employee'])->group(function () {
     Route::get('/pos', [PosController::class, 'PosIndex'])->name('pos.page');
 });
-
-
 
 ////// Frontend  ///////
 
