@@ -14,10 +14,12 @@ use App\Http\Controllers\EmployeeDashboardController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductSubCategoryController;
+use App\Http\Controllers\ProductTypeController;
 
 use App\Http\Controllers\Frontend\FrontendController;
 
 use App\Http\Controllers\PosController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -107,7 +109,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/backend/brand/delete/{id}' ,  'DestoryBrand')->name('delete.brand');
     });
 
-    // Backend Brand routes
+    // Backend Category routes
     Route::controller(ProductCategoryController::class)->group(function(){
         Route::get('/backend/product/categories', 'AllProductCategories')->name('all.product.categories');
         Route::post('/backend/product/categories/store',  'StoreProductCategories')->name('store.product.categories');
@@ -118,12 +120,20 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
     Route::controller(ProductSubCategoryController::class)->group(function(){
         Route::get('/backend/product/sub_categories', 'AllProductSubCategories')->name('all.product.sub_categories');
-        Route::get('/backend/product/sub_categories/add', 'AddProductSubCategories')->name('add.product.sub_categories');
         Route::post('/backend/product/sub_categories/store',  'StoreProductSubCategories')->name('store.product.sub_categories');
         Route::get('/backend/product/sub_categories/edit/{slug}', 'EditProductSubCategories')->name('edit.product.sub_categories');
         Route::post('/backend/product/sub_categories/update', 'UpdateProductSubCategories')->name('update.product.sub_categories');
         Route::get('/backend/product/sub_categories/delete/{id}' ,  'DestoryProductSubCategories')->name('delete.product.sub_categories');
     });
+
+    Route::controller(ProductTypeController::class)->group(function(){
+        Route::get('/backend/product/types', 'AllProductType')->name('all.product.types');
+        Route::post('/backend/product/type/store',  'StoreProductType')->name('store.product.types');
+        Route::get('/backend/product/type/edit/{slug}', 'EditProductType')->name('edit.product.types');
+        Route::post('/backend/product/type/update', 'UpdateProductType')->name('update.product.types');
+        Route::get('/backend/product/type/delete/{id}' ,  'DestoryProductType')->name('delete.product.types');
+    });
+
 
 
     // Backend Role routes
