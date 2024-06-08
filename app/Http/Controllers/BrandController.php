@@ -14,7 +14,7 @@ class BrandController extends Controller
 {
     public function AllBrand(){
         $brands = Brand::latest()->get();
-        return view('backend.brand.brand_all',compact('brands'));
+        return view('backend.admin.brand.brand_all',compact('brands'));
     } // End Method
 
     public function StoreBrand(Request $request)
@@ -74,7 +74,7 @@ class BrandController extends Controller
     {
         $brand = Brand::where('brand_slug', $slug)->firstOrFail();
         $brands = Brand::latest()->get();
-        return view('backend.brand.brand_edit', compact('brands', 'brand'));
+        return view('backend.admin.brand.brand_edit', compact('brands', 'brand'));
     }
 
     public function UpdateBrand(Request $request)

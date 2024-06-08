@@ -21,10 +21,8 @@ return new class extends Migration
             $table->string('discount_price')->nullable();
             $table->enum('status', ['active', 'inactive']);
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('product_type_id');
             $table->timestamps();
 
-            $table->foreign('product_type_id')->references('id')->on('product_types')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

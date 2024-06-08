@@ -14,7 +14,7 @@ class ProductCategoryController extends Controller
 {
     public function AllProductCategories(){
         $product_categories = ProductCategory::latest()->get();
-        return view('backend.product_category.product_category_all',compact('product_categories'));
+        return view('backend.admin.product_category.product_category_all',compact('product_categories'));
     } // End Method
 
     public function StoreProductCategories(Request $request)
@@ -63,7 +63,7 @@ class ProductCategoryController extends Controller
     {
         $product_category = ProductCategory::where('product_category_slug', $slug)->firstOrFail();
         $product_categories = ProductCategory::latest()->get();
-        return view('backend.product_category.product_category_edit', compact('product_category', 'product_categories'));
+        return view('backend.admin.product_category.product_category_edit', compact('product_category', 'product_categories'));
     }
 
     public function UpdateProductCategories(Request $request)

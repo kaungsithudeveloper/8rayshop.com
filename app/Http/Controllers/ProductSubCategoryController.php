@@ -15,7 +15,7 @@ class ProductSubCategoryController extends Controller
     public function AllProductSubCategories(){
         $product_categories = ProductCategory::orderBy('product_category_name','ASC')->get();
         $product_subcategories = ProductSubCategory::latest()->get();
-        return view('backend.product_subcategory.product_sub_category_all',compact('product_categories','product_subcategories'));
+        return view('backend.admin.product_subcategory.product_sub_category_all',compact('product_categories','product_subcategories'));
     } // End Method
 
     public function StoreProductSubCategories(Request $request)
@@ -54,7 +54,7 @@ class ProductSubCategoryController extends Controller
         $product_subcategory = ProductSubCategory::where('product_subcategory_slug', $slug)->firstOrFail();
         $product_subcategories = ProductSubCategory::latest()->get();
         $product_categories = ProductCategory::all();
-        return view('backend.product_subcategory.product_sub_category_edit', compact('product_subcategory', 'product_subcategories','product_categories'));
+        return view('backend.admin.product_subcategory.product_sub_category_edit', compact('product_subcategory', 'product_subcategories','product_categories'));
     }
 
 

@@ -11,7 +11,7 @@ class ProductTypeController extends Controller
 {
     public function AllProductType(){
         $product_types = ProductType::latest()->get();
-        return view('backend.product_type.product_type_all',compact('product_types'));
+        return view('backend.admin.product_type.product_type_all',compact('product_types'));
     } // End Method
 
     public function StoreProductType(Request $request)
@@ -47,7 +47,7 @@ class ProductTypeController extends Controller
     {
         $product_type = ProductType::where('product_type_slug', $slug)->firstOrFail();
         $product_types = ProductType::latest()->get();
-        return view('backend.product_type.product_type_edit', compact('product_type', 'product_types'));
+        return view('backend.admin.product_type.product_type_edit', compact('product_type', 'product_types'));
     }
 
     public function UpdateProductType(Request $request){
