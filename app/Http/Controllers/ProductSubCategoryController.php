@@ -21,7 +21,7 @@ class ProductSubCategoryController extends Controller
     public function StoreProductSubCategories(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product_categories_id' => 'required|string|max:255',
+            'product_category_id' => 'required|string|max:255',
             'product_subcategory_name' => 'required|string|max:255|unique:product_sub_categories,product_subcategory_name',
         ]);
 
@@ -36,7 +36,7 @@ class ProductSubCategoryController extends Controller
         }
 
         $product_subcategory = new ProductSubCategory;
-        $product_subcategory->product_categories_id = $request->input('product_categories_id');
+        $product_subcategory->product_category_id = $request->input('product_category_id');
         $product_subcategory->product_subcategory_name = $request->input('product_subcategory_name');
         $product_subcategory->product_subcategory_slug = strtolower(str_replace(' ', '-', $request->product_subcategory_name));
         $product_subcategory->save();
@@ -64,7 +64,7 @@ class ProductSubCategoryController extends Controller
         $product_subcategory_id = $request->id;
 
         $validator = Validator::make($request->all(), [
-            'product_categories_id' => 'required|string|max:255',
+            'product_category_id' => 'required|string|max:255',
             'product_subcategory_name' => 'required|string|max:255|unique:product_sub_categories,product_subcategory_name',
         ]);
 
@@ -79,7 +79,7 @@ class ProductSubCategoryController extends Controller
         }
 
         $product_subcategory = ProductSubCategory::findOrFail($product_subcategory_id);
-        $product_subcategory->product_categories_id = $request->input('product_categories_id');
+        $product_subcategory->product_category_id = $request->input('product_category_id');
         $product_subcategory->product_subcategory_name = $request->input('product_subcategory_name');
         $product_subcategory->product_subcategory_slug = strtolower(str_replace(' ', '-', $request->product_subcategory_name));
         $product_subcategory->save();

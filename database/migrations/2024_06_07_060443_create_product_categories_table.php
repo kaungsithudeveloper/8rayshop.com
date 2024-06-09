@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('product_category_name')->unique();
             $table->string('product_category_slug');
-            $table->string('product_category_image');
+            $table->string('product_category_image')->nullable();
             $table->timestamps();
         });
     }

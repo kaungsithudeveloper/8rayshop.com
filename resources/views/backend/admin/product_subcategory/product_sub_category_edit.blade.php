@@ -38,7 +38,7 @@
                                     <div class="form-group">
                                         <div class="form-group">
                                             <label class="form-label">Product Category Name :</label>
-                                            <select name="product_categories_id" class="form-control form-select" data-bs-placeholder="Select Product Category">
+                                            <select name="product_category_id" class="form-control form-select" data-bs-placeholder="Select Product Category">
                                                 <option selected="">Open this select menu</option>
                                                 @foreach($product_categories as $category)
                                                     <option value="{{ $category->id }}"
