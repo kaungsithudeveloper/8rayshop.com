@@ -75,7 +75,7 @@
                                                                             <td>
                                                                                 <div class="d-flex">
                                                                                     <div class="mt-0 mt-sm-3 d-block">
-                                                                                        <img src="{{ !empty($product->photo) ? url('upload/product_images/' . $product->photo) : url('upload/blog_images.png') }}">
+                                                                                        <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                                     </div>
                                                                                 </div>
                                                                             </td>

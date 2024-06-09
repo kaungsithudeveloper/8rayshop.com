@@ -13,6 +13,7 @@ use App\Models\MultiImg;
 use App\Models\Brand;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 
 class ProductController extends Controller
@@ -50,13 +51,12 @@ class ProductController extends Controller
             'product_size' => 'required|string|max:255',
             'product_color' => 'required|string|max:255',
 
-
         ]);
 
         if ($validator->fails()) {
 
             $notification = [
-                'message' => 'some error occurred',
+                'message' => 'The product name already exists',
                 'alert-type' => 'error',
             ];
 
@@ -72,6 +72,22 @@ class ProductController extends Controller
         $product->discount_price = $request->input('discount_price');
         $product->user_id = auth()->user()->id;
         $product->status = 'inactive';
+        if ($request->hasFile('product_photo')) {
+            $image = $request->file('product_photo');
+            $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'upload/product_images/' . $imageName;
+
+            // Compress and save the image
+            Image::make($image)
+                ->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->save(public_path($imagePath), 75); // Adjust the quality to compress
+
+            $product->product_photo = $imageName;
+        }
+        $product->created_at = Carbon::now();
         $product->save();
 
         $product_info = new ProductInfo();
@@ -85,24 +101,39 @@ class ProductController extends Controller
         $product_info->product_size = $request->input('product_size');
         $product_info->product_color = $request->input('product_color');
 
-        if ($request->hasFile('product_photo')) {
-            $image = $request->file('product_photo');
-            $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'upload/product_info_images/' . $imageName;
 
-            // Save the image and update user's photo field
-            Image::make($image)->save(public_path($imagePath));
-            $product_info->product_photo = $imageName;
-        }
-
+        $product_info->created_at = Carbon::now();
         $product_info->save();
 
+
+        if ($request->hasFile('multi_img')) {
+            foreach ($request->file('multi_img') as $img) {
+                $imageName = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
+                $imagePath = 'upload/product_multi_images/' . $imageName;
+
+                // Compress and save the image
+                Image::make($img)
+                    ->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->save(public_path($imagePath), 75); // Adjust the quality to compress
+
+                // Save the image info to the database
+                $product_multiImage = new MultiImg();
+                $product_multiImage->product_id = $product->id;
+                $product_multiImage->photo_name = $imageName;
+                $product_multiImage->created_at = Carbon::now();
+                $product_multiImage->save();
+            }
+        }
+
         $notification = [
-            'message' => 'Product Category Create Successfully',
+            'message' => 'Product Create Successfully',
             'alert-type' => 'success',
         ];
 
 
-        return redirect()->route('all.product')->with('success', 'Product created successfully.');
+        return redirect()->route('all.product')->with($notification);
     }
 }

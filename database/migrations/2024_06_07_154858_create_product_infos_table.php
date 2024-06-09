@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('product_color')->nullable();
             $table->text('short_descp');
             $table->text('long_descp');
-            $table->string('product_photo');
             $table->integer('hot_deals')->nullable();
             $table->integer('featured')->nullable();
             $table->integer('special_offer')->nullable();

@@ -207,6 +207,23 @@
 
 
                                     <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Multiple Image</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label for="inputProductTitle" class="form-label">Multiple Image</label>
+                                                <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple="">
+
+                                                <div class="row" id="preview_img"></div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="card">
                                         <div class="card-body">
                                             <button type="submit" class="btn btn-primary">Create Product</button>
                                             <a href="" class="btn btn-danger">Discard</a>
@@ -234,6 +251,37 @@
                     });
                 });
             </script>
+
+            <script>
+
+                $(document).ready(function(){
+                $('#multiImg').on('change', function(){ //on file input change
+                    if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
+                    {
+                        var data = $(this)[0].files; //this file data
+
+                        $.each(data, function(index, file){ //loop though each file
+                            if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)){ //check supported file type
+                                var fRead = new FileReader(); //new filereader
+                                fRead.onload = (function(file){ //trigger function on successful read
+                                return function(e) {
+                                    var img = $('<img/>').addClass('thumb').attr('src', e.target.result) .width(150)
+                                .height(120); //create image element
+                                    $('#preview_img').append(img); //append image to output element
+                                };
+                                })(file);
+                                fRead.readAsDataURL(file); //URL representing the file's data.
+                            }
+                        });
+
+                    }else{
+                        alert("Your browser doesn't support File API!"); //if File API is absent
+                    }
+                });
+                });
+
+            </script>
+
 
             <script type="text/javascript">
                 $(document).ready(function (){

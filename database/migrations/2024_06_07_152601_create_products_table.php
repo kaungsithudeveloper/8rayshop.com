@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('product_qty');
             $table->string('selling_price');
             $table->string('discount_price')->nullable();
+            $table->string('product_photo');
             $table->enum('status', ['active', 'inactive']);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
