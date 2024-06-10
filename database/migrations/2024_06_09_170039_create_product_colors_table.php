@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('product_colors', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
-            $table->string('product_type_name');
+            $table->string('color_name');
+            $table->string('color_slug');
             $table->timestamps();
         });
     }
