@@ -11,9 +11,13 @@ use App\Models\ProductType;
 use App\Models\ProductInfo;
 use App\Models\MultiImg;
 use App\Models\Brand;
+use App\Models\ProductColor;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Database\Seeders\ProductSubCategorySeeder;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 
 class ProductController extends Controller
@@ -27,11 +31,13 @@ class ProductController extends Controller
 
         $product_type = ProductType::orderBy('product_type_name','ASC')->get();
         $brands = Brand::orderBy('brand_name','ASC')->get();
-        $product_categories = ProductCategory::orderBy('product_category_name','ASC')->get();
-        $product_sub_categories = ProductSubCategory::orderBy('product_subcategory_name','ASC')->get();
+        $product_categories = ProductCategory::where('id', '!=', 1)->orderBy('product_category_name', 'ASC')->get();
+        $product_sub_categories = ProductSubCategory::where('id', '!=', 1)->orderBy('product_subcategory_name','ASC')->get();
         return view('backend.admin.product.product_add',compact('product_type','brands','product_categories','product_sub_categories'));
 
     } // End Method
+
+
 
     public function StoreProduct(Request $request)
     {
@@ -40,99 +46,78 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|string|max:255',
             'product_name' => 'required|string|max:255',
-            'product_qty' => 'required|integer',
-            'selling_price' => 'required|string|max:255',
-            'brand_id' => 'nullable|string|max:255',
-            'product_categories_id' => 'nullable|string|max:255',
-            'product_sub_categories_id' => 'nullable|string|max:255',
-            'product_type_id' => 'required|exists:product_types,id',
-            'long_descp' => 'required|string|max:255',
-            'short_descp' => 'required|string|max:255',
-            'product_size' => 'required|string|max:255',
-            'product_color' => 'required|string|max:255',
-
+            'brand_id' => 'required|string|max:255',
+            'product_color_id' => 'required|string|max:255',
+            'product_category_id' => 'required|integer',
+            'product_subcategory_id' => 'required|array',
+            'product_subcategory_id.*' => 'integer',
         ]);
 
         if ($validator->fails()) {
-
             $notification = [
-                'message' => 'The product name already exists',
+                'message' => 'Validation failed.',
                 'alert-type' => 'error',
             ];
-
-            return redirect()->back()->with($notification);
+            return redirect()->back()->withErrors($validator)->withInput()->with($notification);
         }
 
+        // Create the product
         $product = new Product();
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
-        $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
-        $product->product_qty = $request->input('product_qty');
-        $product->selling_price = $request->input('selling_price');
-        $product->discount_price = $request->input('discount_price');
-        $product->user_id = auth()->user()->id;
-        $product->status = 'inactive';
-        if ($request->hasFile('product_photo')) {
-            $image = $request->file('product_photo');
-            $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'upload/product_images/' . $imageName;
-
-            // Compress and save the image
-            Image::make($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->save(public_path($imagePath), 75); // Adjust the quality to compress
-
-            $product->product_photo = $imageName;
-        }
-        $product->created_at = Carbon::now();
+        $product->product_slug = Str::slug($request->input('product_name'));
+        $product->status = $request->input('status', 'active');
+        $product->user_id = auth()->id();
         $product->save();
 
-        $product_info = new ProductInfo();
-        $product_info->product_id = $product->id;
-        $product_info->short_descp = $request->input('short_descp');
-        $product_info->long_descp = $request->input('long_descp');
-        $product_info->brand_id = $request->input('brand_id');
-        $product_info->product_categories_id = $request->input('product_categories_id');
-        $product_info->product_sub_categories_id = $request->input('product_sub_categories_id');
-        $product_info->product_type_id = $request->input('product_type_id');
-        $product_info->product_size = $request->input('product_size');
-        $product_info->product_color = $request->input('product_color');
+        // Handle product colors
+        $product_colors = explode(',', $request->input('product_color_id'));
+        foreach ($product_colors as $color_name) {
+            $color_name = trim($color_name);
+            $color = ProductColor::firstOrCreate(['color_name' => $color_name], ['color_slug' => Str::slug($color_name)]);
+            $product->productColor()->attach($color->id);
+        }
 
+        // Handle product categories
+        $product_category_names = explode(',', $request->input('prodct_category_id'));
+        $product_categoryIds = [];
+        foreach ($product_category_names as $category_name) {
+            $category_name = trim($category_name);
+            $category = ProductCategory::firstOrCreate(
+                ['product_category_name' => $category_name],
+                ['product_category_slug' => Str::slug($category_name)]
+            );
+            $product_categoryIds[] = $category->id;
+        }
+        $product->productCategory()->attach($product_categoryIds);
 
-        $product_info->created_at = Carbon::now();
-        $product_info->save();
+        // Handle product subcategories
+        $product_subCategories = explode(',', $request->input('product_subcategory_id'));
+        $product_subCategoryIds = [];
+        foreach ($product_subCategories as $subCategory_name) {
+            $subCategory_name = trim($subCategory_name);
+            $subCategory = ProductSubCategory::firstOrCreate(
+                ['product_category_id' => $product_categoryIds[0]], // Assuming the first category is used
+                ['product_subcategory_name' => $subCategory_name, 'product_subcategory_slug' => Str::slug($subCategory_name)]
+            );
+            $product_subCategoryIds[] = $subCategory->id;
+        }
+        $product->productSubCategory()->attach($product_subCategoryIds);
 
-
-        if ($request->hasFile('multi_img')) {
-            foreach ($request->file('multi_img') as $img) {
-                $imageName = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-                $imagePath = 'upload/product_multi_images/' . $imageName;
-
-                // Compress and save the image
-                Image::make($img)
-                    ->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->save(public_path($imagePath), 75); // Adjust the quality to compress
-
-                // Save the image info to the database
-                $product_multiImage = new MultiImg();
-                $product_multiImage->product_id = $product->id;
-                $product_multiImage->photo_name = $imageName;
-                $product_multiImage->created_at = Carbon::now();
-                $product_multiImage->save();
-            }
+        foreach ($product_subCategoryIds as $subcategoryId) {
+            DB::table('product_category_belongs')->insert([
+                'product_id' => $product->id,
+                'product_category_id' => $product_categoryIds,
+                'product_subcategory_id' => $subcategoryId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
 
         $notification = [
-            'message' => 'Product Create Successfully',
+            'message' => 'Product created successfully!',
             'alert-type' => 'success',
         ];
-
 
         return redirect()->route('all.product')->with($notification);
     }

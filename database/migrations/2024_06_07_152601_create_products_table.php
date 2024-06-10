@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('product_code');
             $table->string('product_name');
             $table->string('product_slug');
-            $table->integer('product_qty');
-            $table->string('selling_price');
+            $table->integer('product_qty')->nullable();
+            $table->string('selling_price')->nullable();
             $table->string('discount_price')->nullable();
-            $table->string('product_photo');
+            $table->string('product_photo')->nullable();
             $table->enum('status', ['active', 'inactive']);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

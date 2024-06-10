@@ -16,7 +16,7 @@ class ProductCaegorySeeder extends Seeder
     public function run()
     {
         $categories = [
-            'none',
+            'None',
             'Lighting and Accessories',
             'Microphones',
             'Microphone stand and desk setup stand',

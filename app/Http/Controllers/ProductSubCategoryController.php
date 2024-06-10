@@ -113,4 +113,11 @@ class ProductSubCategoryController extends Controller
         return redirect()->route('all.product.categories')->with($notification);
     }// End Method
 
+
+    public function GetSubCategory($category_id){
+        $subcat = ProductSubCategory::where('product_category_id',$category_id)->orderBy('product_subcategory_name','ASC')->get();
+            return json_encode($subcat);
+
+    }// End Method
+
 }

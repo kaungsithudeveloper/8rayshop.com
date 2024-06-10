@@ -13,6 +13,17 @@ class ProductSubCategorySeeder extends Seeder
      */
     public function run(): void
     {
+
+        // Add the specific subcategory with id=1
+        DB::table('product_sub_categories')->insert([
+            'id' => 1,
+            'product_category_id' => 1,
+            'product_subcategory_name' => 'Other',
+            'product_subcategory_slug' => Str::slug('Other'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         $subCategories = [
             ['category_name' => 'Gopro & Accessories', 'sub_categories' => [
                 'Gopro Hero 12', 'Gopro Hero 11', 'Gopro Hero 10', 'Gopro Hero 9', 'Gopro Hero 8', 'Gopro Hero 7', 'Gopro Hero 6', 'Gopro Hero 5'

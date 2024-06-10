@@ -13,12 +13,14 @@ class ProductSubCategory extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function product_category(){
+    public function category(){
         return $this->belongsTo(ProductCategory::class, 'product_category_id','id');
     }
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class, 'product_category_belongs')
+                    ->withPivot('product_category_id')
+                    ->withTimestamps();
     }
 }

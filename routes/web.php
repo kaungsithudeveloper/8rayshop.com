@@ -21,6 +21,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Frontend\FrontendController;
 
 use App\Http\Controllers\PosController;
+use App\Models\Brand;
+use App\Models\ProductCategory;
+use App\Models\ProductColor;
+use App\Models\ProductSubCategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,13 +116,16 @@ Route::middleware(['auth','role:admin'])->group(function () {
     });
 
     // Backend Product SubCategory routes
-    Route::controller(ProductSubCategoryController::class)->group(function(){
+    Route::controller(ProductSubCategoryController::class)->group(function() {
         Route::get('/backend/product/sub_categories', 'AllProductSubCategories')->name('all.product.sub_categories');
-        Route::post('/backend/product/sub_categories/store',  'StoreProductSubCategories')->name('store.product.sub_categories');
+        Route::post('/backend/product/sub_categories/store', 'StoreProductSubCategories')->name('store.product.sub_categories');
         Route::get('/backend/product/sub_categories/edit/{slug}', 'EditProductSubCategories')->name('edit.product.sub_categories');
-        Route::post('/backend/product/sub_categories/update', 'UpdateProductSubCategories')->name('update.product.sub_categories');
-        Route::get('/backend/product/sub_categories/delete/{id}' ,  'DestoryProductSubCategories')->name('delete.product.sub_categories');
+        Route::post('/backend/product/sub_categories/update', 'UpdateProductSubCategories')->name('update.product_sub_categories');
+        Route::get('/backend/product/sub_categories/delete/{id}', 'DestroyProductSubCategories')->name('delete.product_sub_categories');
+        //Route::get('/subcategory/ajax/{product_category_id}', 'GetSubCategory');
     });
+
+    Route::get('/subcategory/ajax/{product_category_id}', [ProductSubCategoryController::class, 'getSubCategory'])->name('getSubCategory');
 
     // Backend Product Type routes
     Route::controller(ProductTypeController::class)->group(function(){
@@ -147,6 +154,17 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::post('/backend/product/update', 'UpdateProduct')->name('update.product');
         Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
     });
+
+    Route::get('/brands', function() {
+        $brands = Brand::pluck('brand_name')->toArray();
+        return response()->json($brands);
+    });
+
+    Route::get('/product-colors', function() {
+        $product_colors = ProductColor::pluck('color_name')->toArray();
+        return response()->json($product_colors);
+    });
+
 
 
 

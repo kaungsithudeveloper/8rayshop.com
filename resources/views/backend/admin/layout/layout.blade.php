@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Sash – Bootstrap 5  Admin & Dashboard Template">
     <meta name="author" content="Spruko Technologies Private Limited">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
 
     <!-- FAVICON -->
@@ -34,6 +35,7 @@
 
      <!-- View Message CSS-->
      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+
 
     @stack('styles')
 
@@ -77,6 +79,12 @@
     <!-- JQUERY JS -->
     <script src="{{ url('backend/js/jquery.min.js') }}"></script>
 
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
     <!-- BOOTSTRAP JS -->
     <script src="{{ url('backend/plugins/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ url('backend/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -108,6 +116,13 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         @if (Session::has('message'))
             var type = "{{ Session::get('alert-type', 'info') }}"
             switch (type) {
@@ -125,6 +140,8 @@
                     break;
             }
         @endif
+
+
     </script>
 
     @stack('scripts')
