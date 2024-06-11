@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Brand extends Model
+class ProductColor extends Model
 {
     use HasFactory;
     protected $guarded = [];
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_brand_belongs', 'brand_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'product_color_belongs', 'product_color_id', 'brand_id','product_id');
     }
 }

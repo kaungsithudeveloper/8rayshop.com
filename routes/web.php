@@ -22,6 +22,11 @@ use App\Http\Controllers\Frontend\FrontendController;
 
 use App\Http\Controllers\PosController;
 
+use App\Models\Brand;
+use App\Models\ProductCategory;
+use App\Models\ProductColor;
+use App\Models\ProductSubCategory;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -147,6 +152,20 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::post('/backend/product/update', 'UpdateProduct')->name('update.product');
         Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
     });
+
+
+
+    Route::get('/brands', function() {
+        $brands = Brand::pluck('brand_name')->toArray();
+        return response()->json($brands);
+    });
+
+    Route::get('/product-colors', function() {
+        $product_colors = ProductColor::pluck('color_name')->toArray();
+        return response()->json($product_colors);
+    });
+
+
 
 
 

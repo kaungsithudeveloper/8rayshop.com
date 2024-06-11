@@ -12,7 +12,7 @@ use Spatie\Permission\Models\Role;
 
 use App\Models\EmployeeInfo;
 use Spatie\Permission\Traits\HasRoles;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 
 class User extends Authenticatable

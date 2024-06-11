@@ -35,4 +35,14 @@ class Product extends Model
     {
         return $this->belongsTo(ProductSubCategory::class);
     }
+
+    public function productColor()
+    {
+        return $this->belongsToMany(ProductColor::class, 'product_color_belongs', 'product_id', 'product_color_id');
+    }
+
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'product_brand_belongs', 'product_id', 'brand_id');
+    }
 }

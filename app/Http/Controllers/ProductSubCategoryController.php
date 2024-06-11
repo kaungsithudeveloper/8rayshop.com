@@ -97,20 +97,15 @@ class ProductSubCategoryController extends Controller
 
     public function DestoryProductSubCategories($id)
     {
-        $product_category = ProductCategory::findOrFail($id);
-        $imagePath = public_path('upload/product_category_images/' . $product_category->product_category_image);
-        if (file_exists($imagePath) && is_file($imagePath)) {
-            unlink($imagePath);
-        }
-
-        $product_category->delete();
+        $product_subcategory = ProductSubCategory::findOrFail($id);
+        $product_subcategory->delete();
 
         $notification = array(
-            'message' => 'Brand Deleted Successfully',
+            'message' => 'SubCategory Deleted Successfully',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('all.product.categories')->with($notification);
+        return redirect()->route('all.product.sub_categories')->with($notification);
     }// End Method
 
 }
