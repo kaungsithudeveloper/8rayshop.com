@@ -43,8 +43,10 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|string|max:255',
             'product_name' => 'required|string|max:255',
-            'brand_id' => 'required|string|max:255',
-            'product_color_id' => 'required|string|max:255',
+            //'brand_id' => 'required|string|max:255',
+            //'product_color_id' => 'required|string|max:255',
+            'product_category_id' => 'required|string|max:255',
+            'product_subcategory_id' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -68,7 +70,7 @@ class ProductController extends Controller
 
         // Create Product Color
 
-
+        /*
         $product_colors = explode(',', $validatedData['product_color_id']);
         $colorIds = [];
         foreach ($product_colors as $color_name) {
@@ -94,7 +96,9 @@ class ProductController extends Controller
         }
         $product->brands()->attach($brandIds);
 
-        /*
+        */
+
+
         $product_categories = explode(',', $validatedData['product_category_id']);
         $categoryIds = [];
         foreach ($product_categories as $category) {
@@ -105,20 +109,20 @@ class ProductController extends Controller
             );
             $categoryIds[] = $productCategory->id;
         }
-        $product->productColor()->attach($categoryIds);
+        $product->productCategory()->attach($categoryIds);
 
-        $product_categories = explode(',', $validatedData['product_subcategory_id']);
-        $subCategoryIds = [];
-        foreach ($product_categories as $category) {
-            $category = trim($category);
-            $productCategory = ProductCategory::firstOrCreate(
-                ['product_category_name' => $category],
-                ['product_category_slug' => Str::slug($category)]
-            );
-            $subCategoryIds[] = $productCategory->id;
+
+        if (!empty($validatedData['product_subcategory_id'])) {
+            $subcategoryNames = explode(',', $validatedData['product_subcategory_id']);
+            foreach ($subcategoryNames as $categoryName) {
+                $subcategory = ProductSubCategory::firstOrCreate(['product_subcategory_name' => trim($categoryName)]);
+                $subcategory->product_categories_id = 1;
+                $subcategory->product_subcategory_slug = Str::slug($subcategory->product_subcategory_name);
+                $subcategory->save();
+                $product->productSubCategory()->attach($subcategory->id);
+            }
         }
-        $product->productColor()->attach($subCategoryIds);
-        */
+
 
         $notification = [
             'message' => 'Product created successfully!',

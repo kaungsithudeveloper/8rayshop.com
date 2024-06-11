@@ -64,17 +64,32 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="row">
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-4">
+                                                        <label for="brand" class="form-label">Brand:</label>
+                                                        <input type="text" name="brand_id" class="form-control" id="brand" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-4">
+                                                        <label for="product_colors" class="form-label">Product Colors:</label>
+                                                        <input type="text" name="product_color_id" class="form-control" id="product_colors" required>
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Product Category:</label>
-                                                        <input type="text" name="product_category_id" class="form-control" id="product_category" required>
+                                                        <input type="text" name="product_category_id" class="form-control" id="brand" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="product_colors" class="form-label">Product SubCategory:</label>
-                                                        <input type="text" name="product_subcategory_id" class="form-control" id="product-subcategory" required>
+                                                        <input type="text" name="product_subcategory_id" class="form-control" id="product_colors" required>
                                                     </div>
                                                 </div>
 
@@ -139,47 +154,6 @@
                         typeaheadjs: {
                             name: 'brands',
                             source: brands.ttAdapter()
-                        },
-                        confirmKeys: [13, 44],
-                    });
-
-                    // Bloodhound for brands
-                    var product_categories = new Bloodhound({
-                        datumTokenizer: Bloodhound.tokenizers.whitespace,
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                        prefetch: {
-                            url: "/product-category",
-                            cache: false,
-                        }
-                    });
-
-                    product_categories.initialize();
-
-                    $('#product_category').tagsinput({
-                        typeaheadjs: {
-                            name: 'product_categories',
-                            source: product_categories.ttAdapter()
-                        },
-                        confirmKeys: [13, 44],
-                    });
-
-
-                    // Bloodhound for brands
-                    var product_subcategories = new Bloodhound({
-                        datumTokenizer: Bloodhound.tokenizers.whitespace,
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                        prefetch: {
-                            url: "/product-subcategory",
-                            cache: false,
-                        }
-                    });
-
-                    product_subcategories.initialize();
-
-                    $('#product-subcategory').tagsinput({
-                        typeaheadjs: {
-                            name: 'product_subcategories',
-                            source: product_subcategories.ttAdapter()
                         },
                         confirmKeys: [13, 44],
                     });

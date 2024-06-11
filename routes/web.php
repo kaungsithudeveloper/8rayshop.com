@@ -154,7 +154,6 @@ Route::middleware(['auth','role:admin'])->group(function () {
     });
 
 
-
     Route::get('/brands', function() {
         $brands = Brand::pluck('brand_name')->toArray();
         return response()->json($brands);
@@ -163,6 +162,16 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('/product-colors', function() {
         $product_colors = ProductColor::pluck('color_name')->toArray();
         return response()->json($product_colors);
+    });
+
+    Route::get('/product-category', function() {
+        $product_categories = ProductCategory::pluck('product_category_name')->toArray();
+        return response()->json($product_categories);
+    });
+
+    Route::get('/product-subcategory', function() {
+        $product_subcategories = ProductSubCategory::pluck('product_subcategory_name')->toArray();
+        return response()->json($product_subcategories);
     });
 
 

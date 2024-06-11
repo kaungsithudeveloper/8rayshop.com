@@ -9,6 +9,8 @@ use App\Models\ProductType;
 use App\Models\ProductInfo;
 use App\Models\ProductCategory;
 use App\Models\ProductSubCategory;
+use App\Models\ProductColor;
+use App\Models\Brand;
 
 class Product extends Model
 {
@@ -28,12 +30,12 @@ class Product extends Model
 
     public function productCategory()
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->belongsToMany(ProductCategory::class, 'product_category_belongs', 'product_id', 'product_category_id');
     }
 
     public function productSubCategory()
     {
-        return $this->belongsTo(ProductSubCategory::class);
+        return $this->belongsToMany(ProductSubCategory::class, 'product_subcategory_belongs', 'product_id', 'product_subcategory_id');
     }
 
     public function productColor()

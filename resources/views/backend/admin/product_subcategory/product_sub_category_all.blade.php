@@ -77,7 +77,7 @@
                                         </thead>
 
                                         <tbody>
-                                            @foreach ($product_subcategories as $key => $category)
+                                            @foreach ($product_subcategories as $key => $subcategory)
                                                 <tr class="border-bottom">
                                                     <td class="text-center">
                                                         <div class="mt-0 mt-sm-2 d-block">
@@ -91,7 +91,9 @@
                                                         <div class="d-flex">
                                                             <div class="mt-0 mt-sm-3 d-block">
                                                                 <h6 class="mb-0 fs-14 fw-semibold">
-                                                                    {{ $category->product_category->product_category_name }}
+                                                                    @foreach ($subcategory->productCategories as $category)
+                                                                        {{ $category->product_category_name }}
+                                                                    @endforeach
                                                                 </h6>
                                                             </div>
                                                         </div>
@@ -101,7 +103,7 @@
                                                         <div class="d-flex">
                                                             <div class="mt-0 mt-sm-3 d-block">
                                                                 <h6 class="mb-0 fs-14 fw-semibold">
-                                                                    {{ $category->product_subcategory_name }}
+                                                                    {{ $subcategory->product_subcategory_name }}
                                                                 </h6>
                                                             </div>
                                                         </div>
@@ -109,20 +111,18 @@
 
                                                     <td>
                                                         <div class="g-2 text-center">
+                                                            <a href="{{ route('edit.product.sub_categories', $subcategory->product_subcategory_slug) }}"
+                                                                class="btn text-primary btn-sm" data-bs-toggle="tooltip"
+                                                                data-bs-original-title="Edit">
+                                                                <span class="fe fe-edit fs-14"></span>
+                                                            </a>
 
-                                                                <a href="{{ route('edit.product.sub_categories', $category->product_subcategory_slug) }}"
-                                                                    class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                    data-bs-original-title="Edit">
-                                                                    <span class="fe fe-edit fs-14"></span>
-                                                                </a>
-
-                                                                <a href="{{ route('delete.product.sub_categories', $category->id) }}"
-                                                                    class="btn text-danger btn-sm" id="delete"
-                                                                    data-bs-toggle="tooltip"
-                                                                    data-bs-original-title="Delete">
-                                                                    <span class="fe fe-trash-2 fs-14"></span>
-                                                                </a>
-
+                                                            <a href="{{ route('delete.product.sub_categories', $subcategory->id) }}"
+                                                                class="btn text-danger btn-sm" id="delete"
+                                                                data-bs-toggle="tooltip"
+                                                                data-bs-original-title="Delete">
+                                                                <span class="fe fe-trash-2 fs-14"></span>
+                                                            </a>
                                                         </div>
                                                     </td>
                                                 </tr>

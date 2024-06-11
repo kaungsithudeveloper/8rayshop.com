@@ -9,12 +9,14 @@ use App\Models\ProductSubCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductSubCategoryController extends Controller
 {
     public function AllProductSubCategories(){
         $product_categories = ProductCategory::orderBy('product_category_name','ASC')->get();
-        $product_subcategories = ProductSubCategory::latest()->get();
+        $product_subcategories = ProductSubCategory::with('productCategories')->latest()->get();
         return view('backend.admin.product_subcategory.product_sub_category_all',compact('product_categories','product_subcategories'));
     } // End Method
 
@@ -36,10 +38,18 @@ class ProductSubCategoryController extends Controller
         }
 
         $product_subcategory = new ProductSubCategory;
-        $product_subcategory->product_categories_id = $request->input('product_categories_id');
         $product_subcategory->product_subcategory_name = $request->input('product_subcategory_name');
         $product_subcategory->product_subcategory_slug = strtolower(str_replace(' ', '-', $request->product_subcategory_name));
         $product_subcategory->save();
+
+
+        DB::table('category_subcategory_belongs')->insert([
+            'product_category_id' => $request->input('product_categories_id'),
+            'product_subcategory_id' => $product_subcategory->id,
+        ]);
+
+        // Commit the transaction
+        DB::commit();
 
         $notification = array(
             'message' => 'Product SubCategory Inserted Successfully',
@@ -51,48 +61,59 @@ class ProductSubCategoryController extends Controller
 
     public function EditProductSubCategories($slug)
     {
-        $product_subcategory = ProductSubCategory::where('product_subcategory_slug', $slug)->firstOrFail();
+        $product_subcategory = ProductSubCategory::with('productCategories')->where('product_subcategory_slug', $slug)->firstOrFail();
         $product_subcategories = ProductSubCategory::latest()->get();
         $product_categories = ProductCategory::all();
         return view('backend.admin.product_subcategory.product_sub_category_edit', compact('product_subcategory', 'product_subcategories','product_categories'));
     }
 
 
-    public function UpdateProductSubCategories(Request $request){
+    public function UpdateProductSubCategories(Request $request)
+{
+    $product_subcategory_id = $request->id;
+    $product_subcategory = ProductSubCategory::findOrFail($product_subcategory_id);
 
-        //dd($request->all());
-        $product_subcategory_id = $request->id;
+    // Check if the subcategory name is different from the existing one
+    $isUniqueName = $request->input('product_subcategory_name') !== $product_subcategory->product_subcategory_name;
 
-        $validator = Validator::make($request->all(), [
-            'product_categories_id' => 'required|string|max:255',
-            'product_subcategory_name' => 'required|string|max:255|unique:product_sub_categories,product_subcategory_name',
-        ]);
+    // Validate the request
+    $validatorRules = [
+        'product_categories_id' => 'required|exists:product_categories,id',
+        'product_subcategory_name' => $isUniqueName ? 'required|string|max:255|unique:product_sub_categories,product_subcategory_name' : 'required|string|max:255',
+    ];
 
-        if ($validator->fails()) {
+    $validator = Validator::make($request->all(), $validatorRules);
 
-            $notification = [
-                'message' => 'The product Subcategory name already exists',
-                'alert-type' => 'error',
-            ];
+    if ($validator->fails()) {
+        $notification = [
+            'message' => 'Validation failed: ' . implode(', ', $validator->errors()->all()),
+            'alert-type' => 'error',
+        ];
 
-            return redirect()->back()->with($notification);
-        }
+        return redirect()->back()->with($notification);
+    }
 
-        $product_subcategory = ProductSubCategory::findOrFail($product_subcategory_id);
-        $product_subcategory->product_categories_id = $request->input('product_categories_id');
+    if ($isUniqueName) {
         $product_subcategory->product_subcategory_name = $request->input('product_subcategory_name');
-        $product_subcategory->product_subcategory_slug = strtolower(str_replace(' ', '-', $request->product_subcategory_name));
+        $product_subcategory->product_subcategory_slug = strtolower(str_replace(' ', '-', $request->input('product_subcategory_name')));
         $product_subcategory->save();
+    }
 
-       $notification = array(
-            'message' => 'SubCategory Updated Successfully',
-            'alert-type' => 'success'
+        DB::table('category_subcategory_belongs')->updateOrInsert(
+            ['product_subcategory_id' => $product_subcategory_id],
+            ['product_category_id' => $request->input('product_categories_id')]
         );
 
-        return redirect()->route('all.product.sub_categories')->with($notification);
+    $notification = [
+        'message' => 'SubCategory Updated Successfully',
+        'alert-type' => 'success'
+    ];
+
+    return redirect()->route('all.product.sub_categories')->with($notification);
+}
 
 
-    }// End Method
+
 
 
     public function DestoryProductSubCategories($id)
