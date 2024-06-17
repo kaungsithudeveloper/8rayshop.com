@@ -31,8 +31,8 @@ class ProductController extends Controller
         $product_type = ProductType::orderBy('product_type_name','ASC')->get();
         $brands = Brand::orderBy('brand_name','ASC')->get();
         $product_categories = ProductCategory::orderBy('product_category_name','ASC')->get();
-        $product_sub_categories = ProductSubCategory::orderBy('product_subcategory_name','ASC')->get();
-        return view('backend.admin.product.product_add',compact('product_type','brands','product_categories','product_sub_categories'));
+        $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name','ASC')->get();
+        return view('backend.admin.product.product_add',compact('product_type','brands','product_categories','product_subCategories'));
 
     } // End Method
 
@@ -46,7 +46,8 @@ class ProductController extends Controller
             //'brand_id' => 'required|string|max:255',
             //'product_color_id' => 'required|string|max:255',
             'product_category_id' => 'required|string|max:255',
-            'product_subcategory_id' => 'required|string|max:255',
+            'product_subcategory_id' => 'required|array',
+            'product_subcategory_id.*' => 'integer',
         ]);
 
         if ($validator->fails()) {
@@ -111,17 +112,15 @@ class ProductController extends Controller
         }
         $product->productCategory()->attach($categoryIds);
 
-
-        if (!empty($validatedData['product_subcategory_id'])) {
-            $subcategoryNames = explode(',', $validatedData['product_subcategory_id']);
-            foreach ($subcategoryNames as $categoryName) {
-                $subcategory = ProductSubCategory::firstOrCreate(['product_subcategory_name' => trim($categoryName)]);
-                $subcategory->product_categories_id = 1;
-                $subcategory->product_subcategory_slug = Str::slug($subcategory->product_subcategory_name);
-                $subcategory->save();
-                $product->productSubCategory()->attach($subcategory->id);
+        // Create Product SubCategory
+        $subCategoryIds = [];
+        foreach ($validatedData['product_subcategory_id'] as $subCategoryId) {
+            $productSubCategory = ProductSubCategory::find($subCategoryId);
+            if ($productSubCategory) {
+                $subCategoryIds[] = $productSubCategory->id;
             }
         }
+        $product->productSubCategory()->attach($subCategoryIds);
 
 
         $notification = [

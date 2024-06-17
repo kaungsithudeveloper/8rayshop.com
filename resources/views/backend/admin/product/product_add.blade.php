@@ -71,11 +71,16 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    <div class="form-group mb-4">
-                                                        <label for="product_colors" class="form-label">Product SubCategory:</label>
-                                                        <input type="text" name="product_subcategory_id" class="form-control" id="product-subcategory" required>
-                                                    </div>
+
+
+                                                <div class="form-group">
+                                                    <label class="form-label"> Product SubCategory: </label>
+                                                    <select class="form-control select2" name="product_subcategory_id[]" multiple>
+                                                        <option value="1">None</option>
+                                                        @foreach($product_subCategories as $subcategory)
+                                                            <option value="{{ $subcategory->id }}" >{{ $subcategory->product_subcategory_name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
 
 
