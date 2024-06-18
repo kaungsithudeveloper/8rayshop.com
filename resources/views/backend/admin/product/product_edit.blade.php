@@ -89,17 +89,16 @@
                                             <div class="card-body">
                                                 <div class="mb-3">
                                                     <label for="inputProductTitle" class="form-label">Multiple Image</label>
-                                                    <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple="">
+                                                    <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple>
 
                                                     <div class="row" id="preview_img">
                                                         @foreach($product->multiImages as $img)
-                                                            <div class="col-md-3 thumb-wrapper">
-                                                                <img src="{{ asset('upload/product_multi_images/'.$img->photo_name) }}" width="150" height="120" class="thumb" />
-                                                                <button class="remove-btn">x</button>
-                                                            </div>
+                                                        <div class="col-md-3 thumb-wrapper" data-id="{{ $img->id }}">
+                                                            <img src="{{ url('upload/product_multi_images/' . $img->photo_name) }}" alt="Product" style="width:100px; height: 100px;" class="thumb">
+                                                            <button class="remove-btn">x</button>
+                                                        </div>
                                                         @endforeach
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -241,7 +240,6 @@
                                             display: inline-block;
                                             margin: 10px;
                                         }
-
                                         .remove-btn {
                                             position: absolute;
                                             top: 5px;
@@ -256,7 +254,6 @@
                                             cursor: pointer;
                                             display: none;
                                         }
-
                                         .thumb-wrapper:hover .remove-btn {
                                             display: block;
                                         }
@@ -264,7 +261,7 @@
 
                                     <div class="card">
                                         <div class="card-body">
-                                            <button type="submit" class="btn btn-primary">Create Product</button>
+                                            <button type="submit" class="btn btn-primary">Update Product</button>
                                             <a href="" class="btn btn-danger float-end">Discard</a>
                                         </div>
                                     </div>
@@ -379,46 +376,78 @@
                 });
             </script>
 <script>
-    $(document).ready(function(){
-        $('#multiImg').on('change', function(){ //on file input change
-            if (window.File && window.FileReader && window.FileList && window.Blob) { //check File API supported browser
-                var data = $(this)[0].files; //this file data
+    $(document).ready(function () {
+    // Preview and upload new images
+    $('#multiImg').on('change', function () {
+        var data = $(this)[0].files;
 
-                $.each(data, function(index, file){ //loop through each file
-                    if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)){ //check supported file type
-                        var fRead = new FileReader(); //new filereader
-                        fRead.onload = (function(file){ //trigger function on successful read
-                            return function(e) {
-                                var thumbWrapper = $('<div/>').addClass('thumb-wrapper');
-                                var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120);
-                                var removeBtn = $('<button/>').addClass('remove-btn').text('x');
+        $.each(data, function (index, file) {
+            if (/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)) {
+                var fRead = new FileReader();
+                fRead.onload = (function (file) {
+                    return function (e) {
+                        var thumbWrapper = $('<div/>').addClass('col-md-3 thumb-wrapper');
+                        var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120);
+                        var removeBtn = $('<button/>').addClass('remove-btn').text('x');
 
-                                thumbWrapper.append(img).append(removeBtn);
-                                $('#preview_img').append(thumbWrapper);
+                        thumbWrapper.append(img).append(removeBtn);
+                        $('#preview_img').append(thumbWrapper);
 
-                                removeBtn.on('click', function(e){
-                                    e.preventDefault();
-                                    thumbWrapper.remove();
-                                });
-                            };
-                        })(file);
-                        fRead.readAsDataURL(file); //URL representing the file's data.
-                    }
-                });
-
-            } else {
-                alert("Your browser doesn't support File API!"); //if File API is absent
+                        removeBtn.on('click', function (e) {
+                            e.preventDefault();
+                            thumbWrapper.remove();
+                        });
+                    };
+                })(file);
+                fRead.readAsDataURL(file);
             }
         });
 
-        // Remove existing images on click
-        $('.remove-btn').on('click', function(e){
-            e.preventDefault();
-            $(this).closest('.thumb-wrapper').remove();
+        // AJAX call to upload images
+        var formData = new FormData();
+        $.each(data, function (index, file) {
+            formData.append('multi_img[]', file);
+        });
+
+        $.ajax({
+            url: '{{ route("update.multi.image") }}', // Update with your route
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                // Handle success response
+            },
+            error: function (error) {
+                // Handle error response
+            }
         });
     });
-</script>
 
+    // Remove existing images
+    $('#preview_img').on('click', '.remove-btn', function (e) {
+        e.preventDefault();
+        var thumbWrapper = $(this).closest('.thumb-wrapper');
+        var imageId = thumbWrapper.data('id');
+
+        $.ajax({
+            url: '{{ route("delete.multi.image") }}', // Update with your route
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: imageId
+            },
+            success: function (response) {
+                thumbWrapper.remove();
+            },
+            error: function (error) {
+                // Handle error response
+            }
+        });
+    });
+});
+
+</script>
 
 
 

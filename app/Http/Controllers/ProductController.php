@@ -203,6 +203,7 @@ class ProductController extends Controller
 
     public function UpdateProduct(Request $request)
     {
+        //dd($request->all());
         $id = $request->id;
         // Validate the request data
         $validator = Validator::make($request->all(), [
@@ -270,31 +271,24 @@ class ProductController extends Controller
         $product_info->updated_at = Carbon::now();
         $product_info->save();
 
-        if ($request->hasFile('multi_img')) {
-            // Delete old images
-            $oldImages = MultiImg::where('product_id', $product->id)->get();
-            foreach ($oldImages as $img) {
-                unlink(public_path('upload/product_multi_images/' . $img->photo_name));
+        if ($request->file('multi_img')) {
+            // Remove old images
+            foreach ($product->multiImages as $img) {
+                if (file_exists(public_path('upload/product_multi_images/'.$img->photo_name))) {
+                    unlink(public_path('upload/product_multi_images/'.$img->photo_name));
+                }
                 $img->delete();
             }
 
             // Upload new images
-            foreach ($request->file('multi_img') as $img) {
-                $imageName = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-                $imagePath = 'upload/product_multi_images/' . $imageName;
+            foreach ($request->file('multi_img') as $file) {
+                $filename = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+                $file->move(public_path('upload/product_multi_images'), $filename);
 
-                Image::make($img)
-                    ->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->save(public_path($imagePath), 75);
-
-                $product_multiImage = new MultiImg();
-                $product_multiImage->product_id = $product->id;
-                $product_multiImage->photo_name = $imageName;
-                $product_multiImage->created_at = Carbon::now();
-                $product_multiImage->save();
+                MultiImg::create([
+                    'product_id' => $product->id,
+                    'photo_name' => $filename,
+                ]);
             }
         }
 
@@ -344,6 +338,34 @@ class ProductController extends Controller
         ];
 
         return redirect()->route('all.product')->with($notification);
+    }
+
+    public function updateMultiImage(Request $request)
+    {
+        if ($request->hasFile('multi_img')) {
+            foreach ($request->file('multi_img') as $file) {
+                $filename = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+                $file->move(public_path('upload/product_multi_images'), $filename);
+
+                MultiImg::create([
+                    'product_id' => $request->product_id, // Ensure product_id is passed from the form
+                    'photo_name' => $filename,
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+            return response()->json(['success' => 'Images uploaded successfully.']);
+        }
+        return response()->json(['error' => 'No images to upload.'], 400);
+    }
+
+    public function deleteMultiImage(Request $request)
+    {
+        $image = MultiImg::findOrFail($request->id);
+        if (file_exists(public_path('upload/product_multi_images/'.$image->photo_name))) {
+            unlink(public_path('upload/product_multi_images/'.$image->photo_name));
+        }
+        $image->delete();
+        return response()->json(['success' => 'Image deleted successfully.']);
     }
 
 }
