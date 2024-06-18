@@ -13,6 +13,11 @@ class ProductSubCategory extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function categories()
+    {
+        return $this->belongsToMany(ProductCategory::class, 'category_subcategory_belongs', 'product_subcategory_id', 'product_category_id');
+    }
+
     public function product_category(){
         return $this->belongsTo(ProductCategory::class, 'product_categories_id');
     }

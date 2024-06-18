@@ -16,23 +16,22 @@
 
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
-                            <h1 class="page-title">Create Product</h1>
+                            <h1 class="page-title">Edit Product</h1>
                             <div>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Create Product</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
                                 </ol>
                             </div>
                         </div>
                         <!-- PAGE-HEADER END -->
 
                         <!-- ROW-1 -->
-                        <form id="myForm" method="post" action="{{ route('store.product') }}" enctype="multipart/form-data">
+                        <form id="myForm" method="post" action="{{ route('update.product') }}" enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" name="id" value="{{ $product->id }}">
                             <div class="row">
-
                                 <div class="col-xl-8">
-
                                         @if ($errors->any())
                                             <div class="alert alert-danger">
                                                 @foreach ($errors->all() as $err)
@@ -43,19 +42,21 @@
 
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="product_code" class="form-label">Product Code :<span
-                                                                    class="text-red">*</span></label>
-                                                            <input type="text" class="form-control"  name="product_code" autocomplete="product_code" required>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label for="product_code" class="form-label">Product Code :<span
+                                                                        class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="product_code" value="{{ $product->product_code }}" autocomplete="product_code" required>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="form-group">
-                                                            <label for="product_name" class="form-label">Product Name:<span
-                                                                    class="text-red">*</span></label>
-                                                            <input type="text" class="form-control"  name="product_name" autocomplete="product_name" required>
+                                                        <div class="col-md-8">
+                                                            <div class="form-group">
+                                                                <label for="product_name" class="form-label">Product Name:<span
+                                                                        class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="product_name" value="{{ $product->product_name }}" autocomplete="product_name" required>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -66,7 +67,7 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="short_descp" class="form-label">Short Description :</label>
-                                                    <textarea class="form-control mb-4" rows="4" name="short_descp"></textarea>
+                                                    <textarea class="form-control mb-4" rows="4" name="short_descp">{{ $product->productInfo->short_descp }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,7 +76,7 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="long_descp" class="form-label">Product Description :</label>
-                                                    <textarea name="long_descp" id="myTextarea" class="content"></textarea>
+                                                    <textarea name="long_descp" id="myTextarea" class="content">{{ $product->productInfo->long_descp }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -90,7 +91,14 @@
                                                     <label for="inputProductTitle" class="form-label">Multiple Image</label>
                                                     <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple="">
 
-                                                    <div class="row" id="preview_img"></div>
+                                                    <div class="row" id="preview_img">
+                                                        @foreach($product->multiImages as $img)
+                                                            <div class="col-md-3 thumb-wrapper">
+                                                                <img src="{{ asset('upload/product_multi_images/'.$img->photo_name) }}" width="150" height="120" class="thumb" />
+                                                                <button class="remove-btn">x</button>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
 
                                                 </div>
                                             </div>
@@ -102,13 +110,24 @@
                                         <div class="card-body">
                                             <div class="row">
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Product Category:</label>
                                                         <select name="product_category_id" class="form-select select2" id="inputVendor">
                                                             <option value="1">None</option>
                                                             @foreach($product_categories as $cat)
-                                                                <option value="{{ $cat->id }}">{{ $cat->product_category_name }}</option>
+                                                                <option value="{{ $cat->id }}" {{ $cat->id == $product->product_category_id ? 'selected' : '' }}>{{ $cat->product_category_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group mb-4">
+                                                        <label class="form-label"> Product SubCategory: </label>
+                                                        <select name="product_subcategory_id[]" class="form-select select2" id="inputCollection" multiple>
+                                                            @foreach($product_subCategories as $subCat)
+                                                                <option value="{{ $subCat->id }}" {{ in_array($subCat->id, $product->productSubCategory->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $subCat->product_subcategory_name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -116,24 +135,15 @@
 
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
-                                                        <label class="form-label"> Product SubCategory: </label>
-                                                        <select name="product_subcategory_id[]" class="form-select select2" id="inputCollection" multiple>
-                                                            <option></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Brand:</label>
-                                                        <input type="text" name="brand_id" class="form-control" id="brand" required>
+                                                        <input type="text" name="brand_id" class="form-control" id="brand" value="{{ implode(', ', $product->brands->pluck('brand_name')->toArray()) }}" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="product_colors" class="form-label">Product Colors:</label>
-                                                        <input type="text" name="product_color_id" class="form-control" id="product_colors" required>
+                                                        <input type="text" name="product_color_id" class="form-control" id="product_colors" value="{{ implode(', ', $product->productColor->pluck('color_name')->toArray()) }}" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -145,30 +155,26 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="product_qty" class="form-label">Stock :<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="product_qty" required>
+                                                        <label for="product_qty" class="form-label">Stock :<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="product_qty" value="{{ $product->product_qty }}" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="product_size" class="form-label">Product Size :<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="product_size" required>
+                                                        <label for="product_size" class="form-label">Product Size :<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="product_size" value="{{ $product->productInfo->product_size }}" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="selling_price" class="form-label">Selling Price:<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="selling_price" required>
+                                                        <label for="selling_price" class="form-label">Selling Price:<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="selling_price" value="{{ $product->selling_price }}" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="discount_price" class="form-label">Discount Price:<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="discount_price" required>
+                                                        <label for="discount_price" class="form-label">Discount Price:<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="discount_price" value="{{ $product->discount_price }}" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -190,26 +196,24 @@
                                                     <h6 class="mb-0"></h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
-                                                    <img id="showImage" src="{{ (!empty($product->photo))?url('upload/admin_images/'.$product->photo):url('upload/profile.jpg') }}" alt="Admin" style="width:100px; height: 100px;" >
+                                                    <img id="showImage" src="{{ (!empty($product->product_photo))?url('upload/product_images/'.$product->product_photo):url('upload/profile.jpg') }}" alt="Product" style="width:100px; height: 100px;" >
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="form-label">Checkboxes</div>
                                             <div class="row">
-
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="new" value="1" >
+                                                            <input type="checkbox" class="custom-control-input" name="new" value="1" {{ $product->productInfo->new ? 'checked' : '' }}>
                                                             <span class="custom-control-label">New</span>
                                                         </label>
 
                                                         <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="hot" value="1" >
+                                                            <input type="checkbox" class="custom-control-input" name="hot" value="1" {{ $product->productInfo->hot ? 'checked' : '' }}>
                                                             <span class="custom-control-label">Hot</span>
                                                         </label>
                                                     </div>
@@ -217,22 +221,46 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="sale" value="1" >
+                                                            <input type="checkbox" class="custom-control-input" name="sale" value="1" {{ $product->productInfo->sale ? 'checked' : '' }}>
                                                             <span class="custom-control-label">Sale</span>
                                                         </label>
 
                                                         <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="best_sale" value="1" >
+                                                            <input type="checkbox" class="custom-control-input" name="best_sale" value="1" {{ $product->productInfo->best_sale ? 'checked' : '' }}>
                                                             <span class="custom-control-label">Best sale</span>
                                                         </label>
                                                     </div>
                                                 </div>
-
-
-
                                             </div>
                                         </div>
                                     </div>
+
+                                    <style>
+                                        .thumb-wrapper {
+                                            position: relative;
+                                            display: inline-block;
+                                            margin: 10px;
+                                        }
+
+                                        .remove-btn {
+                                            position: absolute;
+                                            top: 5px;
+                                            right: 5px;
+                                            background-color: red;
+                                            color: white;
+                                            border: none;
+                                            border-radius: 50%;
+                                            width: 20px;
+                                            height: 20px;
+                                            text-align: center;
+                                            cursor: pointer;
+                                            display: none;
+                                        }
+
+                                        .thumb-wrapper:hover .remove-btn {
+                                            display: block;
+                                        }
+                                    </style>
 
                                     <div class="card">
                                         <div class="card-body">
@@ -241,6 +269,7 @@
                                         </div>
                                     </div>
                                 </div>
+
 
                             </div>
                         <!-- ROW-1 END -->
@@ -349,36 +378,50 @@
                     });
                 });
             </script>
+<script>
+    $(document).ready(function(){
+        $('#multiImg').on('change', function(){ //on file input change
+            if (window.File && window.FileReader && window.FileList && window.Blob) { //check File API supported browser
+                var data = $(this)[0].files; //this file data
 
-            <script>
+                $.each(data, function(index, file){ //loop through each file
+                    if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)){ //check supported file type
+                        var fRead = new FileReader(); //new filereader
+                        fRead.onload = (function(file){ //trigger function on successful read
+                            return function(e) {
+                                var thumbWrapper = $('<div/>').addClass('thumb-wrapper');
+                                var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120);
+                                var removeBtn = $('<button/>').addClass('remove-btn').text('x');
 
-                $(document).ready(function(){
-                $('#multiImg').on('change', function(){ //on file input change
-                    if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
-                    {
-                        var data = $(this)[0].files; //this file data
+                                thumbWrapper.append(img).append(removeBtn);
+                                $('#preview_img').append(thumbWrapper);
 
-                        $.each(data, function(index, file){ //loop though each file
-                            if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)){ //check supported file type
-                                var fRead = new FileReader(); //new filereader
-                                fRead.onload = (function(file){ //trigger function on successful read
-                                return function(e) {
-                                    var img = $('<img/>').addClass('thumb').attr('src', e.target.result) .width(150)
-                                .height(120); //create image element
-                                    $('#preview_img').append(img); //append image to output element
-                                };
-                                })(file);
-                                fRead.readAsDataURL(file); //URL representing the file's data.
-                            }
-                        });
-
-                    }else{
-                        alert("Your browser doesn't support File API!"); //if File API is absent
+                                removeBtn.on('click', function(e){
+                                    e.preventDefault();
+                                    thumbWrapper.remove();
+                                });
+                            };
+                        })(file);
+                        fRead.readAsDataURL(file); //URL representing the file's data.
                     }
                 });
-                });
 
-            </script>
+            } else {
+                alert("Your browser doesn't support File API!"); //if File API is absent
+            }
+        });
+
+        // Remove existing images on click
+        $('.remove-btn').on('click', function(e){
+            e.preventDefault();
+            $(this).closest('.thumb-wrapper').remove();
+        });
+    });
+</script>
+
+
+
+
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script type="text/javascript">

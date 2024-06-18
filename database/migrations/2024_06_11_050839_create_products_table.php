@@ -22,9 +22,11 @@ return new class extends Migration
             $table->string('product_photo')->nullable();
             $table->enum('status', ['active', 'inactive']);
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('product_type_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('product_type_id')->references('id')->on('product_types')->onDelete('cascade');
         });
     }
 

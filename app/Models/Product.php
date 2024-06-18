@@ -11,6 +11,7 @@ use App\Models\ProductCategory;
 use App\Models\ProductSubCategory;
 use App\Models\ProductColor;
 use App\Models\Brand;
+use App\Models\MultiImg;
 
 class Product extends Model
 {
@@ -46,5 +47,10 @@ class Product extends Model
     public function brands()
     {
         return $this->belongsToMany(Brand::class, 'product_brand_belongs', 'product_id', 'brand_id');
+    }
+
+    public function multiImages()
+    {
+        return $this->hasMany(MultiImg::class, 'product_id');
     }
 }

@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('product_infos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('product_id');
             $table->string('product_size')->nullable();
             $table->text('short_descp');
             $table->text('long_descp');
-            $table->integer('hot_deals')->nullable();
-            $table->integer('featured')->nullable();
-            $table->integer('special_offer')->nullable();
-            $table->integer('special_deals')->nullable();
+            $table->integer('new')->nullable();
+            $table->integer('hot')->nullable();
+            $table->integer('sale')->nullable();
+            $table->integer('best_sale')->nullable();
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

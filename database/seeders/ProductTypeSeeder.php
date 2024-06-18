@@ -16,7 +16,6 @@ class ProductTypeSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            'none',
             'products',
             'movies',
             'games',

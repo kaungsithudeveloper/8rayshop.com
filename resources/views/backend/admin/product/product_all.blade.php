@@ -153,7 +153,7 @@
                                                                                             <span class="fe fe-eye fs-14"></span>
                                                                                         </a>
 
-                                                                                        <a href=""
+                                                                                        <a href="{{ route('edit.product', $product->product_slug) }}"
                                                                                             class="btn text-primary btn-sm" data-bs-toggle="tooltip"
                                                                                             data-bs-original-title="Edit">
                                                                                             <span class="fe fe-edit fs-14"></span>

@@ -94,7 +94,6 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/edit/employee/salary/{id}' ,  'EditAdminEmployeeSalary')->name('edit.employee.salary');
         Route::put('/update/employee/salary/{id}', 'UpdateAdminEmployeeSalary')->name('update.employee.salary');
 
-
     });
 
     // Backend user routes
@@ -123,7 +122,9 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/backend/product/sub_categories/edit/{slug}', 'EditProductSubCategories')->name('edit.product.sub_categories');
         Route::post('/backend/product/sub_categories/update', 'UpdateProductSubCategories')->name('update.product.sub_categories');
         Route::get('/backend/product/sub_categories/delete/{id}' ,  'DestoryProductSubCategories')->name('delete.product.sub_categories');
+
     });
+    Route::get('/subcategory/ajax/{product_category_id}', [ProductSubCategoryController::class, 'getSubCategory'])->name('getSubCategory');
 
     // Backend Product Type routes
     Route::controller(ProductTypeController::class)->group(function(){
@@ -148,10 +149,12 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/backend/product', 'AllProduct')->name('all.product');
         Route::get('/backend/product/add', 'AddProduct')->name('product.add');
         Route::post('/backend/product/store',  'StoreProduct')->name('store.product');
-        Route::get('/backend/product/edit/{slug}', 'EditProduct')->name('edit.product');
         Route::post('/backend/product/update', 'UpdateProduct')->name('update.product');
         Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
     });
+
+
+    Route::get('/backend/product/edit/{slug}', [ProductController::class, 'EditProduct'])->name('edit.product');
 
 
     Route::get('/brands', function() {
