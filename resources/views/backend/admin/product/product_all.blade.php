@@ -10,7 +10,11 @@
 
                 <!-- PAGE-HEADER -->
                 <div class="page-header">
-                    <h1 class="page-title">All Product</h1>
+                    <h1 class="page-title">
+                        <a href="{{ route('product.add') }}" class="btn btn-primary">
+                            Add New Product
+                        </a>
+                    </h1>
                     <div>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
@@ -147,19 +151,13 @@
                                                                             <td>
                                                                                 <div class="g-2 text-center">
 
-                                                                                        <a href=""
-                                                                                            class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                                            data-bs-original-title="Detail">
-                                                                                            <span class="fe fe-eye fs-14"></span>
-                                                                                        </a>
-
                                                                                         <a href="{{ route('edit.product', $product->product_slug) }}"
                                                                                             class="btn text-primary btn-sm" data-bs-toggle="tooltip"
                                                                                             data-bs-original-title="Edit">
                                                                                             <span class="fe fe-edit fs-14"></span>
                                                                                         </a>
 
-                                                                                        <a href=""
+                                                                                        <a href="{{ route('delete.product', $product->id) }}"
                                                                                             class="btn text-danger btn-sm" id="delete"
                                                                                             data-bs-toggle="tooltip"
                                                                                             data-bs-original-title="Delete">

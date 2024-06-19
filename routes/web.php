@@ -153,8 +153,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
     });
 
-    Route::post('/update-multi-image', [ProductController::class, 'updateMultiImage'])->name('update.multi.image');
-    Route::post('/delete-multi-image', [ProductController::class, 'deleteMultiImage'])->name('delete.multi.image');
+    Route::delete('/delete-multi-image/{id}', [ProductController::class, 'deleteMultiImage']);
+Route::post('/update-multi-images', [ProductController::class, 'updateMultiImages']);
 
     Route::get('/backend/product/edit/{slug}', [ProductController::class, 'EditProduct'])->name('edit.product');
 

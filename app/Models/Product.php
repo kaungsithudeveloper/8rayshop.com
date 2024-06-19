@@ -29,10 +29,17 @@ class Product extends Model
         return $this->hasOne(ProductInfo::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(ProductCategory::class, 'product_category_belongs', 'product_id', 'product_category_id');
+    }
+
     public function productCategory()
     {
         return $this->belongsToMany(ProductCategory::class, 'product_category_belongs', 'product_id', 'product_category_id');
     }
+
+
 
     public function productSubCategory()
     {

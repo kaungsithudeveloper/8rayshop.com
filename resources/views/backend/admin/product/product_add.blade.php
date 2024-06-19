@@ -157,14 +157,21 @@
                                                         <input type="text" class="form-control"  name="product_size" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="purchase_price" class="form-label">Purchase Price:<span
+                                                                class="text-red">*</span></label>
+                                                        <input type="text" class="form-control"  name="purchase_price" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="selling_price" class="form-label">Selling Price:<span
                                                                 class="text-red">*</span></label>
                                                         <input type="text" class="form-control"  name="selling_price" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="discount_price" class="form-label">Discount Price:<span
                                                                 class="text-red">*</span></label>

@@ -43,10 +43,11 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|unique:products,product_code|string|max:255',
             'product_name' => 'required|unique:products,product_name|string|max:255',
-            'short_descp' => 'required|string|max:255',
-            'long_descp' => 'required|string|max:255',
+            'short_descp' => 'required|string',
+            'long_descp' => 'required|string',
             'product_qty' => 'required|integer',
             'product_size' => 'required|string|max:255',
+            'purchase_price' => 'required|string|max:255',
             'selling_price' => 'required|string|max:255',
             'discount_price' => 'required|string|max:255',
             'brand_id' => 'required|string|max:255',
@@ -75,6 +76,7 @@ class ProductController extends Controller
         $product->product_name = $request->input('product_name');
         $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
         $product->product_qty = $request->input('product_qty');
+        $product->purchase_price = $request->input('purchase_price');
         $product->selling_price = $request->input('selling_price');
         $product->discount_price = $request->input('discount_price');
         $product->user_id = auth()->user()->id;
@@ -189,7 +191,9 @@ class ProductController extends Controller
     public function EditProduct($slug)
     {
         // Retrieve the product by slug
-        $product = Product::with(['productInfo', 'productColor', 'brands', 'productCategory', 'productSubCategory', 'multiImages'])->where('product_slug', $slug)->firstOrFail();
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])
+    ->where('product_slug', $slug)
+    ->firstOrFail();
 
         // Retrieve all necessary related data
         $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();
@@ -209,10 +213,11 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|string|max:255' . $id,
             'product_name' => 'required|string|max:255' . $id,
-            'short_descp' => 'required|string|max:255',
-            'long_descp' => 'required|string|max:255',
+            'short_descp' => 'required|string',
+            'long_descp' => 'required|string',
             'product_qty' => 'required|integer',
             'product_size' => 'required|string|max:255',
+            'purchase_price' => 'required|string|max:255',
             'selling_price' => 'required|string|max:255',
             'discount_price' => 'required|string|max:255',
             'brand_id' => 'required|string|max:255',
@@ -238,6 +243,7 @@ class ProductController extends Controller
         $product->product_name = $request->input('product_name');
         $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
         $product->product_qty = $request->input('product_qty');
+        $product->purchase_price = $request->input('purchase_price');
         $product->selling_price = $request->input('selling_price');
         $product->discount_price = $request->input('discount_price');
         $product->user_id = auth()->user()->id;
@@ -340,32 +346,69 @@ class ProductController extends Controller
         return redirect()->route('all.product')->with($notification);
     }
 
-    public function updateMultiImage(Request $request)
+    public function deleteMultiImage($id)
     {
+        $image = MultiImg::findOrFail($id);
+        if (file_exists(public_path('upload/product_multi_images/'.$image->photo_name))) {
+            unlink(public_path('upload/product_multi_images/'.$image->photo_name));
+        }
+        $image->delete();
+        return response()->json(['success' => 'Image deleted successfully!']);
+    }
+
+    public function updateMultiImages(Request $request)
+    {
+        $productId = $request->product_id;
+
         if ($request->hasFile('multi_img')) {
             foreach ($request->file('multi_img') as $file) {
                 $filename = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
                 $file->move(public_path('upload/product_multi_images'), $filename);
 
                 MultiImg::create([
-                    'product_id' => $request->product_id, // Ensure product_id is passed from the form
+                    'product_id' => $productId,
                     'photo_name' => $filename,
-                    'created_at' => Carbon::now(),
                 ]);
             }
-            return response()->json(['success' => 'Images uploaded successfully.']);
         }
-        return response()->json(['error' => 'No images to upload.'], 400);
+
+        $notification = [
+            'message' => 'Product created successfully!',
+            'alert-type' => 'success',
+        ];
+
+        return redirect()->route('all.product')->with($notification);
     }
 
-    public function deleteMultiImage(Request $request)
+    public function DestoryProduct($id)
     {
-        $image = MultiImg::findOrFail($request->id);
-        if (file_exists(public_path('upload/product_multi_images/'.$image->photo_name))) {
-            unlink(public_path('upload/product_multi_images/'.$image->photo_name));
+        $product = Product::findOrFail($id);
+
+        // Delete the main product image
+        $mainImagePath = public_path('upload/product_images/' . $product->product_photo);
+        if (file_exists($mainImagePath) && is_file($mainImagePath)) {
+            unlink($mainImagePath);
         }
-        $image->delete();
-        return response()->json(['success' => 'Image deleted successfully.']);
+
+        // Delete all multi-images associated with the product
+        $multiImages = MultiImg::where('product_id', $id)->get();
+        foreach ($multiImages as $image) {
+            $imagePath = public_path('upload/product_multi_images/' . $image->photo_name);
+            if (file_exists($imagePath) && is_file($imagePath)) {
+                unlink($imagePath);
+            }
+            $image->delete();
+        }
+
+        // Delete the product itself
+        $product->delete();
+
+        $notification = array(
+            'message' => 'Product Deleted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('all.product')->with($notification);
     }
 
 }

@@ -83,30 +83,28 @@
 
 
                                         <div class="card">
-                                            <div class="card-header">
-                                                <div class="card-title">Multiple Image</div>
-                                            </div>
-                                            <div class="card-body">
-
+                                        <div class="card-header">
+                                            <div class="card-title">Multiple Image</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
                                                 <label for="inputProductTitle" class="form-label">Multiple Image</label>
-                                                    <div class="row">
-                                                        <div class="col-8"><input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple></div>
-                                                        <div class="col-4"><button id="updateImages" class="btn btn-primary">Update Images</button></div>
-                                                    </div>
-                                                <div class="mb-3 mt-2">
+                                                <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple>
 
-                                                    <div class="row" id="preview_img">
-                                                        @foreach($product->multiImages as $img)
-                                                        <div class="col-md-3 thumb-wrapper" data-id="{{ $img->id }}">
-                                                            <img src="{{ (!empty($img->photo_name)) ? url('upload/product_multi_images/'.$img->photo_name) : url('upload/profile.jpg') }}" alt="Product" style="width:100px; height: 100px;" class="thumb">
-                                                            <button class="remove-btn" type="button">x</button>
-                                                        </div>
-                                                        @endforeach
+                                                <div class="row" id="preview_img">
+                                                    @foreach($product->multiImages as $img)
+                                                    <div class="col-md-3 thumb-wrapper" data-id="{{ $img->id }}">
+                                                        <img src="{{ (!empty($img->photo_name)) ? url('upload/product_multi_images/'.$img->photo_name) : url('upload/profile.jpg') }}" alt="Product" style="width:100px; height: 100px;" class="thumb">
+                                                        <button class="btn btn-danger btn-sm remove-btn" type="button">x</button>
+                                                        <button class="btn btn-secondary btn-sm move-up" type="button">↑</button>
+                                                        <button class="btn btn-secondary btn-sm move-down" type="button">↓</button>
                                                     </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
-
+                                    </div>
+                                    <button id="updateImages" class="btn btn-primary">Update Images</button>
 
                                 </div>
                                 <div class="col-xl-4">
@@ -119,11 +117,9 @@
                                                     <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Product Category:</label>
                                                         <select name="product_category_id" class="form-select select2" id="inputVendor">
-                                                            <option value="">None</option>
+                                                            <option value="1">None</option>
                                                             @foreach($product_categories as $cat)
-                                                                <option value="{{ $cat->id }}" {{ $product->categories->contains($cat->id) ? 'selected' : '' }}>
-                                                                    {{ $cat->product_category_name }}
-                                                                </option>
+                                                                <option value="{{ $cat->id }}" {{ $cat->id == $product->product_category_id ? 'selected' : '' }}>{{ $cat->product_category_name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -172,19 +168,13 @@
                                                         <input type="text" class="form-control" name="product_size" value="{{ $product->productInfo->product_size }}" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="purchase_price" class="form-label">Purchase Price:<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="purchase_price" value="{{ $product->purchase_price }}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="selling_price" class="form-label">Selling Price:<span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="selling_price" value="{{ $product->selling_price }}" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="discount_price" class="form-label">Discount Price:<span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="discount_price" value="{{ $product->discount_price }}" required>
@@ -254,7 +244,6 @@
                                             display: inline-block;
                                             margin: 10px;
                                         }
-
                                         .remove-btn {
                                             position: absolute;
                                             top: 5px;
@@ -269,7 +258,6 @@
                                             cursor: pointer;
                                             display: none;
                                         }
-
                                         .thumb-wrapper:hover .remove-btn {
                                             display: block;
                                         }
@@ -393,7 +381,6 @@
             </script>
 <script>
     $(document).ready(function () {
-        // Handle image selection
         $('#multiImg').on('change', function () {
             if (window.File && window.FileReader && window.FileList && window.Blob) {
                 var data = $(this)[0].files;
@@ -424,7 +411,7 @@
             }
         });
 
-        // Handle image deletion
+        // Remove existing images on click
         $('#preview_img').on('click', '.remove-btn', function (e) {
             e.preventDefault();
             var thumbWrapper = $(this).closest('.thumb-wrapper');
@@ -467,6 +454,7 @@
             });
         });
     });
+
 </script>
 
 
