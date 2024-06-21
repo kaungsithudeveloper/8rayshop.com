@@ -28,72 +28,25 @@
                         </a>
                     </li>
 
-                    <li class="sub-category">
-                        <h3>Product Management</h3>
-                    </li>
                     <li class="slide">
                         <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                            <i class="side-menu__icon fe fe-slack"></i>
-                            <span class="side-menu__label">Product Management</span>
-                            <i class="angle fe fe-chevron-right"></i>
+                            <i class="side-menu__icon fe fe-users"></i>
+                            <span class="side-menu__label">User Management</span>
+                            <i class="angle fe fe-chevron-right"></i></a>
+                        <ul class="slide-menu">
+                            <li class="side-menu-label1"><a href="javascript:void(0)">User Management</a></li>
+                            <li><a href="{{ route('all.employee.user') }}" class="slide-item"> All User </a></li>
+                            <li><a href="{{ route('add.employee.user') }}" class="slide-item"> Add User </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="slide">
+                        <a class="side-menu__item has-link"
+                            data-bs-toggle="slide" href="{{ route('all.employee.brand') }}">
+                            <i class="side-menu__icon fe fe-award"></i>
+                            <span class="side-menu__label">Brand Management</span>
                         </a>
-                        <ul class="slide-menu">
-                            <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
-                            <li><a href="cards.html" class="slide-item"> All Product</a></li>
-                            <li><a href="calendar.html" class="slide-item"> Add Product</a></li>
-                        </ul>
                     </li>
-
-                    <li class="slide">
-                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i class="side-menu__icon fe fe-slack"></i><span class="side-menu__label">Categories Management</span><i class="angle fe fe-chevron-right"></i></a>
-                        <ul class="slide-menu">
-                            <li class="side-menu-label1"><a href="javascript:void(0)">Categories Management</a></li>
-                            <li><a href="cards.html" class="slide-item"> All Categories</a></li>
-                            <li><a href="calendar.html" class="slide-item"> Add Categories</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="slide">
-                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i class="side-menu__icon fe fe-slack"></i><span class="side-menu__label">Brand Management</span><i class="angle fe fe-chevron-right"></i></a>
-                        <ul class="slide-menu">
-                            <li class="side-menu-label1"><a href="javascript:void(0)">Brand Management</a></li>
-                            <li><a href="cards.html" class="slide-item"> All Brand</a></li>
-                            <li><a href="calendar.html" class="slide-item"> Add Brand</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="sub-category">
-                        <h3>Order Management</h3>
-                    </li>
-
-                    <li class="slide">
-                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i class="side-menu__icon fe fe-slack"></i><span class="side-menu__label">Order Management</span><i class="angle fe fe-chevron-right"></i></a>
-                        <ul class="slide-menu">
-                            <li class="side-menu-label1"><a href="javascript:void(0)">Order Management</a></li>
-                            <li><a href="cards.html" class="slide-item"> All Order</a></li>
-                            <li><a href="cards.html" class="slide-item"> Pending Order</a></li>
-                            <li><a href="cards.html" class="slide-item"> Complete Order</a></li>
-
-                        </ul>
-                    </li>
-
-                <li class="sub-category">
-                    <h3>Post</h3>
-                </li>
-                <li class="slide">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                        <i class="side-menu__icon fe fe fe-unlock"></i>
-                        <span class="side-menu__label">Posts Management</span>
-                        <i class="angle fe fe-chevron-right"></i>
-                    </a>
-                    <ul class="slide-menu">
-                        <li class="side-menu-label1"><a href="javascript:void(0)">Posts Management</a></li>
-                        <li><a href="{{ route('all.permission') }}" class="slide-item"> All Posts </a></li>
-                        <li><a href="{{ route('all.roles') }}" class="slide-item">  Add Post </a></li>
-                        <li><a href="{{ route('add.roles.permission') }}" class="slide-item"> Post Categoreies </a></li>
-                        <li><a href="{{ route('add.roles.permission') }}" class="slide-item"> Post Tags </a></li>
-                    </ul>
-                </li>
 
 
                 <li class="sub-category">

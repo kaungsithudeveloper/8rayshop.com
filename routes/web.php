@@ -16,6 +16,8 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductSubCategoryController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\EmployeeBrandController;
+use App\Http\Controllers\EmployeeUserController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -158,13 +160,9 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::post('/update-multi-images', 'updateMultiImages');
         Route::get('/backend/product/edit/{slug}','EditProduct')->name('edit.product');
 
+        //Test Youtube video Link Good
         Route::get('/product_infos', 'index');
     });
-
-
-
-
-
 
 
     Route::get('/brands', function() {
@@ -243,6 +241,24 @@ Route::middleware(['auth','role:employee'])->group(function () {
 
         //////////// End DataCentre Route ////////////
 
+    });
+
+    // Backend user routes
+    Route::controller(EmployeeUserController::class)->group(function(){
+        Route::get('/employee/users', 'AllEmployeeUser')->name('all.employee.user');
+        Route::get('/add/employee/users', 'AddEmployeeUser')->name('add.employee.user');
+        Route::post('/store/employee/users',  'StoreEmployeeUser')->name('store.employee.user');
+        Route::get('/edit/employee/users/{id}' ,  'EditEmployeeUser')->name('edit.employee.user');
+        Route::post('/update/employee/users/{id}',  'UpdateEmployeeUser')->name('update.employee.user');
+        Route::get('/delete/employee/users/{id}' ,  'DeleteEmployeeUser')->name('delete..employee.user');
+    });
+
+    Route::controller(EmployeeBrandController::class)->group(function(){
+        Route::get('/backend/employee/brand', 'AllEmployeeBrand')->name('all.employee.brand');
+        Route::post('/backend/employee/brand/store',  'StoreEmployeeBrand')->name('store.employee.brand');
+        Route::get('/backend/employee/brand/edit/{slug}', 'EditEmployeeBrand')->name('edit.employee.brand');
+        Route::post('/backend/employee/brand/update', 'UpdateEmployeeBrand')->name('update.employee.brand');
+        Route::get('/backend/employee/brand/delete/{id}' ,  'DestoryEmployeeBrand')->name('delete.employee.brand');
     });
 
     Route::controller(EmployeeController::class)->group(function(){

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -14,88 +12,76 @@ use Spatie\Permission\Models\Permission;
 use App\Rules\UsernameRule;
 use App\Rules\MobileRule;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class AdminUserController extends Controller
+class EmployeeUserController extends Controller
 {
-    ///////// Start Backend User Controller Methods /////////
-    public function AllAdminUser()
+    public function AllEmployeeUser()
     {
 
         $alluser = User::where('role', 'user')->get();
-        return view('backend.admin.users.all_user', compact('alluser'));
+        return view('backend.employees.8ray.users.all_user', compact('alluser'));
     }
 
-    public function AddAdminUser()
+    public function AddEmployeeUser()
     {
-        return view('backend.admin.users.add_user');
+        return view('backend.employees.8ray.users.add_user');
     }// End Mehtod
 
-    public function StoreAdminUser(Request $request)
+    public function StoreEmployeeUser(Request $request)
     {
-        try {
-            $validator = validator(request()->all(), [
-                'username' => ['required', new UsernameRule, 'unique:users,username'],
-                'email' => 'required|email|unique:users,email',
-                'phone' => ['required', new MobileRule, 'unique:users,phone'],
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for image file
-            ]);
+        //dd($request->all());
+        $validator = validator(request()->all(), [
+            'username' => ['required', new UsernameRule, 'unique:users,username'],
+            'email' => 'required|email|unique:users,email',
+            'phone' => ['required', new MobileRule, 'unique:users,phone'],
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for image file
+        ]);
 
-            if ($validator->fails()) {
-                return back()->withErrors($validator);
-            }
-
-            $user = new User();
-            $user->name = $request->name;
-            $user->username = $request->username;
-            $user->email = $request->email;
-            $user->phone = $request->phone;
-            $user->aboutme = $request->aboutme;
-            $user->password = Hash::make($request->password);
-            $user->role = 'user';
-            $user->status = 'active';
-
-            if ($request->file('photo')) {
-                $image = $request->file('photo');
-                $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-                $imagePath = 'upload/user_images/' . $name_gen;
-                Image::make($image)->resize(300, 400)->save(public_path($imagePath));
-                $imageName = $name_gen;
-                $user['photo'] = $imageName;
-            }
-
-            $user->save();
-
-             $notification = array(
-                'message' => 'New User Created Successfully',
-                'alert-type' => 'success'
-            );
-
-            return redirect()->route('all.admin.user')->with($notification);
-
-        } catch (\Exception $e) {
-            Log::error('Error updating user: ' . $e->getMessage());
-            $notification = [
-                'message' => 'An error occurred while Create the user.',
-                'alert-type' => 'error',
-            ];
-
-            return back()->with($notification);
+        if ($validator->fails()) {
+            return back()->withErrors($validator);
         }
 
+        $user = new User();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->aboutme = $request->aboutme;
+        $user->password = Hash::make($request->password);
+        $user->role = 'user';
+        $user->status = 'active';
+
+        if ($request->file('photo')) {
+            $image = $request->file('photo');
+            $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'upload/user_images/' . $name_gen;
+            Image::make($image)->resize(300, 300)->save(public_path($imagePath));
+            $imageName = $name_gen;
+            $user['photo'] = $imageName;
+        }
+
+        $user->save();
+
+         $notification = array(
+            'message' => 'New User Created Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('all.employee.user')->with($notification);
+
 
     }// End Mehtod
 
-    public function EditAdminUser($id)
+    public function EditEmployeeUser($id)
     {
         $userData = User::findOrFail($id);
-        return view('backend.admin.users.edit_user',compact('userData'));
+        return view('backend.employees.8ray.users.edit_user',compact('userData'));
     }// End Mehtod
 
-    public function UpdateAdminUser(Request $request, $id)
+    public function UpdateEmployeeUser(Request $request, $id)
     {
         try {
             // Validation rules
@@ -146,7 +132,7 @@ class AdminUserController extends Controller
                 'alert-type' => 'success',
             ];
 
-            return redirect()->route('all.admin.user')->with($notification);
+            return redirect()->route('all.employee.user')->with($notification);
 
         } catch (\Exception $e) {
             Log::error('Error updating user: ' . $e->getMessage());
@@ -159,7 +145,7 @@ class AdminUserController extends Controller
         }
     }
 
-    public function DeleteAdminUser($id)
+    public function DeleteEmployeeUser($id)
     {
 
         $user = User::findOrFail($id);
@@ -175,7 +161,4 @@ class AdminUserController extends Controller
         return redirect()->back()->with($notification);
 
     }// End Mehtod
-
-
-    ///////// End Backend User Controller Methods /////////
 }
