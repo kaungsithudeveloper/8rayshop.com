@@ -157,6 +157,22 @@
                                                                                             <span class="fe fe-edit fs-14"></span>
                                                                                         </a>
 
+                                                                                        @if ($product->status == 'active')
+                                                                                            <a href="{{ route('inactive.product', $product->id) }}"
+                                                                                                class="btn text-primary btn-sm"
+                                                                                                data-bs-toggle="tooltip"
+                                                                                                data-bs-original-title="Inactive">
+                                                                                                <span class="fa fa-toggle-on fs-14"></span>
+                                                                                            </a>
+                                                                                        @else
+                                                                                            <a href="{{ route('active.product', $product->id) }}"
+                                                                                                class="btn text-primary btn-sm"
+                                                                                                data-bs-toggle="tooltip"
+                                                                                                data-bs-original-title="Active">
+                                                                                                <span class="fa fa-toggle-off fs-14"></span>
+                                                                                            </a>
+                                                                                        @endif
+
                                                                                         <a href="{{ route('delete.product', $product->id) }}"
                                                                                             class="btn text-danger btn-sm" id="delete"
                                                                                             data-bs-toggle="tooltip"

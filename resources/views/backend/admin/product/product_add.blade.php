@@ -91,7 +91,6 @@
                                                     <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple="">
 
                                                     <div class="row" id="preview_img"></div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -357,36 +356,51 @@
                 });
             </script>
 
-            <script>
+<script>
+    $(document).ready(function(){
+        var fileList = [];
 
-                $(document).ready(function(){
-                $('#multiImg').on('change', function(){ //on file input change
-                    if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
-                    {
-                        var data = $(this)[0].files; //this file data
+        $('#multiImg').on('change', function(){ //on file input change
+            if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
+            {
+                var data = $(this)[0].files; //this file data
 
-                        $.each(data, function(index, file){ //loop though each file
-                            if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)){ //check supported file type
-                                var fRead = new FileReader(); //new filereader
-                                fRead.onload = (function(file){ //trigger function on successful read
-                                return function(e) {
-                                    var img = $('<img/>').addClass('thumb').attr('src', e.target.result) .width(150)
-                                .height(120); //create image element
-                                    $('#preview_img').append(img); //append image to output element
-                                };
-                                })(file);
-                                fRead.readAsDataURL(file); //URL representing the file's data.
-                            }
-                        });
-
-                    }else{
-                        alert("Your browser doesn't support File API!"); //if File API is absent
+                $.each(data, function(index, file){ //loop though each file
+                    if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)){ //check supported file type
+                        fileList.push(file); //add file to the fileList
+                        var fRead = new FileReader(); //new filereader
+                        fRead.onload = (function(file, index){ //trigger function on successful read
+                        return function(e) {
+                            var container = $('<div/>').addClass('col-md-3 mt-2 text-center').attr('data-index', index); //create container element with data-index attribute and center the content
+                            var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120); //create image element
+                            var deleteBtn = $('<button/>').addClass('btn btn-danger btn-sm mt-2 mb-2').text('Delete').on('click', function(){
+                                var idx = $(this).parent().data('index');
+                                fileList.splice(idx, 1); //remove file from fileList
+                                $(this).parent().remove(); //remove container on delete button click
+                                updateFileInput(); //update file input
+                            });
+                            container.append(img).append('<br>').append(deleteBtn); //append image and delete button to container, with a line break
+                            $('#preview_img').append(container); //append container to output element
+                        };
+                        })(file, fileList.length - 1);
+                        fRead.readAsDataURL(file); //URL representing the file's data.
                     }
                 });
-                });
 
-            </script>
+            }else{
+                alert("Your browser doesn't support File API!"); //if File API is absent
+            }
+        });
 
+        function updateFileInput() {
+            var dataTransfer = new DataTransfer();
+            fileList.forEach(function(file) {
+                dataTransfer.items.add(file);
+            });
+            $('#multiImg')[0].files = dataTransfer.files; //update input element with the new fileList
+        }
+    });
+</script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script type="text/javascript">
                 $(document).ready(function () {

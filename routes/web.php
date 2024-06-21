@@ -151,12 +151,19 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::post('/backend/product/store',  'StoreProduct')->name('store.product');
         Route::post('/backend/product/update', 'UpdateProduct')->name('update.product');
         Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
+
+        Route::get('/inactive/product/{id}' ,  'ProductInactive')->name('inactive.product');
+        Route::get('/active/product/{id}' ,  'ProductActive')->name('active.product');
+        Route::delete('/delete-multi-image/{id}', 'deleteMultiImage');
+        Route::post('/update-multi-images', 'updateMultiImages');
+        Route::get('/backend/product/edit/{slug}','EditProduct')->name('edit.product');
+
     });
 
-    Route::delete('/delete-multi-image/{id}', [ProductController::class, 'deleteMultiImage']);
-Route::post('/update-multi-images', [ProductController::class, 'updateMultiImages']);
 
-    Route::get('/backend/product/edit/{slug}', [ProductController::class, 'EditProduct'])->name('edit.product');
+
+
+
 
 
     Route::get('/brands', function() {

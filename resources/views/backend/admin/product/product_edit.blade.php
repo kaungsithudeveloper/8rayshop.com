@@ -81,34 +81,41 @@
                                             </div>
                                         </div>
 
-
                                         <div class="card">
-                                            <div class="card-header">
-                                                <div class="card-title">Multiple Image</div>
-                                            </div>
                                             <div class="card-body">
+                                                <div class="form-label">Checkboxes</div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" name="new" value="1" {{ $product->productInfo->new ? 'checked' : '' }}>
+                                                                <span class="custom-control-label">New</span>
+                                                            </label>
 
-                                                <label for="inputProductTitle" class="form-label">Multiple Image</label>
-                                                    <div class="row">
-                                                        <div class="col-8"><input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple></div>
-                                                        <div class="col-4"><button id="updateImages" class="btn btn-primary">Update Images</button></div>
-                                                    </div>
-                                                <div class="mb-3 mt-2">
-
-                                                    <div class="row" id="preview_img">
-                                                        @foreach($product->multiImages as $img)
-                                                        <div class="col-md-3 thumb-wrapper" data-id="{{ $img->id }}">
-                                                            <img src="{{ (!empty($img->photo_name)) ? url('upload/product_multi_images/'.$img->photo_name) : url('upload/profile.jpg') }}" alt="Product" style="width:100px; height: 100px;" class="thumb">
-                                                            <button class="remove-btn" type="button">x</button>
+                                                            <label class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" name="hot" value="1" {{ $product->productInfo->hot ? 'checked' : '' }}>
+                                                                <span class="custom-control-label">Hot</span>
+                                                            </label>
                                                         </div>
-                                                        @endforeach
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" name="sale" value="1" {{ $product->productInfo->sale ? 'checked' : '' }}>
+                                                                <span class="custom-control-label">Sale</span>
+                                                            </label>
+
+                                                            <label class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" name="best_sale" value="1" {{ $product->productInfo->best_sale ? 'checked' : '' }}>
+                                                                <span class="custom-control-label">Best sale</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
                                 </div>
+
                                 <div class="col-xl-4">
 
                                     <div class="card">
@@ -121,7 +128,7 @@
                                                         <select name="product_category_id" class="form-select select2" id="inputVendor">
                                                             <option value="">None</option>
                                                             @foreach($product_categories as $cat)
-                                                                <option value="{{ $cat->id }}" {{ $product->categories->contains($cat->id) ? 'selected' : '' }}>
+                                                                <option value="{{ $cat->id }}" {{ $product->productCategory->contains($cat->id) ? 'selected' : '' }}>
                                                                     {{ $cat->product_category_name }}
                                                                 </option>
                                                             @endforeach
@@ -214,66 +221,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="form-label">Checkboxes</div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="new" value="1" {{ $product->productInfo->new ? 'checked' : '' }}>
-                                                            <span class="custom-control-label">New</span>
-                                                        </label>
 
-                                                        <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="hot" value="1" {{ $product->productInfo->hot ? 'checked' : '' }}>
-                                                            <span class="custom-control-label">Hot</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="sale" value="1" {{ $product->productInfo->sale ? 'checked' : '' }}>
-                                                            <span class="custom-control-label">Sale</span>
-                                                        </label>
 
-                                                        <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="best_sale" value="1" {{ $product->productInfo->best_sale ? 'checked' : '' }}>
-                                                            <span class="custom-control-label">Best sale</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <style>
-                                        .thumb-wrapper {
-                                            position: relative;
-                                            display: inline-block;
-                                            margin: 10px;
-                                        }
-
-                                        .remove-btn {
-                                            position: absolute;
-                                            top: 5px;
-                                            right: 5px;
-                                            background-color: red;
-                                            color: white;
-                                            border: none;
-                                            border-radius: 50%;
-                                            width: 20px;
-                                            height: 20px;
-                                            text-align: center;
-                                            cursor: pointer;
-                                            display: none;
-                                        }
-
-                                        .thumb-wrapper:hover .remove-btn {
-                                            display: block;
-                                        }
-                                    </style>
 
                                     <div class="card">
                                         <div class="card-body">
@@ -282,11 +231,39 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
-                        <!-- ROW-1 END -->
                         </form>
+                        <!-- ROW-1 END -->
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Multiple Image</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <label for="inputProductTitle" class="form-label">Multiple Image</label>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple>
+                                            </div>
+                                            <div class="col-4">
+                                                <button id="updateImages" class="btn btn-primary">Update Images</button>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 mt-2">
+                                            <div class="row" id="preview_img">
+                                                @foreach($product->multiImages as $img)
+                                                <div class="col-md-2 text-center thumb-wrapper" data-id="{{ $img->id }}">
+                                                    <img src="{{ (!empty($img->photo_name)) ? url('upload/product_multi_images/'.$img->photo_name) : url('upload/profile.jpg') }}" alt="Product" style="width:100px; height: 100px;" class="thumb">
+                                                    <button class="btn btn-danger btn-sm mt-2 delete_btn">Delete</button>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                     <!-- CONTAINER END -->
@@ -393,30 +370,32 @@
             </script>
 <script>
     $(document).ready(function () {
+        var fileList = []; // Initialize fileList array
+
         // Handle image selection
         $('#multiImg').on('change', function () {
             if (window.File && window.FileReader && window.FileList && window.Blob) {
                 var data = $(this)[0].files;
 
-                $.each(data, function (index, file) {
-                    if (/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)) {
-                        var fRead = new FileReader();
-                        fRead.onload = (function (file) {
-                            return function (e) {
-                                var thumbWrapper = $('<div/>').addClass('col-md-3 thumb-wrapper');
-                                var img = $('<img/>').addClass('thumb').attr('src', e.target.result).css({width: '100px', height: '100px'});
-                                var removeBtn = $('<button/>').addClass('remove-btn').text('x');
-
-                                thumbWrapper.append(img).append(removeBtn);
-                                $('#preview_img').append(thumbWrapper);
-
-                                removeBtn.on('click', function (e) {
-                                    e.preventDefault();
-                                    thumbWrapper.remove();
+                $.each(data, function(index, file) { // Loop through each file
+                    if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)) { // Check supported file type
+                        fileList.push(file); // Add file to the fileList
+                        var fRead = new FileReader(); // New FileReader
+                        fRead.onload = (function(file, index) { // Trigger function on successful read
+                            return function(e) {
+                                var container = $('<div/>').addClass('col-md-2 text-center').attr('data-index', index); // Create container element with data-index attribute
+                                var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120); // Create image element
+                                var deleteBtn = $('<button/>').addClass('btn btn-danger btn-sm mt-2').text('Delete').on('click', function() {
+                                    var idx = $(this).parent().data('index');
+                                    fileList.splice(idx, 1); // Remove file from fileList
+                                    $(this).parent().remove(); // Remove container on delete button click
+                                    updateFileInput(); // Update file input
                                 });
+                                container.append(img).append('<br>').append(deleteBtn); // Append image and delete button to container
+                                $('#preview_img').append(container); // Append container to output element
                             };
-                        })(file);
-                        fRead.readAsDataURL(file);
+                        })(file, fileList.length - 1);
+                        fRead.readAsDataURL(file); // Read the file as data URL
                     }
                 });
             } else {
@@ -425,7 +404,7 @@
         });
 
         // Handle image deletion
-        $('#preview_img').on('click', '.remove-btn', function (e) {
+        $('#preview_img').on('click', '.delete_btn', function (e) {
             e.preventDefault();
             var thumbWrapper = $(this).closest('.thumb-wrapper');
             var imageId = thumbWrapper.data('id');
@@ -464,10 +443,14 @@
                 data: formData,
                 processData: false,
                 contentType: false,
+                success: function (response) {
+                    alert("Images updated successfully!");
+                }
             });
         });
     });
 </script>
+
 
 
 
