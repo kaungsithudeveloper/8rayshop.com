@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('product_size')->nullable();
             $table->text('short_descp');
             $table->text('long_descp');
+            $table->string('url')->nullable();;
             $table->integer('new')->nullable();
             $table->integer('hot')->nullable();
             $table->integer('sale')->nullable();

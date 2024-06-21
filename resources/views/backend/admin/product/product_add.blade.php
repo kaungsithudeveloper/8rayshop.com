@@ -182,6 +182,13 @@
                                     </div>
 
                                     <div class="card">
+                                        <div class="card-body">
+                                            <label for="url" class="form-label">YouTube Link</label>
+                                            <input type="url" class="form-control" id="url" name="url" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
                                         <div class="card-header">
                                             <div class="card-title">Product Photo</div>
                                         </div>

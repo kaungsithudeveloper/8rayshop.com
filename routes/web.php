@@ -158,6 +158,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::post('/update-multi-images', 'updateMultiImages');
         Route::get('/backend/product/edit/{slug}','EditProduct')->name('edit.product');
 
+        Route::get('/product_infos', 'index');
     });
 
 

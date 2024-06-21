@@ -187,6 +187,9 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'OEmbed' => 'Cohensive\OEmbed\Facades\OEmbed'
     ])->toArray(),
+
+
 
 ];

@@ -15,6 +15,7 @@ use App\Models\Brand;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Cohensive\Embed\Embed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -36,6 +37,14 @@ class ProductController extends Controller
 
     } // End Method
 
+
+    private function convertToEmbedUrl($url)
+    {
+        $parsedUrl = parse_url($url);
+        parse_str($parsedUrl['query'], $queryParams);
+        return 'https://www.youtube.com/embed/' . $queryParams['v'];
+    }
+
     public function StoreProduct(Request $request)
     {
         // Validate the request data
@@ -45,6 +54,7 @@ class ProductController extends Controller
             'product_name' => 'required|unique:products,product_name|string|max:255',
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
+            'url' => 'required|url',
             'product_qty' => 'required|integer',
             'product_size' => 'required|string|max:255',
             'purchase_price' => 'required|string|max:255',
@@ -55,7 +65,6 @@ class ProductController extends Controller
             'product_category_id' => 'required|string|max:255',
             'product_subcategory_id' => 'array',
             'product_subcategory_id.*' => 'integer',
-
         ]);
 
 
@@ -104,6 +113,7 @@ class ProductController extends Controller
         $product_info->product_id = $product->id;
         $product_info->short_descp = $request->input('short_descp');
         $product_info->long_descp = $request->input('long_descp');
+        $product_info->url = $this->convertToEmbedUrl($request->input('url'));
         $product_info->product_size = $request->input('product_size');
         $product_info->new = $request->input('new');
         $product_info->hot = $request->input('hot');
@@ -434,5 +444,11 @@ class ProductController extends Controller
 
         return redirect()->back()->with($notification);
 }
+
+public function index()
+    {
+        $productInfos = Product::with(['productInfo'])->get();
+        return view('backend.admin.product.product_youtube_link_test', compact('productInfos'));
+    }
 
 }
