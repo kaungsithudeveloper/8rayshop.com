@@ -13,7 +13,6 @@ class ProductTypeController extends Controller
         $product_types = ProductType::latest()->get();
         return view('backend.admin.product_type.product_type_all',compact('product_types'));
     } // End Method
-
     public function StoreProductType(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -42,14 +41,12 @@ class ProductTypeController extends Controller
 
         return redirect()->route('all.product.types')->with($notification);
     }
-
     public function EditProductType($slug)
     {
         $product_type = ProductType::where('product_type_slug', $slug)->firstOrFail();
         $product_types = ProductType::latest()->get();
         return view('backend.admin.product_type.product_type_edit', compact('product_type', 'product_types'));
     }
-
     public function UpdateProductType(Request $request){
 
         //dd($request->all());
@@ -83,8 +80,6 @@ class ProductTypeController extends Controller
 
 
     }// End Method
-
-
     public function DestoryProductType($id)
     {
         $product_type = ProductType::findOrFail($id);
@@ -97,4 +92,92 @@ class ProductTypeController extends Controller
 
         return redirect()->route('all.product.types')->with($notification);
     }// End Method
+
+
+    // Start Employee Product Type
+    public function AllEmployeeProductType(){
+        $product_types = ProductType::latest()->get();
+        return view('backend.employees.8ray.product_type.product_type_all',compact('product_types'));
+    } // End Method
+    public function StoreEmployeeProductType(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'product_type_name' => 'required|string|max:255|unique:product_types,product_type_name',
+        ]);
+
+        if ($validator->fails()) {
+
+            $notification = [
+                'message' => 'The product type name already exists',
+                'alert-type' => 'error',
+            ];
+
+            return redirect()->back()->with($notification);
+        }
+
+        $product_type = new ProductType;
+        $product_type->product_type_name = $request->input('product_type_name');
+        $product_type->product_type_slug = strtolower(str_replace(' ', '-', $request->product_type_name));
+        $product_type->save();
+
+        $notification = array(
+            'message' => 'Product Type Inserted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('all.employee.product.types')->with($notification);
+    }
+    public function EditEmployeeProductType($slug)
+    {
+        $product_type = ProductType::where('product_type_slug', $slug)->firstOrFail();
+        $product_types = ProductType::latest()->get();
+        return view('backend.employees.8ray.product_type.product_type_edit', compact('product_type', 'product_types'));
+    }
+    public function UpdateEmployeeProductType(Request $request){
+
+        //dd($request->all());
+        $product_type_id = $request->id;
+
+        $validator = Validator::make($request->all(), [
+            'product_type_name' => 'required|string|max:255|unique:product_types,product_type_name',
+        ]);
+
+        if ($validator->fails()) {
+
+            $notification = [
+                'message' => 'The Product Type name already exists',
+                'alert-type' => 'error',
+            ];
+
+            return redirect()->back()->with($notification);
+        }
+
+        $product_type = ProductType::findOrFail($product_type_id);
+        $product_type->product_type_name = $request->input('product_type_name');
+        $product_type->product_type_slug = strtolower(str_replace(' ', '-', $request->product_type_name));
+        $product_type->save();
+
+       $notification = array(
+            'message' => 'Product Type Updated Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('all.employee.product.types')->with($notification);
+
+
+    }// End Method
+    public function DestoryEmployeeProductType($id)
+    {
+        $product_type = ProductType::findOrFail($id);
+        $product_type->delete();
+
+        $notification = array(
+            'message' => 'Product Type Deleted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('all.employee.product.types')->with($notification);
+    }// End Method
+
+    // End Employee Product Type
 }

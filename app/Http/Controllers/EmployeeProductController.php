@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductSubCategory;
@@ -19,14 +18,13 @@ use Cohensive\Embed\Embed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-
-class ProductController extends Controller
+class EmployeeProductController extends Controller
 {
-    public function AllProduct(){
+    public function AllEmployeeProduct(){
         $products = Product::latest()->get();
         $activeProducts = Product::where('status', 'active')->latest()->get();
         $inActiveProduct = Product::where('status', 'inactive')->latest()->get();
-        return view('backend.admin.product.product_all',compact('products','activeProducts','inActiveProduct'));
+        return view('backend.employees.8ray.product.product_all',compact('products','activeProducts','inActiveProduct'));
     } // End Method
 
     public function AddProduct(){
@@ -204,8 +202,7 @@ class ProductController extends Controller
     {
         // Retrieve the product by slug
         $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])
-    ->where('product_slug', $slug)
-    ->firstOrFail();
+                    ->where('product_slug', $slug)->firstOrFail();
 
         // Retrieve all necessary related data
         $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();
@@ -445,12 +442,11 @@ class ProductController extends Controller
         );
 
         return redirect()->back()->with($notification);
-}
+    }
 
-public function index()
+    public function index()
     {
         $productInfos = Product::with(['productInfo'])->get();
         return view('backend.admin.product.product_youtube_link_test', compact('productInfos'));
     }
-
 }

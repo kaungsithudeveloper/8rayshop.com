@@ -261,6 +261,49 @@ Route::middleware(['auth','role:employee'])->group(function () {
         Route::get('/backend/employee/brand/delete/{id}' ,  'DestoryEmployeeBrand')->name('delete.employee.brand');
     });
 
+    Route::controller(ProductCategoryController::class)->group(function(){
+        Route::get('/backend/employee/product/categories', 'AllEmployeeProductCategories')->name('all.employee.product.categories');
+        Route::post('/backend/employee/product/categories/store',  'StoreEmployeeProductCategories')->name('store.employee.product.categories');
+        Route::get('/backend/employee/product/categories/edit/{slug}', 'EditEmployeeProductCategories')->name('edit.employee.product.categories');
+        Route::post('/backend/employee/product/categories/update', 'UpdateEmployeeProductCategories')->name('update.employee.product.categories');
+        Route::get('/backend/employee/product/categories/delete/{id}' ,  'DestoryEmployeeProductCategories')->name('delete.employee.product.categories');
+    });
+
+    Route::controller(ProductSubCategoryController::class)->group(function(){
+        Route::get('/backend/employee/product/sub_categories', 'AllEmployeeProductSubCategories')->name('all.employee.product.sub_categories');
+        Route::post('/backend/employee/product/sub_categories/store',  'StoreEmployeeProductSubCategories')->name('store.employee.product.sub_categories');
+        Route::get('/backend/employee/product/sub_categories/edit/{slug}', 'EditEmployeeProductSubCategories')->name('edit.employee.product.sub_categories');
+        Route::post('/backend/employee/product/sub_categories/update', 'UpdateEmployeeProductSubCategories')->name('update.employee.product.sub_categories');
+        Route::get('/backend/employee/product/sub_categories/delete/{id}' ,  'DestoryEmployeeProductSubCategories')->name('delete.employee.product.sub_categories');
+        Route::get('/subcategory/ajax/{product_category_id}', 'getSubCategory')->name('getSubCategory');
+    });
+
+    Route::controller(ProductTypeController::class)->group(function(){
+        Route::get('/backend/employee/product/types', 'AllEmployeeProductType')->name('all.employee.product.types');
+        Route::post('/backend/employee/product/type/store',  'StoreEmployeeProductType')->name('store.employee.product.types');
+        Route::get('/backend/employee/product/type/edit/{slug}', 'EditEmployeeProductType')->name('edit.employee.product.types');
+        Route::post('/backend/employee/product/type/update', 'UpdateEmployeeProductType')->name('update.employee.product.types');
+        Route::get('/backend/employee/product/type/delete/{id}' ,  'DestoryEmployeeProductType')->name('delete.employee.product.types');
+    });
+
+    //Backend Product Management Routes
+    Route::controller(ProductController::class)->group(function(){
+        Route::get('/backend/employee/product', 'AllEmployeeProduct')->name('all.employee.product');
+        Route::get('/backend/employee/product/add', 'AddEmployeeProduct')->name('product.employee.add');
+        Route::post('/backend/employee/product/store',  'StoreEmployeeProduct')->name('store.employee.product');
+        Route::post('/backend/employee/product/update', 'UpdateEmployeeProduct')->name('update.employee.product');
+        Route::get('/backend/employee/product/delete/{id}' ,  'DestoryEmployeeProduct')->name('delete.employee.product');
+
+        Route::get('/inactive/employee/product/{id}' ,  'ProductEmployeeInactive')->name('inactive.employee.product');
+        Route::get('/active/employee/product/{id}' ,  'ProductEmployeeActive')->name('active.employee.product');
+        Route::delete('/delete-multi-image/{id}', 'deleteMultiImage');
+        Route::post('/update-multi-images', 'updateMultiImages');
+        Route::get('/backend/employee/product/edit/{slug}','EditEmployeeProduct')->name('edit.employee.product');
+
+        //Test Youtube video Link Good
+        Route::get('/product_infos', 'index');
+    });
+
     Route::controller(EmployeeController::class)->group(function(){
 
         //8Ray Route
@@ -269,6 +312,8 @@ Route::middleware(['auth','role:employee'])->group(function () {
 
 
     });
+
+
 
 });
 
