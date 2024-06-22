@@ -133,7 +133,8 @@ class ProductTypeController extends Controller
         $product_types = ProductType::latest()->get();
         return view('backend.employees.8ray.product_type.product_type_edit', compact('product_type', 'product_types'));
     }
-    public function UpdateEmployeeProductType(Request $request){
+    public function UpdateEmployeeProductType(Request $request)
+     {
 
         //dd($request->all());
         $product_type_id = $request->id;

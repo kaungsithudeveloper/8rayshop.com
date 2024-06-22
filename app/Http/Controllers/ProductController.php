@@ -12,6 +12,7 @@ use App\Models\ProductColor;
 use App\Models\ProductInfo;
 use App\Models\MultiImg;
 use App\Models\Brand;
+use App\Models\Stock;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -22,11 +23,12 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function AllProduct(){
-        $products = Product::latest()->get();
+    public function AllProduct()
+    {
+        $products = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'stock'])->latest()->get();
         $activeProducts = Product::where('status', 'active')->latest()->get();
         $inActiveProduct = Product::where('status', 'inactive')->latest()->get();
-        return view('backend.admin.product.product_all',compact('products','activeProducts','inActiveProduct'));
+        return view('backend.admin.product.product_all', compact('products', 'activeProducts', 'inActiveProduct'));
     } // End Method
 
     public function AddProduct(){
@@ -57,7 +59,7 @@ class ProductController extends Controller
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
             'url' => 'required|url',
-            'product_qty' => 'required|integer',
+            'stock_qty' => 'required|integer',
             'product_size' => 'required|string|max:255',
             'purchase_price' => 'required|string|max:255',
             'selling_price' => 'required|string|max:255',
@@ -86,7 +88,7 @@ class ProductController extends Controller
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
         $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
-        $product->product_qty = $request->input('product_qty');
+
         $product->purchase_price = $request->input('purchase_price');
         $product->selling_price = $request->input('selling_price');
         $product->discount_price = $request->input('discount_price');
@@ -124,6 +126,10 @@ class ProductController extends Controller
         $product_info->created_at = Carbon::now();
         $product_info->save();
 
+        $product_stock = new Stock();
+        $product_stock->product_id = $product->id;
+        $product_stock->stock_qty = $request->input('stock_qty');
+        $product_stock->save();
 
         if ($request->hasFile('multi_img')) {
             foreach ($request->file('multi_img') as $img) {
@@ -203,7 +209,7 @@ class ProductController extends Controller
     public function EditProduct($slug)
     {
         // Retrieve the product by slug
-        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','Stock'])
     ->where('product_slug', $slug)
     ->firstOrFail();
 

@@ -126,7 +126,6 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/backend/product/sub_categories/delete/{id}' ,  'DestoryProductSubCategories')->name('delete.product.sub_categories');
 
     });
-    Route::get('/subcategory/ajax/{product_category_id}', [ProductSubCategoryController::class, 'getSubCategory'])->name('getSubCategory');
 
     // Backend Product Type routes
     Route::controller(ProductTypeController::class)->group(function(){
@@ -221,6 +220,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
 });
 
+Route::get('/subcategory/ajax/{product_category_id}', [ProductSubCategoryController::class, 'getSubCategory'])->name('getSubCategory');
+
 Route::middleware(['auth','role:employee'])->group(function () {
 
     Route::controller(EmployeeDashboardController::class)->group(function(){
@@ -275,7 +276,6 @@ Route::middleware(['auth','role:employee'])->group(function () {
         Route::get('/backend/employee/product/sub_categories/edit/{slug}', 'EditEmployeeProductSubCategories')->name('edit.employee.product.sub_categories');
         Route::post('/backend/employee/product/sub_categories/update', 'UpdateEmployeeProductSubCategories')->name('update.employee.product.sub_categories');
         Route::get('/backend/employee/product/sub_categories/delete/{id}' ,  'DestoryEmployeeProductSubCategories')->name('delete.employee.product.sub_categories');
-        Route::get('/subcategory/ajax/{product_category_id}', 'getSubCategory')->name('getSubCategory');
     });
 
     Route::controller(ProductTypeController::class)->group(function(){
