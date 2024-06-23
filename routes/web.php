@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeBrandController;
 use App\Http\Controllers\EmployeeUserController;
+use App\Http\Controllers\StockController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -143,6 +144,16 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/backend/brand/edit/{slug}', 'EditBrand')->name('edit.brand');
         Route::post('/backend/brand/update', 'UpdateBrand')->name('update.brand');
         Route::get('/backend/brand/delete/{id}' ,  'DestoryBrand')->name('delete.brand');
+    });
+
+    Route::controller(StockController::class)->group(function(){
+        Route::get('/backend/stock', 'AllStock')->name('all.stock');
+        Route::post('/backend/stock/store',  'StoreStock')->name('store.stock');
+        Route::get('/backend/stock/edit/{id}', 'EditStock')->name('edit.stock');
+        Route::put('/backend/stock/update/{id}','UpdateStock')->name('update.stock');
+        Route::get('/backend/stock/delete/{id}' ,  'DestoryStock')->name('delete.stock');
+        Route::post('/fetch-stock', 'fetchStock')->name('fetch.stock');
+        Route::post('/fetch-products-by-brand', 'fetchProductsByBrand')->name('fetch.products.by.brand');
     });
 
     //Backend Product Management Routes

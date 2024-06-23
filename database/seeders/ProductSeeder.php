@@ -120,5 +120,37 @@ class ProductSeeder extends Seeder
             ],
 
         ]);
+
+        DB::table('product_brand_belongs')->insert([
+            [
+                'product_id' => 1,
+                'brand_id' => 2,
+            ],
+            [
+                'product_id' => 2,
+                'brand_id' => 2,
+            ],
+            [
+                'product_id' => 3,
+                'brand_id' => 2,
+            ],
+            [
+                'product_id' => 4,
+                'brand_id' => 3,
+            ],
+            [
+                'product_id' => 5,
+                'brand_id' => 4,
+            ],
+            [
+                'product_id' => 6,
+                'brand_id' => 5,
+            ],
+            [
+                'product_id' => 7,
+                'brand_id' => 5,
+            ],
+
+        ]);
     }
 }

@@ -25,11 +25,12 @@ class ProductController extends Controller
 {
     public function AllProduct()
     {
-        $products = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'stock'])->latest()->get();
-        $activeProducts = Product::where('status', 'active')->latest()->get();
-        $inActiveProduct = Product::where('status', 'inactive')->latest()->get();
+        $products = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])->with(['stocks.branch'])->latest()->get();
+        $activeProducts = Product::where('status', 'active')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])->with(['stocks.branch'])->latest()->get();
+        $inActiveProduct = Product::where('status', 'inactive')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])->with(['stocks.branch'])->latest()->get();
+
         return view('backend.admin.product.product_all', compact('products', 'activeProducts', 'inActiveProduct'));
-    } // End Method
+    }
 
     public function AddProduct(){
 
@@ -59,7 +60,6 @@ class ProductController extends Controller
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
             'url' => 'required|url',
-            'product_qty' => 'required|integer',
             'product_size' => 'required|string|max:255',
             'purchase_price' => 'required|string|max:255',
             'selling_price' => 'required|string|max:255',
@@ -203,9 +203,9 @@ class ProductController extends Controller
     public function EditProduct($slug)
     {
         // Retrieve the product by slug
-        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','Stock'])
-    ->where('product_slug', $slug)
-    ->firstOrFail();
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages',])
+                    ->where('product_slug', $slug)
+                    ->firstOrFail();
 
         // Retrieve all necessary related data
         $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();

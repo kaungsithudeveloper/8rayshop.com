@@ -61,8 +61,15 @@ class Product extends Model
         return $this->hasMany(MultiImg::class, 'product_id');
     }
 
-    public function stock()
+    public function stocks()
     {
-        return $this->hasOne(Stock::class, 'product_id');
+        return $this->hasMany(Stock::class);
+    }
+
+    protected $appends = ['total_stock'];
+
+    public function getTotalStockAttribute()
+    {
+        return $this->stocks()->sum('stock_qty');
     }
 }
