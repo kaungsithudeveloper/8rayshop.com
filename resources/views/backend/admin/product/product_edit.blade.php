@@ -169,12 +169,6 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="product_qty" class="form-label">Stock :<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="product_qty" value="{{ $product->product_qty }}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label for="product_size" class="form-label">Product Size :<span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="product_size" value="{{ $product->productInfo->product_size }}" required>
                                                     </div>
