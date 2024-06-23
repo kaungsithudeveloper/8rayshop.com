@@ -144,9 +144,9 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="stock_qty" class="form-label">Stock :<span
+                                                        <label for="product_qty" class="form-label">Stock :<span
                                                                 class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="stock_qty" required>
+                                                        <input type="text" class="form-control"  name="product_qty" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">

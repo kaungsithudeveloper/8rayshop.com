@@ -104,7 +104,7 @@
                                                                                 <div class="d-flex">
                                                                                     <div class="mt-0 mt-sm-3 d-block">
                                                                                         <h6 class="mb-0 fs-14 fw-semibold">
-                                                                                            {{ $product->stock->stock_qty }}
+                                                                                            {{ $product->product_qty }}
                                                                                         </h6>
                                                                                     </div>
                                                                                 </div>
@@ -254,7 +254,7 @@
                                                                                 <td>
                                                                                     <div class="d-flex">
                                                                                         <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->stock_qty }} </h6>
+                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_qty }}</h6>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>
@@ -394,7 +394,7 @@
                                                                                 <td>
                                                                                     <div class="d-flex">
                                                                                         <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->stock_qty }} </h6>
+                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_qty }} </h6>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>

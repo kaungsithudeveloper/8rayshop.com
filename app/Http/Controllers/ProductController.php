@@ -59,7 +59,7 @@ class ProductController extends Controller
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
             'url' => 'required|url',
-            'stock_qty' => 'required|integer',
+            'product_qty' => 'required|integer',
             'product_size' => 'required|string|max:255',
             'purchase_price' => 'required|string|max:255',
             'selling_price' => 'required|string|max:255',
@@ -88,7 +88,7 @@ class ProductController extends Controller
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
         $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
-
+        $product->product_qty = $request->input('product_qty');
         $product->purchase_price = $request->input('purchase_price');
         $product->selling_price = $request->input('selling_price');
         $product->discount_price = $request->input('discount_price');
@@ -125,11 +125,6 @@ class ProductController extends Controller
         $product_info->best_sale = $request->input('best_sale');
         $product_info->created_at = Carbon::now();
         $product_info->save();
-
-        $product_stock = new Stock();
-        $product_stock->product_id = $product->id;
-        $product_stock->stock_qty = $request->input('stock_qty');
-        $product_stock->save();
 
         if ($request->hasFile('multi_img')) {
             foreach ($request->file('multi_img') as $img) {
