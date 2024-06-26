@@ -11,6 +11,8 @@ use App\Models\ProductCategory;
 use App\Models\ProductSubCategory;
 use App\Models\ProductColor;
 use App\Models\Brand;
+use App\Models\Price;
+use App\Models\Stock;
 use App\Models\MultiImg;
 
 class Product extends Model
@@ -39,8 +41,6 @@ class Product extends Model
         return $this->belongsToMany(ProductCategory::class, 'product_category_belongs', 'product_id', 'product_category_id');
     }
 
-
-
     public function productSubCategory()
     {
         return $this->belongsToMany(ProductSubCategory::class, 'product_subcategory_belongs', 'product_id', 'product_subcategory_id');
@@ -64,6 +64,11 @@ class Product extends Model
     public function stocks()
     {
         return $this->hasMany(Stock::class);
+    }
+
+    public function price()
+    {
+        return $this->hasOne(Price::class, 'product_id');
     }
 
     protected $appends = ['total_stock'];

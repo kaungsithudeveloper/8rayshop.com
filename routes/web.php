@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductSubCategoryController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeBrandController;
+use App\Http\Controllers\EmployeeProductController;
 use App\Http\Controllers\EmployeeUserController;
 use App\Http\Controllers\StockController;
 
@@ -149,11 +150,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::controller(StockController::class)->group(function(){
         Route::get('/backend/stock', 'AllStock')->name('all.stock');
         Route::post('/backend/stock/store',  'StoreStock')->name('store.stock');
-        Route::get('/backend/stock/edit/{id}', 'EditStock')->name('edit.stock');
-        Route::put('/backend/stock/update/{id}','UpdateStock')->name('update.stock');
         Route::get('/backend/stock/delete/{id}' ,  'DestoryStock')->name('delete.stock');
-        Route::post('/fetch-stock', 'fetchStock')->name('fetch.stock');
-        Route::post('/fetch-products-by-brand', 'fetchProductsByBrand')->name('fetch.products.by.brand');
     });
 
     //Backend Product Management Routes
@@ -166,38 +163,12 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
         Route::get('/inactive/product/{id}' ,  'ProductInactive')->name('inactive.product');
         Route::get('/active/product/{id}' ,  'ProductActive')->name('active.product');
-        Route::delete('/delete-multi-image/{id}', 'deleteMultiImage');
-        Route::post('/update-multi-images', 'updateMultiImages');
+
         Route::get('/backend/product/edit/{slug}','EditProduct')->name('edit.product');
 
         //Test Youtube video Link Good
         Route::get('/product_infos', 'index');
     });
-
-
-    Route::get('/brands', function() {
-        $brands = Brand::pluck('brand_name')->toArray();
-        return response()->json($brands);
-    });
-
-    Route::get('/product-colors', function() {
-        $product_colors = ProductColor::pluck('color_name')->toArray();
-        return response()->json($product_colors);
-    });
-
-    Route::get('/product-category', function() {
-        $product_categories = ProductCategory::pluck('product_category_name')->toArray();
-        return response()->json($product_categories);
-    });
-
-    Route::get('/product-subcategory', function() {
-        $product_subcategories = ProductSubCategory::pluck('product_subcategory_name')->toArray();
-        return response()->json($product_subcategories);
-    });
-
-
-
-
 
 
     // Backend Role routes
@@ -231,7 +202,6 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
 });
 
-Route::get('/subcategory/ajax/{product_category_id}', [ProductSubCategoryController::class, 'getSubCategory'])->name('getSubCategory');
 
 Route::middleware(['auth','role:employee'])->group(function () {
 
@@ -242,15 +212,10 @@ Route::middleware(['auth','role:employee'])->group(function () {
 
         //////////// Start 8Ray Route ////////////
         Route::get('/employee/8ray/dashboard',  'Employee8rayDashboard')->name('employee.8ray.dashboard');
-
-
         //////////// End 8Ray Route ////////////
-
 
         //////////// Start DataCentre Route ////////////
         Route::get('/employee/datacentre/dashboard',  'EmployeeDatacentreDashboard')->name('employee.datacentre.dashboard');
-
-
         //////////// End DataCentre Route ////////////
 
     });
@@ -297,40 +262,57 @@ Route::middleware(['auth','role:employee'])->group(function () {
         Route::get('/backend/employee/product/type/delete/{id}' ,  'DestoryEmployeeProductType')->name('delete.employee.product.types');
     });
 
-    //Backend Product Management Routes
-    Route::controller(ProductController::class)->group(function(){
-        Route::get('/backend/employee/product', 'AllEmployeeProduct')->name('all.employee.product');
-        Route::get('/backend/employee/product/add', 'AddEmployeeProduct')->name('product.employee.add');
-        Route::post('/backend/employee/product/store',  'StoreEmployeeProduct')->name('store.employee.product');
-        Route::post('/backend/employee/product/update', 'UpdateEmployeeProduct')->name('update.employee.product');
-        Route::get('/backend/employee/product/delete/{id}' ,  'DestoryEmployeeProduct')->name('delete.employee.product');
+    Route::controller(EmployeeProductController::class)->group(function(){
+        Route::get('/employee/product', 'AllEmployeeProduct')->name('all.employee.product');
+        Route::get('/employee/product/add', 'AddEmployeeProduct')->name('add.employee.product');
+        Route::post('/employee/product/store',  'StoreEmployeeProduct')->name('store.employee.product');
+        Route::get('/employee/product/edit/{slug}','EditEmployeeProduct')->name('edit.employee.product');
+        Route::post('/employee/product/update', 'UpdateEmployeeProduct')->name('update.employee.product');
+        Route::get('/employee/product/delete/{id}' ,  'DestoryEmployeeProduct')->name('delete.employee.product');
 
         Route::get('/inactive/employee/product/{id}' ,  'ProductEmployeeInactive')->name('inactive.employee.product');
         Route::get('/active/employee/product/{id}' ,  'ProductEmployeeActive')->name('active.employee.product');
-        Route::delete('/delete-multi-image/{id}', 'deleteMultiImage');
-        Route::post('/update-multi-images', 'updateMultiImages');
-        Route::get('/backend/employee/product/edit/{slug}','EditEmployeeProduct')->name('edit.employee.product');
-
-        //Test Youtube video Link Good
-        Route::get('/product_infos', 'index');
     });
+
+
 
     Route::controller(EmployeeController::class)->group(function(){
-
         //8Ray Route
         Route::get('/employee/logout',  'EmployeeLogOut')->name('employee.logout');
-
-
-
     });
-
-
-
 });
 
 Route::middleware(['auth'],['role'=>'admin','employee'])->group(function () {
     Route::get('/pos', [PosController::class, 'PosIndex'])->name('pos.page');
 });
+
+Route::get('/subcategory/ajax/{product_category_id}', [ProductSubCategoryController::class, 'getSubCategory'])->name('getSubCategory');
+Route::delete('/delete-multi-image/{id}', [ProductController::class, 'deleteMultiImage']);
+Route::post('/update-multi-images', [ProductController::class,'updateMultiImages']);
+Route::post('/fetch-prices', [StockController::class, 'fetchPrices'])->name('fetch.prices');
+Route::post('/fetch-stock', [StockController::class,'fetchStock'])->name('fetch.stock');
+Route::post('/fetch-products-by-brand', [StockController::class,'fetchProductsByBrand'])->name('fetch.products.by.brand');
+
+Route::get('/brands', function() {
+    $brands = Brand::pluck('brand_name')->toArray();
+    return response()->json($brands);
+});
+
+Route::get('/product-colors', function() {
+    $product_colors = ProductColor::pluck('color_name')->toArray();
+    return response()->json($product_colors);
+});
+
+Route::get('/product-category', function() {
+    $product_categories = ProductCategory::pluck('product_category_name')->toArray();
+    return response()->json($product_categories);
+});
+
+Route::get('/product-subcategory', function() {
+    $product_subcategories = ProductSubCategory::pluck('product_subcategory_name')->toArray();
+    return response()->json($product_subcategories);
+});
+
 
 ////// Frontend  ///////
 

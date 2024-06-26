@@ -1,6 +1,6 @@
-@extends('backend.admin.layout.layout')
+@extends('backend.employees.layout.layout_8ray')
 
-@section('admin')
+@section('employee')
     <!--app-content open-->
     <div class="main-content app-content mt-0">
         <div class="side-app">
@@ -11,7 +11,7 @@
                 <!-- PAGE-HEADER -->
                 <div class="page-header">
                     <h1 class="page-title">
-                        <a href="{{ route('product.add') }}" class="btn btn-primary">
+                        <a href="{{ route('add.employee.product') }}" class="btn btn-primary">
                             Add New Product
                         </a>
                     </h1>
@@ -50,147 +50,91 @@
                                                 <div class="tab-content">
                                                     <div class="tab-pane active" id="tab5">
                                                         <div class="table-responsive">
-                                                            <table id="responsive-datatable" class="table table-bordered text-nowrap mb-0 table-striped">
+                                                            <table id="example3" class="table table-bordered text-nowrap mb-0 table-striped">
                                                                 <thead class="border-top">
                                                                     <tr>
-                                                                        <th class="bg-transparent border-bottom-0 text-center" style="width: 3%;"> ID </th>
-                                                                        <th class="bg-transparent border-bottom-0" style="width: 7%;"> Photo</th>
-                                                                        <th class="bg-transparent border-bottom-0"> Product Code </th>
-                                                                        <th class="bg-transparent border-bottom-0"> Product Name</th>
-                                                                        <th class="bg-transparent border-bottom-0"> Stock </th>
-                                                                        <th class="bg-transparent border-bottom-0"> Selling Price </th>
-                                                                        <th class="bg-transparent border-bottom-0"> Discount Price </th>
-                                                                        <th class="bg-transparent border-bottom-0"> Status </th>
-                                                                        <th class="bg-transparent border-bottom-0"> Editor </th>
-                                                                        <th class="bg-transparent border-bottom-0"> Date </th>
-                                                                        <th class="bg-transparent border-bottom-0 text-center " style="width: 10%;">Action</th>
+                                                                        <th class="border-bottom-0">ID</th>
+                                                                        <th class="border-bottom-0">Product Code</th>
+                                                                        <th class="border-bottom-0">Product Name</th>
+                                                                        <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
+                                                                        <th class="border-bottom-0">Total Stock</th>
+                                                                        <th class="border-bottom-0">8Ray Stock</th>
+                                                                        <th class="border-bottom-0">(GP)Stock</th>
+                                                                        <th class="border-bottom-0">Selling Price</th>
+                                                                        <th class="border-bottom-0">Status</th>
+                                                                        <th class="border-bottom-0">Date</th>
+                                                                        <th class="border-bottom-0">Action</th>
                                                                     </tr>
                                                                 </thead>
 
                                                                 <tbody>
                                                                     @foreach ($products as $key => $product)
-                                                                        <tr class="border-bottom">
-                                                                            <td class="text-center">
-                                                                                <div class="mt-0 mt-sm-2 d-block">
-                                                                                    <h6 class="mb-0 fs-14 fw-semibold"> {{ $key + 1 }} </h6>
-                                                                                </div>
-                                                                            </td>
+                                                                    <tr>
+                                                                        <td>{{ $key + 1 }}</td>
+                                                                        <td>{{ $product->product_code }}</td>
+                                                                        <td>{{ $product->product_name }}</td>
+                                                                        <td>
+                                                                            <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
+                                                                        </td>
+                                                                        <td>{{ $product->total_stock }}</td>
+                                                                        <td>
+                                                                            @php
+                                                                                $stock = $product->stocks->firstWhere('branch_id', 1);
+                                                                            @endphp
+                                                                            {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                        </td>
+                                                                        <td>
+                                                                            @php
+                                                                                $stock = $product->stocks->firstWhere('branch_id', 2);
+                                                                            @endphp
+                                                                            {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                        </td>
 
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
+                                                                        <td> {{ $product->price->selling_price }}</td>
 
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_code }} </h6>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
+                                                                        <td>
+                                                                            @if ($product->status == 'active')
+                                                                                <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
+                                                                                    {{ $product->status }}
+                                                                                </span>
+                                                                            @else
+                                                                                <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
+                                                                                    {{ $product->status }}
+                                                                                </span>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>{{ date('F j, Y', strtotime($product['created_at'])) }}</td>
+                                                                        <td>
+                                                                            <a href="{{ route('edit.employee.product', $product->product_slug) }}"
+                                                                                class="btn text-primary btn-sm" data-bs-toggle="tooltip"
+                                                                                data-bs-original-title="Edit">
+                                                                                <span class="fe fe-edit fs-14"></span>
+                                                                            </a>
 
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_name }} </h6>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
+                                                                            @if ($product->status == 'active')
+                                                                                <a href="{{ route('inactive.employee.product', $product->id) }}"
+                                                                                    class="btn text-primary btn-sm"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-original-title="Inactive">
+                                                                                    <span class="fa fa-toggle-on fs-14"></span>
+                                                                                </a>
+                                                                            @else
+                                                                                <a href="{{ route('active.employee.product', $product->id) }}"
+                                                                                    class="btn text-primary btn-sm"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-original-title="Active">
+                                                                                    <span class="fa fa-toggle-off fs-14"></span>
+                                                                                </a>
+                                                                            @endif
 
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_qty }} </h6>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->selling_price }} </h6>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->discount_price }} </h6>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        @if ($product->status == 'active')
-                                                                                            <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
-                                                                                                {{ $product->status }}
-                                                                                            </span>
-                                                                                        @else
-                                                                                            <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
-                                                                                                {{ $product->status }}
-                                                                                            </span>
-                                                                                        @endif
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->user_id }} </h6>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td>
-                                                                                <div class="d-flex">
-                                                                                    <div class="mt-0 mt-sm-3 d-block">
-                                                                                        {{ date('F j, Y', strtotime($product['created_at'])) }}
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td>
-                                                                                <div class="g-2 text-center">
-
-                                                                                        <a href="{{ route('edit.product', $product->product_slug) }}"
-                                                                                            class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                                            data-bs-original-title="Edit">
-                                                                                            <span class="fe fe-edit fs-14"></span>
-                                                                                        </a>
-
-                                                                                        @if ($product->status == 'active')
-                                                                                            <a href="{{ route('inactive.product', $product->id) }}"
-                                                                                                class="btn text-primary btn-sm"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-original-title="Inactive">
-                                                                                                <span class="fa fa-toggle-on fs-14"></span>
-                                                                                            </a>
-                                                                                        @else
-                                                                                            <a href="{{ route('active.product', $product->id) }}"
-                                                                                                class="btn text-primary btn-sm"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-original-title="Active">
-                                                                                                <span class="fa fa-toggle-off fs-14"></span>
-                                                                                            </a>
-                                                                                        @endif
-
-                                                                                        <a href="{{ route('delete.product', $product->id) }}"
-                                                                                            class="btn text-danger btn-sm" id="delete"
-                                                                                            data-bs-toggle="tooltip"
-                                                                                            data-bs-original-title="Delete">
-                                                                                            <span class="fe fe-trash-2 fs-14"></span>
-                                                                                        </a>
-
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
+                                                                            <a href="{{ route('delete.employee.product', $product->id) }}"
+                                                                                class="btn text-danger btn-sm" id="delete"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-original-title="Delete">
+                                                                                <span class="fe fe-trash-2 fs-14"></span>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
@@ -199,278 +143,187 @@
                                                     <div class="tab-pane" id="tab6">
                                                         <div class="table-responsive">
                                                             <div class="table-responsive">
-                                                                <table id="responsive-datatable" class="table table-bordered text-nowrap mb-0 table-striped">
-                                                                    <thead class="border-top">
-                                                                        <tr>
-                                                                            <th class="bg-transparent border-bottom-0 text-center" style="width: 3%;"> ID </th>
-                                                                            <th class="bg-transparent border-bottom-0" style="width: 7%;"> Photo</th>
-                                                                            <th class="bg-transparent border-bottom-0"> Product Code </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Product Name</th>
-                                                                            <th class="bg-transparent border-bottom-0"> Stock </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Selling Price </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Discount Price </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Status </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Editor </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Date </th>
-                                                                            <th class="bg-transparent border-bottom-0 text-center " style="width: 10%;">Action</th>
-                                                                        </tr>
-                                                                    </thead>
+                                                                <div class="table-responsive">
+                                                                    <table id="example3" class="table table-bordered text-nowrap border-bottom">
+                                                                        <thead class="border-top">
+                                                                            <tr>
+                                                                                <th class="border-bottom-0">ID</th>
+                                                                                <th class="border-bottom-0">Product Code</th>
+                                                                                <th class="border-bottom-0">Product Name</th>
+                                                                                <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
+                                                                                <th class="border-bottom-0">Total Stock</th>
+                                                                                <th class="border-bottom-0">8Ray Stock</th>
+                                                                                <th class="border-bottom-0">(GP)Stock</th>
+                                                                                <th class="border-bottom-0">Selling Price</th>
+                                                                                <th class="border-bottom-0">Status</th>
+                                                                                <th class="border-bottom-0">Date</th>
+                                                                                <th class="border-bottom-0">Action</th>
+                                                                            </tr>
+                                                                        </thead>
 
-                                                                    <tbody>
-                                                                        @foreach ($activeProducts as $key => $product)
-                                                                            <tr class="border-bottom">
-                                                                                <td class="text-center">
-                                                                                    <div class="mt-0 mt-sm-2 d-block">
-                                                                                        <h6 class="mb-0 fs-14 fw-semibold"> {{ $key + 1 }} </h6>
-                                                                                    </div>
+                                                                        <tbody>
+                                                                            @foreach ($activeProducts as $key => $product)
+                                                                            <tr>
+                                                                                <td>{{ $key + 1 }}</td>
+                                                                                <td>{{ $product->product_code }}</td>
+                                                                                <td>{{ $product->product_name }}</td>
+                                                                                <td>
+                                                                                    <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
+                                                                                </td>
+                                                                                <td>{{ $product->total_stock }}</td>
+                                                                                <td>
+                                                                                    @php
+                                                                                        $stock = $product->stocks->firstWhere('branch_id', 1);
+                                                                                    @endphp
+                                                                                    {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                                </td>
+                                                                                <td>
+                                                                                    @php
+                                                                                        $stock = $product->stocks->firstWhere('branch_id', 2);
+                                                                                    @endphp
+                                                                                    {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                                 </td>
 
+                                                                                <td> {{ $product->price->selling_price }}</td>
+
                                                                                 <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <img src="{{ !empty($product->photo) ? url('upload/product_images/' . $product->photo) : url('upload/blog_images.png') }}">
-                                                                                        </div>
-                                                                                    </div>
+                                                                                    @if ($product->status == 'active')
+                                                                                        <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
+                                                                                            {{ $product->status }}
+                                                                                        </span>
+                                                                                    @else
+                                                                                        <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
+                                                                                            {{ $product->status }}
+                                                                                        </span>
+                                                                                    @endif
                                                                                 </td>
-
+                                                                                <td>{{ date('F j, Y', strtotime($product['created_at'])) }}</td>
                                                                                 <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_code }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
+                                                                                    <a href="{{ route('edit.employee.product', $product->product_slug) }}"
+                                                                                        class="btn text-primary btn-sm" data-bs-toggle="tooltip"
+                                                                                        data-bs-original-title="Edit">
+                                                                                        <span class="fe fe-edit fs-14"></span>
+                                                                                    </a>
 
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_name }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
+                                                                                    @if ($product->status == 'active')
+                                                                                        <a href="{{ route('inactive.employee.product', $product->id) }}"
+                                                                                            class="btn text-primary btn-sm"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-original-title="Inactive">
+                                                                                            <span class="fa fa-toggle-on fs-14"></span>
+                                                                                        </a>
+                                                                                    @else
+                                                                                        <a href="{{ route('active.employee.product', $product->id) }}"
+                                                                                            class="btn text-primary btn-sm"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-original-title="Active">
+                                                                                            <span class="fa fa-toggle-off fs-14"></span>
+                                                                                        </a>
+                                                                                    @endif
 
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_qty }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->selling_price }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->discount_price }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            @if ($product->status == 'active')
-                                                                                                <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
-                                                                                                    {{ $product->status }}
-                                                                                                </span>
-                                                                                            @else
-                                                                                                <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
-                                                                                                    {{ $product->status }}
-                                                                                                </span>
-                                                                                            @endif
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->user_id }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            {{ date('F j, Y, g:ia', strtotime($product['created_at'])) }}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="g-2 text-center">
-
-                                                                                            <a href=""
-                                                                                                class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                                                data-bs-original-title="Detail">
-                                                                                                <span class="fe fe-eye fs-14"></span>
-                                                                                            </a>
-
-                                                                                            <a href=""
-                                                                                                class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                                                data-bs-original-title="Edit">
-                                                                                                <span class="fe fe-edit fs-14"></span>
-                                                                                            </a>
-
-                                                                                            <a href=""
-                                                                                                class="btn text-danger btn-sm" id="delete"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-original-title="Delete">
-                                                                                                <span class="fe fe-trash-2 fs-14"></span>
-                                                                                            </a>
-
-                                                                                    </div>
+                                                                                    <a href="{{ route('delete.employee.product', $product->id) }}"
+                                                                                        class="btn text-danger btn-sm" id="delete"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-original-title="Delete">
+                                                                                        <span class="fe fe-trash-2 fs-14"></span>
+                                                                                    </a>
                                                                                 </td>
                                                                             </tr>
-                                                                        @endforeach
-                                                                    </tbody>
-                                                                </table>
+                                                                            @endforeach
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane" id="tab7">
                                                         <div class="table-responsive">
                                                             <div class="table-responsive">
-                                                                <table id="responsive-datatable" class="table table-bordered text-nowrap mb-0 table-striped">
+                                                                <table id="example3" class="table table-bordered text-nowrap mb-0 table-striped">
                                                                     <thead class="border-top">
                                                                         <tr>
-                                                                            <th class="bg-transparent border-bottom-0 text-center" style="width: 3%;"> ID </th>
-                                                                            <th class="bg-transparent border-bottom-0" style="width: 7%;"> Photo</th>
-                                                                            <th class="bg-transparent border-bottom-0"> Product Code </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Product Name</th>
-                                                                            <th class="bg-transparent border-bottom-0"> Stock </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Selling Price </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Discount Price </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Status </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Editor </th>
-                                                                            <th class="bg-transparent border-bottom-0"> Date </th>
-                                                                            <th class="bg-transparent border-bottom-0 text-center " style="width: 10%;">Action</th>
+                                                                            <th class="border-bottom-0">ID</th>
+                                                                            <th class="border-bottom-0">Product Code</th>
+                                                                            <th class="border-bottom-0">Product Name</th>
+                                                                            <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
+                                                                            <th class="border-bottom-0">Total Stock</th>
+                                                                            <th class="border-bottom-0">8Ray Stock</th>
+                                                                            <th class="border-bottom-0">(GP)Stock</th>
+                                                                            <th class="border-bottom-0">Selling Price</th>
+                                                                            <th class="border-bottom-0">Status</th>
+                                                                            <th class="border-bottom-0">Date</th>
+                                                                            <th class="border-bottom-0">Action</th>
                                                                         </tr>
                                                                     </thead>
 
                                                                     <tbody>
                                                                         @foreach ($inActiveProduct as $key => $product)
-                                                                            <tr class="border-bottom">
-                                                                                <td class="text-center">
-                                                                                    <div class="mt-0 mt-sm-2 d-block">
-                                                                                        <h6 class="mb-0 fs-14 fw-semibold"> {{ $key + 1 }} </h6>
-                                                                                    </div>
-                                                                                </td>
+                                                                        <tr>
+                                                                            <td>{{ $key + 1 }}</td>
+                                                                            <td>{{ $product->product_code }}</td>
+                                                                            <td>{{ $product->product_name }}</td>
+                                                                            <td>
+                                                                                <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
+                                                                            </td>
+                                                                            <td>{{ $product->total_stock }}</td>
+                                                                            <td>
+                                                                                @php
+                                                                                    $stock = $product->stocks->firstWhere('branch_id', 1);
+                                                                                @endphp
+                                                                                {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                            </td>
+                                                                            <td>
+                                                                                @php
+                                                                                    $stock = $product->stocks->firstWhere('branch_id', 2);
+                                                                                @endphp
+                                                                                {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                            </td>
 
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <img src="{{ !empty($product->photo) ? url('upload/product_images/' . $product->photo) : url('upload/blog_images.png') }}">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
+                                                                            <td> {{ $product->price->selling_price }}</td>
 
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_code }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
+                                                                            <td>
+                                                                                @if ($product->status == 'active')
+                                                                                    <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
+                                                                                        {{ $product->status }}
+                                                                                    </span>
+                                                                                @else
+                                                                                    <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
+                                                                                        {{ $product->status }}
+                                                                                    </span>
+                                                                                @endif
+                                                                            </td>
+                                                                            <td>{{ date('F j, Y', strtotime($product['created_at'])) }}</td>
+                                                                            <td>
+                                                                                <a href="{{ route('edit.employee.product', $product->product_slug) }}"
+                                                                                    class="btn text-primary btn-sm" data-bs-toggle="tooltip"
+                                                                                    data-bs-original-title="Edit">
+                                                                                    <span class="fe fe-edit fs-14"></span>
+                                                                                </a>
 
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_name }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
+                                                                                @if ($product->status == 'active')
+                                                                                    <a href="{{ route('inactive.employee.product', $product->id) }}"
+                                                                                        class="btn text-primary btn-sm"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-original-title="Inactive">
+                                                                                        <span class="fa fa-toggle-on fs-14"></span>
+                                                                                    </a>
+                                                                                @else
+                                                                                    <a href="{{ route('active.employee.product', $product->id) }}"
+                                                                                        class="btn text-primary btn-sm"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-original-title="Active">
+                                                                                        <span class="fa fa-toggle-off fs-14"></span>
+                                                                                    </a>
+                                                                                @endif
 
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->product_qty }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->selling_price }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->discount_price }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            @if ($product->status == 'active')
-                                                                                                <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
-                                                                                                    {{ $product->status }}
-                                                                                                </span>
-                                                                                            @else
-                                                                                                <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
-                                                                                                    {{ $product->status }}
-                                                                                                </span>
-                                                                                            @endif
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            <h6 class="mb-0 fs-14 fw-semibold"> {{ $product->user_id }} </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
-                                                                                            {{ date('F j, Y, g:ia', strtotime($product['created_at'])) }}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <div class="g-2 text-center">
-
-
-                                                                                        <a href=""
-                                                                                            class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                                            data-bs-original-title="Detail">
-                                                                                            <span class="fe fe-eye fs-14"></span>
-                                                                                        </a>
-
-                                                                                            <a href=""
-                                                                                                class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                                                data-bs-original-title="Edit">
-                                                                                                <span class="fe fe-edit fs-14"></span>
-                                                                                            </a>
-
-                                                                                            <a href=""
-                                                                                                class="btn text-danger btn-sm" id="delete"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-original-title="Delete">
-                                                                                                <span class="fe fe-trash-2 fs-14"></span>
-                                                                                            </a>
-
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
+                                                                                <a href="{{ route('delete.employee.product', $product->id) }}"
+                                                                                    class="btn text-danger btn-sm" id="delete"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-original-title="Delete">
+                                                                                    <span class="fe fe-trash-2 fs-14"></span>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>

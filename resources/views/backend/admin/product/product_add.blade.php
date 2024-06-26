@@ -104,7 +104,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Product Category:</label>
-                                                        <select name="product_category_id" class="form-select select2" id="inputVendor">
+                                                        <select name="product_category_id" class="form-control select2-show-search form-select" id="inputVendor">
                                                             <option value="1">None</option>
                                                             @foreach($product_categories as $cat)
                                                                 <option value="{{ $cat->id }}">{{ $cat->product_category_name }}</option>
@@ -125,7 +125,12 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Brand:</label>
-                                                        <input type="text" name="brand_id" class="form-control" id="brand" required>
+                                                        <select name="brand_id" id="brand_id" class="form-control select2-show-search form-select" data-placeholder="Choose one">
+                                                            <option label="Select Brand"></option>
+                                                            @foreach($brands as $brand)
+                                                                <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
 
@@ -149,21 +154,21 @@
                                                         <input type="text" class="form-control"  name="product_size" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="purchase_price" class="form-label">Purchase Price:<span
                                                                 class="text-red">*</span></label>
                                                         <input type="text" class="form-control"  name="purchase_price" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="selling_price" class="form-label">Selling Price:<span
                                                                 class="text-red">*</span></label>
                                                         <input type="text" class="form-control"  name="selling_price" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="discount_price" class="form-label">Discount Price:<span
                                                                 class="text-red">*</span></label>

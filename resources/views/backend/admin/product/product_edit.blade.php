@@ -147,14 +147,19 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Brand:</label>
-                                                        <input type="text" name="brand_id" class="form-control" id="brand" value="{{ implode(', ', $product->brands->pluck('brand_name')->toArray()) }}" required>
+                                                        <select name="brand_id" id="brand_id" class="form-control select2-show-search form-select" data-placeholder="Choose one">
+                                                            <option label="Select Brand"></option>
+                                                            @foreach($brands as $brand)
+                                                                <option value="{{ $brand->id }}" {{ $product->brands->contains($brand->id) ? 'selected' : '' }}>{{ $brand->brand_name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group mb-4">
                                                         <label for="product_colors" class="form-label">Product Colors:</label>
                                                         <input type="text" name="product_color_id" class="form-control" id="product_colors" value="{{ implode(', ', $product->productColor->pluck('color_name')->toArray()) }}" required>
@@ -173,22 +178,22 @@
                                                         <input type="text" class="form-control" name="product_size" value="{{ $product->productInfo->product_size }}" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="purchase_price" class="form-label">Purchase Price:<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="purchase_price" value="{{ $product->purchase_price }}" required>
+                                                        <input type="text" class="form-control" name="purchase_price" value="{{ $product->price->purchase_price }}" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="selling_price" class="form-label">Selling Price:<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="selling_price" value="{{ $product->selling_price }}" required>
+                                                        <input type="text" class="form-control" name="selling_price" value="{{ $product->price->selling_price }}" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="discount_price" class="form-label">Discount Price:<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="discount_price" value="{{ $product->discount_price }}" required>
+                                                        <input type="text" class="form-control" name="discount_price" value="{{ $product->price->discount_price }}" required>
                                                     </div>
                                                 </div>
                                             </div>

@@ -12,6 +12,7 @@ use App\Models\ProductColor;
 use App\Models\ProductInfo;
 use App\Models\MultiImg;
 use App\Models\Brand;
+use App\Models\Price;
 use App\Models\Stock;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
@@ -25,9 +26,9 @@ class ProductController extends Controller
 {
     public function AllProduct()
     {
-        $products = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])->with(['stocks.branch'])->latest()->get();
-        $activeProducts = Product::where('status', 'active')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])->with(['stocks.branch'])->latest()->get();
-        $inActiveProduct = Product::where('status', 'inactive')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])->with(['stocks.branch'])->latest()->get();
+        $products = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
+        $activeProducts = Product::where('status', 'active')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
+        $inActiveProduct = Product::where('status', 'inactive')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
 
         return view('backend.admin.product.product_all', compact('products', 'activeProducts', 'inActiveProduct'));
     }
@@ -88,9 +89,6 @@ class ProductController extends Controller
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
         $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
-        $product->purchase_price = $request->input('purchase_price');
-        $product->selling_price = $request->input('selling_price');
-        $product->discount_price = $request->input('discount_price');
         $product->user_id = auth()->user()->id;
         $product->product_type_id = 1;
         $product->status = 'inactive';
@@ -124,6 +122,14 @@ class ProductController extends Controller
         $product_info->best_sale = $request->input('best_sale');
         $product_info->created_at = Carbon::now();
         $product_info->save();
+
+        $product_price = new Price();
+        $product_price->product_id = $product->id;
+        $product_price->purchase_price = $request->input('purchase_price');
+        $product_price->selling_price = $request->input('selling_price');
+        $product_price->discount_price = $request->input('discount_price');
+        $product_price->created_at = Carbon::now();
+        $product_price->save();
 
         if ($request->hasFile('multi_img')) {
             foreach ($request->file('multi_img') as $img) {
@@ -161,21 +167,7 @@ class ProductController extends Controller
         $product->productColor()->attach($colorIds);
 
 
-         // Create Product Brand
-        $brands = explode(',', $validatedData['brand_id']);
-        $brandIds = [];
-        foreach ($brands as $brand_name) {
-            $brand_name = trim($brand_name);
-            $brand = Brand::firstOrCreate(
-                ['brand_name' => $brand_name],
-                ['brand_slug' => Str::slug($brand_name)]
-            );
-            $brandIds[] = $brand->id;
-        }
-        $product->brands()->attach($brandIds);
-
-
-
+        $product->brands()->attach($validatedData['brand_id']);
         $product->productCategory()->attach($validatedData['product_category_id']);
 
 
@@ -203,7 +195,7 @@ class ProductController extends Controller
     public function EditProduct($slug)
     {
         // Retrieve the product by slug
-        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages',])
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])
                     ->where('product_slug', $slug)
                     ->firstOrFail();
 
@@ -253,9 +245,6 @@ class ProductController extends Controller
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
         $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
-        $product->purchase_price = $request->input('purchase_price');
-        $product->selling_price = $request->input('selling_price');
-        $product->discount_price = $request->input('discount_price');
         $product->user_id = auth()->user()->id;
         $product->product_type_id = 1;
         $product->status = 'inactive';
@@ -288,6 +277,14 @@ class ProductController extends Controller
         $product_info->best_sale = $request->input('best_sale');
         $product_info->updated_at = Carbon::now();
         $product_info->save();
+
+        $product_price = Price::where('product_id', $product->id)->first();
+        $product_price->purchase_price = $request->input('purchase_price');
+        $product_price->selling_price = $request->input('selling_price');
+        $product_price->discount_price = $request->input('discount_price');
+        $product_price->created_at = Carbon::now();
+        $product_price->save();
+
 
         if ($request->file('multi_img')) {
             // Remove old images
@@ -324,17 +321,7 @@ class ProductController extends Controller
         $product->productColor()->sync($colorIds);
 
         // Update Product Brand
-        $brands = explode(',', $validatedData['brand_id']);
-        $brandIds = [];
-        foreach ($brands as $brand_name) {
-            $brand_name = trim($brand_name);
-            $brand = Brand::firstOrCreate(
-                ['brand_name' => $brand_name],
-                ['brand_slug' => Str::slug($brand_name)]
-            );
-            $brandIds[] = $brand->id;
-        }
-        $product->brands()->sync($brandIds);
+        $product->brands()->sync($validatedData['brand_id']);
 
         $product->productCategory()->sync($validatedData['product_category_id']);
 
@@ -445,7 +432,7 @@ class ProductController extends Controller
         return redirect()->back()->with($notification);
 }
 
-public function index()
+    public function index()
     {
         $productInfos = Product::with(['productInfo'])->get();
         return view('backend.admin.product.product_youtube_link_test', compact('productInfos'));

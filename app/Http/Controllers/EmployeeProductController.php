@@ -11,6 +11,8 @@ use App\Models\ProductColor;
 use App\Models\ProductInfo;
 use App\Models\MultiImg;
 use App\Models\Brand;
+use App\Models\Price;
+use App\Models\Stock;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -20,20 +22,22 @@ use Illuminate\Support\Str;
 
 class EmployeeProductController extends Controller
 {
-    public function AllEmployeeProduct(){
-        $products = Product::latest()->get();
-        $activeProducts = Product::where('status', 'active')->latest()->get();
-        $inActiveProduct = Product::where('status', 'inactive')->latest()->get();
-        return view('backend.employees.8ray.product.product_all',compact('products','activeProducts','inActiveProduct'));
-    } // End Method
+    public function AllEmployeeProduct()
+    {
+        $products = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
+        $activeProducts = Product::where('status', 'active')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
+        $inActiveProduct = Product::where('status', 'inactive')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
 
-    public function AddProduct(){
+        return view('backend.employees.8ray.product.product_all', compact('products', 'activeProducts', 'inActiveProduct'));
+    }
+
+    public function AddEmployeeProduct(){
 
         $product_type = ProductType::orderBy('product_type_name','ASC')->get();
         $brands = Brand::orderBy('brand_name','ASC')->get();
         $product_categories = ProductCategory::orderBy('product_category_name','ASC')->get();
         $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name','ASC')->get();
-        return view('backend.admin.product.product_add',compact('product_type','brands','product_categories','product_subCategories'));
+        return view('backend.employees.8ray.product.product_add',compact('product_type','brands','product_categories','product_subCategories'));
 
     } // End Method
 
@@ -45,7 +49,7 @@ class EmployeeProductController extends Controller
         return 'https://www.youtube.com/embed/' . $queryParams['v'];
     }
 
-    public function StoreProduct(Request $request)
+    public function StoreEmployeeProduct(Request $request)
     {
         // Validate the request data
         //dd($request->all());
@@ -55,7 +59,6 @@ class EmployeeProductController extends Controller
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
             'url' => 'required|url',
-            'product_qty' => 'required|integer',
             'product_size' => 'required|string|max:255',
             'purchase_price' => 'required|string|max:255',
             'selling_price' => 'required|string|max:255',
@@ -84,10 +87,6 @@ class EmployeeProductController extends Controller
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
         $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
-        $product->product_qty = $request->input('product_qty');
-        $product->purchase_price = $request->input('purchase_price');
-        $product->selling_price = $request->input('selling_price');
-        $product->discount_price = $request->input('discount_price');
         $product->user_id = auth()->user()->id;
         $product->product_type_id = 1;
         $product->status = 'inactive';
@@ -122,6 +121,13 @@ class EmployeeProductController extends Controller
         $product_info->created_at = Carbon::now();
         $product_info->save();
 
+        $product_price = new Price();
+        $product_price->product_id = $product->id;
+        $product_price->purchase_price = $request->input('purchase_price');
+        $product_price->selling_price = $request->input('selling_price');
+        $product_price->discount_price = $request->input('discount_price');
+        $product_price->created_at = Carbon::now();
+        $product_price->save();
 
         if ($request->hasFile('multi_img')) {
             foreach ($request->file('multi_img') as $img) {
@@ -158,24 +164,8 @@ class EmployeeProductController extends Controller
         }
         $product->productColor()->attach($colorIds);
 
-
-         // Create Product Brand
-        $brands = explode(',', $validatedData['brand_id']);
-        $brandIds = [];
-        foreach ($brands as $brand_name) {
-            $brand_name = trim($brand_name);
-            $brand = Brand::firstOrCreate(
-                ['brand_name' => $brand_name],
-                ['brand_slug' => Str::slug($brand_name)]
-            );
-            $brandIds[] = $brand->id;
-        }
-        $product->brands()->attach($brandIds);
-
-
-
+        $product->brands()->attach($validatedData['brand_id']);
         $product->productCategory()->attach($validatedData['product_category_id']);
-
 
         // Create Product SubCategory if product_subcategory_id exists
         if (isset($validatedData['product_subcategory_id'])) {
@@ -195,14 +185,15 @@ class EmployeeProductController extends Controller
             'alert-type' => 'success',
         ];
 
-        return redirect()->route('all.product')->with($notification);
+        return redirect()->route('all.employee.product')->with($notification);
     }
 
-    public function EditProduct($slug)
+    public function EditEmployeeProduct($slug)
     {
         // Retrieve the product by slug
-        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages'])
-                    ->where('product_slug', $slug)->firstOrFail();
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])
+                    ->where('product_slug', $slug)
+                    ->firstOrFail();
 
         // Retrieve all necessary related data
         $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();
@@ -211,10 +202,10 @@ class EmployeeProductController extends Controller
         $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name', 'ASC')->get();
 
         // Pass the data to the view
-        return view('backend.admin.product.product_edit', compact('product', 'product_type', 'brands', 'product_categories', 'product_subCategories'));
+        return view('backend.employees.8ray.product.product_edit', compact('product', 'product_type', 'brands', 'product_categories', 'product_subCategories'));
     }
 
-    public function UpdateProduct(Request $request)
+    public function UpdateEmployeeProduct(Request $request)
     {
         //dd($request->all());
         $id = $request->id;
@@ -224,7 +215,6 @@ class EmployeeProductController extends Controller
             'product_name' => 'required|string|max:255' . $id,
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
-            'product_qty' => 'required',
             'product_size' => 'required|string|max:255',
             'purchase_price' => 'required|string|max:255',
             'selling_price' => 'required|string|max:255',
@@ -251,10 +241,6 @@ class EmployeeProductController extends Controller
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
         $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
-        $product->product_qty = $request->input('product_qty');
-        $product->purchase_price = $request->input('purchase_price');
-        $product->selling_price = $request->input('selling_price');
-        $product->discount_price = $request->input('discount_price');
         $product->user_id = auth()->user()->id;
         $product->product_type_id = 1;
         $product->status = 'inactive';
@@ -287,6 +273,14 @@ class EmployeeProductController extends Controller
         $product_info->best_sale = $request->input('best_sale');
         $product_info->updated_at = Carbon::now();
         $product_info->save();
+
+        $product_price = Price::where('product_id', $product->id)->first();
+        $product_price->purchase_price = $request->input('purchase_price');
+        $product_price->selling_price = $request->input('selling_price');
+        $product_price->discount_price = $request->input('discount_price');
+        $product_price->created_at = Carbon::now();
+        $product_price->save();
+
 
         if ($request->file('multi_img')) {
             // Remove old images
@@ -322,18 +316,7 @@ class EmployeeProductController extends Controller
         }
         $product->productColor()->sync($colorIds);
 
-        // Update Product Brand
-        $brands = explode(',', $validatedData['brand_id']);
-        $brandIds = [];
-        foreach ($brands as $brand_name) {
-            $brand_name = trim($brand_name);
-            $brand = Brand::firstOrCreate(
-                ['brand_name' => $brand_name],
-                ['brand_slug' => Str::slug($brand_name)]
-            );
-            $brandIds[] = $brand->id;
-        }
-        $product->brands()->sync($brandIds);
+        $product->brands()->sync($validatedData['brand_id']);
 
         $product->productCategory()->sync($validatedData['product_category_id']);
 
@@ -354,7 +337,7 @@ class EmployeeProductController extends Controller
             'alert-type' => 'success',
         ];
 
-        return redirect()->route('all.product')->with($notification);
+        return redirect()->route('all.employee.product')->with($notification);
     }
 
     public function deleteMultiImage($id)

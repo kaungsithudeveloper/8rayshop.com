@@ -53,12 +53,14 @@
                                                             <table id="example3" class="table table-bordered text-nowrap mb-0 table-striped">
                                                                 <thead class="border-top">
                                                                     <tr>
+                                                                        <th class="border-bottom-0">ID</th>
                                                                         <th class="border-bottom-0">Product Code</th>
                                                                         <th class="border-bottom-0">Product Name</th>
-                                                                        <th class="border-bottom-0">Product Photo</th>
+                                                                        <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                         <th class="border-bottom-0">Total Stock</th>
                                                                         <th class="border-bottom-0">8Ray Stock</th>
                                                                         <th class="border-bottom-0">(GP)Stock</th>
+                                                                        <th class="border-bottom-0">Purchase Price</th>
                                                                         <th class="border-bottom-0">Selling Price</th>
                                                                         <th class="border-bottom-0">Status</th>
                                                                         <th class="border-bottom-0">Date</th>
@@ -69,6 +71,7 @@
                                                                 <tbody>
                                                                     @foreach ($products as $key => $product)
                                                                     <tr>
+                                                                        <td>{{ $key + 1 }}</td>
                                                                         <td>{{ $product->product_code }}</td>
                                                                         <td>{{ $product->product_name }}</td>
                                                                         <td>
@@ -79,15 +82,16 @@
                                                                             @php
                                                                                 $stock = $product->stocks->firstWhere('branch_id', 1);
                                                                             @endphp
-                                                                            {{ $stock ? $stock->stock_qty : 'No stock for this branch' }}
+                                                                            {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                         </td>
                                                                         <td>
                                                                             @php
                                                                                 $stock = $product->stocks->firstWhere('branch_id', 2);
                                                                             @endphp
-                                                                            {{ $stock ? $stock->stock_qty : 'No stock for this branch' }}
+                                                                            {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                         </td>
-                                                                        <td> {{ $product->selling_price }}</td>
+                                                                        <td> {{ $product->price->purchase_price }}</td>
+                                                                        <td> {{ $product->price->selling_price }}</td>
 
                                                                         <td>
                                                                             @if ($product->status == 'active')
@@ -144,12 +148,14 @@
                                                                     <table id="example3" class="table table-bordered text-nowrap border-bottom">
                                                                         <thead class="border-top">
                                                                             <tr>
+                                                                                <th class="border-bottom-0">ID</th>
                                                                                 <th class="border-bottom-0">Product Code</th>
                                                                                 <th class="border-bottom-0">Product Name</th>
-                                                                                <th class="border-bottom-0">Product Photo</th>
+                                                                                <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                                 <th class="border-bottom-0">Total Stock</th>
                                                                                 <th class="border-bottom-0">8Ray Stock</th>
                                                                                 <th class="border-bottom-0">(GP)Stock</th>
+                                                                                <th class="border-bottom-0">Purchase Price</th>
                                                                                 <th class="border-bottom-0">Selling Price</th>
                                                                                 <th class="border-bottom-0">Status</th>
                                                                                 <th class="border-bottom-0">Date</th>
@@ -160,6 +166,7 @@
                                                                         <tbody>
                                                                             @foreach ($activeProducts as $key => $product)
                                                                             <tr>
+                                                                                <td>{{ $key + 1 }}</td>
                                                                                 <td>{{ $product->product_code }}</td>
                                                                                 <td>{{ $product->product_name }}</td>
                                                                                 <td>
@@ -170,15 +177,16 @@
                                                                                     @php
                                                                                         $stock = $product->stocks->firstWhere('branch_id', 1);
                                                                                     @endphp
-                                                                                    {{ $stock ? $stock->stock_qty : 'No stock for this branch' }}
+                                                                                    {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                                 </td>
                                                                                 <td>
                                                                                     @php
                                                                                         $stock = $product->stocks->firstWhere('branch_id', 2);
                                                                                     @endphp
-                                                                                    {{ $stock ? $stock->stock_qty : 'No stock for this branch' }}
+                                                                                    {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                                 </td>
-                                                                                <td> {{ $product->selling_price }}</td>
+                                                                                <td> {{ $product->price->purchase_price }}</td>
+                                                                                <td> {{ $product->price->selling_price }}</td>
 
                                                                                 <td>
                                                                                     @if ($product->status == 'active')
@@ -233,15 +241,17 @@
                                                     <div class="tab-pane" id="tab7">
                                                         <div class="table-responsive">
                                                             <div class="table-responsive">
-                                                                <table id="responsive-datatable" class="table table-bordered text-nowrap mb-0 table-striped">
+                                                                <table id="example3" class="table table-bordered text-nowrap mb-0 table-striped">
                                                                     <thead class="border-top">
                                                                         <tr>
+                                                                            <th class="border-bottom-0">ID</th>
                                                                             <th class="border-bottom-0">Product Code</th>
                                                                             <th class="border-bottom-0">Product Name</th>
-                                                                            <th class="border-bottom-0">Product Photo</th>
+                                                                            <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                             <th class="border-bottom-0">Total Stock</th>
                                                                             <th class="border-bottom-0">8Ray Stock</th>
                                                                             <th class="border-bottom-0">(GP)Stock</th>
+                                                                            <th class="border-bottom-0">Purchase Price</th>
                                                                             <th class="border-bottom-0">Selling Price</th>
                                                                             <th class="border-bottom-0">Status</th>
                                                                             <th class="border-bottom-0">Date</th>
@@ -252,6 +262,7 @@
                                                                     <tbody>
                                                                         @foreach ($inActiveProduct as $key => $product)
                                                                         <tr>
+                                                                            <td>{{ $key + 1 }}</td>
                                                                             <td>{{ $product->product_code }}</td>
                                                                             <td>{{ $product->product_name }}</td>
                                                                             <td>
@@ -262,15 +273,16 @@
                                                                                 @php
                                                                                     $stock = $product->stocks->firstWhere('branch_id', 1);
                                                                                 @endphp
-                                                                                {{ $stock ? $stock->stock_qty : 'No stock for this branch' }}
+                                                                                {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                             </td>
                                                                             <td>
                                                                                 @php
                                                                                     $stock = $product->stocks->firstWhere('branch_id', 2);
                                                                                 @endphp
-                                                                                {{ $stock ? $stock->stock_qty : 'No stock for this branch' }}
+                                                                                {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                             </td>
-                                                                            <td> {{ $product->selling_price }}</td>
+                                                                            <td> {{ $product->price->purchase_price }}</td>
+                                                                            <td> {{ $product->price->selling_price }}</td>
 
                                                                             <td>
                                                                                 @if ($product->status == 'active')

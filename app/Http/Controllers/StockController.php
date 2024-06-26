@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Branch;
 use App\Models\Brand;
+use App\Models\Price;
 use Illuminate\Support\Facades\Validator;
 
 class StockController extends Controller
@@ -52,6 +53,28 @@ class StockController extends Controller
         }
     }
 
+    public function fetchPrices(Request $request)
+    {
+        $product_id = $request->input('product_id');
+
+        // Query the price based on product_id
+        $price = Price::where('product_id', $product_id)->first();
+
+        if ($price) {
+            return response()->json([
+                'purchase_price' => $price->purchase_price,
+                'selling_price' => $price->selling_price,
+                'discount_price' => $price->discount_price
+            ]);
+        } else {
+            return response()->json([
+                'purchase_price' => '',
+                'selling_price' => '',
+                'discount_price' => ''
+            ]);
+        }
+    }
+
     public function StoreStock(Request $request)
     {
         // Validation
@@ -59,6 +82,9 @@ class StockController extends Controller
             'product_id' => 'required|integer|exists:products,id',
             'brand_id' => 'required|integer|exists:brands,id',
             'branch_id' => 'required|integer|exists:branches,id',
+            'purchase_price' => 'required|string|max:255',
+            'selling_price' => 'required|string|max:255',
+            'discount_price' => 'required|string|max:255',
             'stock_qty' => 'required|integer|min:1',
         ]);
 
@@ -72,61 +98,28 @@ class StockController extends Controller
 
         $validatedData = $validator->validated();
 
-        // Find existing stock or create new
-        $product_stock = new Stock();
-        $product_stock->product_id = $request->input('product_id');
-        $product_stock->brand_id = $request->input('brand_id');
-        $product_stock->branch_id = $request->input('branch_id');
-        $product_stock->stock_qty = $request->input('stock_qty');
-        $product_stock->save();
+        $product_stock = Stock::updateOrCreate(
+            [
+                'product_id' => $request->input('product_id'),
+                'brand_id' => $request->input('brand_id'),
+                'branch_id' => $request->input('branch_id')
+            ],
+            [
+                'stock_qty' => $request->input('stock_qty')
+            ]
+        );
 
-        $notification = [
-            'message' => 'Product stock updated successfully!',
-            'alert-type' => 'success',
-        ];
-
-        return redirect()->route('all.stock')->with($notification);
-    }
-
-    public function EditStock($id)
-    {
-        $stock = Stock::findOrFail($id);  // Fetch the stock to be edited
-        $products = Product::latest()->get();
-        $productStock = Stock::with('product')->latest()->get();
-        $branches = Branch::latest()->get();
-        $brands = Brand::latest()->get();
-        return view('backend.admin.stock.stock_edit', compact('stock', 'products','productStock', 'branches', 'brands'));
-    }
-
-    public function UpdateStock(Request $request, $id)
-    {
-        // Validation
-        //dd($request->all());
-
-        $validator = Validator::make($request->all(), [
-            'product_id' => 'required|integer|exists:products,id',
-            'brand_id' => 'required|integer|exists:brands,id',
-            'branch_id' => 'required|integer|exists:branches,id',
-            'stock_qty' => 'required|integer|min:1',
-        ]);
-
-        if ($validator->fails()) {
-            $notification = [
-                'message' => 'Validation failed.',
-                'alert-type' => 'error',
-            ];
-            return redirect()->back()->withErrors($validator)->withInput()->with($notification);
-        }
-
-        $validatedData = $validator->validated();
-
-        // Find existing stock
-        $product_stock = Stock::findOrFail($id);
-        $product_stock->product_id = $request->input('product_id');
-        $product_stock->brand_id = $request->input('brand_id');
-        $product_stock->branch_id = $request->input('branch_id');
-        $product_stock->stock_qty = $request->input('stock_qty');
-        $product_stock->save();
+        // Find existing price or create new
+        $product_price = Price::updateOrCreate(
+            [
+                'product_id' => $request->input('product_id')
+            ],
+            [
+                'purchase_price' => $request->input('purchase_price'),
+                'selling_price' => $request->input('selling_price'),
+                'discount_price' => $request->input('discount_price')
+            ]
+        );
 
         $notification = [
             'message' => 'Product stock updated successfully!',

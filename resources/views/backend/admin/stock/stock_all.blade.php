@@ -65,6 +65,21 @@
                                         <label for="stock_qty" class="form-label">Product Stock:</label>
                                         <input type="text" class="form-control" id="stock_qty" name="stock_qty" value="{{ old('stock_qty') }}" required autofocus>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label for="purchase_price" class="form-label">Purchase Price:</label>
+                                        <input type="text" class="form-control" id="purchase_price" name="purchase_price" value="{{ old('purchase_price') }}" required autofocus>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="selling_price" class="form-label">Selling Price:</label>
+                                        <input type="text" class="form-control" id="selling_price" name="selling_price" value="{{ old('selling_price') }}" required autofocus>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="discount_price" class="form-label">Discount Price:</label>
+                                        <input type="text" class="form-control" id="discount_price" name="discount_price" value="{{ old('discount_price') }}" required autofocus>
+                                    </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="mb-3">
@@ -127,15 +142,8 @@
                                                     </td>
                                                     <td>
                                                         <div class="g-2 text-center">
-
-                                                            <a href="{{ route('edit.stock', $stock->id) }}"
-                                                                class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                data-bs-original-title="Edit">
-                                                                <span class="fe fe-edit fs-14"></span>
-                                                            </a>
-
                                                             <a href="{{ route('delete.stock', $stock->id) }}"
-                                                                class="btn text-danger btn-sm" id="delete"
+                                                                class="btn text-danger btn" id="delete"
                                                                 data-bs-toggle="tooltip"
                                                                 data-bs-original-title="Delete">
                                                                 <span class="fe fe-trash-2 fs-14"></span>
@@ -168,16 +176,60 @@
                 var product_id = $('#product_id').val();
                 var branch_id = $('#branch_id').val();
 
+                if (product_id && branch_id) {
+                    $.ajax({
+                        url: '{{ route("fetch.stock") }}',
+                        method: 'POST',
+                        data: {
+                            product_id: product_id,
+                            branch_id: branch_id,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            $('#stock_qty').val(response.stock_qty);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+
+                }
+                if (product_id) {
+                    $.ajax({
+                        url: '{{ route("fetch.prices") }}',
+                        method: 'POST',
+                        data: {
+                            product_id: product_id,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            $('#purchase_price').val(response.purchase_price);
+                            $('#selling_price').val(response.selling_price);
+                            $('#discount_price').val(response.discount_price);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+            $('#brand_id').change(function() {
+                var brand_id = $(this).val();
+
                 $.ajax({
-                    url: '{{ route("fetch.stock") }}',
+                    url: '{{ route("fetch.products.by.brand") }}',
                     method: 'POST',
                     data: {
-                        product_id: product_id,
-                        branch_id: branch_id,
+                        brand_id: brand_id,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        $('#stock_qty').val(response.stock_qty);
+                        $('#product_id').empty(); // Clear the current options
+                        $('#product_id').append('<option label="Select Product"></option>'); // Add placeholder option
+                        $.each(response.products, function(key, product) {
+                            $('#product_id').append('<option value="'+ product.id +'">'+ product.product_name +'</option>');
+                        });
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);
@@ -186,33 +238,6 @@
             });
         });
     </script>
-
-<script>
-    $(document).ready(function() {
-        $('#brand_id').change(function() {
-            var brand_id = $(this).val();
-
-            $.ajax({
-                url: '{{ route("fetch.products.by.brand") }}',
-                method: 'POST',
-                data: {
-                    brand_id: brand_id,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    $('#product_id').empty(); // Clear the current options
-                    $('#product_id').append('<option label="Select Product"></option>'); // Add placeholder option
-                    $.each(response.products, function(key, product) {
-                        $('#product_id').append('<option value="'+ product.id +'">'+ product.product_name +'</option>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    });
-</script>
 
     <!--app-content close-->
 @endsection

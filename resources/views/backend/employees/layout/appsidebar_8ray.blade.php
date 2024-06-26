@@ -47,8 +47,8 @@
                             <i class="angle fe fe-chevron-right"></i></a>
                         <ul class="slide-menu">
                             <li class="side-menu-label1"><a href="javascript:void(0)">Product Management</a></li>
-                            <li><a href="{{ route('all.product') }}" class="slide-item"> All Product  </a></li>
-                            <li><a href="{{ route('product.add') }}" class="slide-item"> Add Product  </a></li>
+                            <li><a href="{{ route('all.employee.product') }}" class="slide-item"> All Product  </a></li>
+                            <li><a href="{{ route('add.employee.product') }}" class="slide-item"> Add Product  </a></li>
                             <li><a href="{{ route('all.employee.product.types') }}" class="slide-item"> Product Types </a></li>
                             <li><a href="{{ route('all.employee.product.categories') }}" class="slide-item"> Product Categories </a></li>
                             <li><a href="{{ route('all.employee.product.sub_categories') }}" class="slide-item"> Product Subcategories </a></li>
