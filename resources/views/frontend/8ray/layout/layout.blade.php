@@ -3,16 +3,16 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Nest - Multipurpose eCommerce HTML Template</title>
+    <title>8 Ray Shop</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="description" content="" />
+    <meta name="description" content="8Ray - Your one-stop shop for Lighting and Accessories, Microphones, Microphone stands and desk setup stands, Tripods & Selfie Sticks, Stabilizers, Product Photography Accessories, GoPro & Accessories, Sound Products, IT Gadgets, and CCTV equipment." />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:title" content="" />
-    <meta property="og:type" content="" />
-    <meta property="og:url" content="" />
-    <meta property="og:image" content="" />
+    <meta property="og:title" content="8Ray - Lighting and Accessories, IT Gadgets, Sound Products, and More" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.8rayshop.com" />
+    <meta property="og:image" content="https://www.yourshopdomain.com/path-to-your-image.jpg" />
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url('frontend/8ray/imgs/theme/favicon.svg') }}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url('frontend/8ray/imgs/theme/logo-darks2.png') }}" />
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ url('frontend/8ray/css/plugins/animate.min.css') }}" />
     <link rel="stylesheet" href="{{ url('frontend/8ray/css/main.css') }}" />

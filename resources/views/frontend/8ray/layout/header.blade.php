@@ -1,14 +1,12 @@
 <header class="header-area header-style-1 header-height-2">
-    <div class="mobile-promotion">
-        <span>Grand opening, <strong>up to 15%</strong> off all items. Only <strong>3 days</strong> left</span>
-    </div>
+
+    <!-- header-info-->
     <div class="header-top header-top-ptb-1 d-none d-lg-block">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-xl-3 col-lg-4">
                     <div class="header-info">
                         <ul>
-
                             <li><a href="page-account.html">My Cart</a></li>
                             <li><a href="shop-wishlist.html">Checkout</a></li>
                             <li><a href="shop-order.html">Order Tracking</a></li>
@@ -19,9 +17,9 @@
                     <div class="text-center">
                         <div id="news-flash" class="d-inline-block">
                             <ul>
-                                <li>100% Secure delivery without contacting the courier</li>
-                                <li>Supper Value Deals - Save more with coupons</li>
-                                <li>Trendy 25silver jewelry, save up 35% off today</li>
+                                <li>Open Daily : 10:00AM to 06:00PM </li>
+                                <li>We sell not only goods but also customers' satisfaction and smile. :)</li>
+                                <li>Live Sale,Vlogging  ,Game Streaming</li>
                             </ul>
                         </div>
                     </div>
@@ -29,30 +27,15 @@
                 <div class="col-xl-3 col-lg-4">
                     <div class="header-info header-info-right">
                         <ul>
-
-                            <li>
-                                <a class="language-dropdown-active" href="#">English <i class="fi-rs-angle-small-down"></i></a>
-                                <ul class="language-dropdown">
-                                    <li>
-                                        <a href="#"><img src="{{ url('frontend/8ray/imgs/theme/flag-fr.png') }}" alt="" />Français</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><img src="{{ url('frontend/8ray/imgs/theme/flag-dt.png') }}" alt="" />Deutsch</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><img src="{{ url('frontend/8ray/imgs/theme/flag-ru.png') }}" alt="" />Pусский</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                             <li>Need help? Call Us: <strong class="text-brand"> + 1800 900</strong></li>
-
+                             <li> Call Us: <strong class="text-brand"> 09 450 127 303, 09450127304</strong></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Search Box-->
     <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
         <div class="container">
             <div class="header-wrap">
@@ -81,27 +64,6 @@
                     </div>
                     <div class="header-action-right">
                         <div class="header-action-2">
-                            <div class="search-location">
-                                <form action="#">
-                                    <select class="select-active">
-                                        <option>Your Location</option>
-                                        <option>Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>Arizona</option>
-                                        <option>Delaware</option>
-                                        <option>Florida</option>
-                                        <option>Georgia</option>
-                                        <option>Hawaii</option>
-                                        <option>Indiana</option>
-                                        <option>Maryland</option>
-                                        <option>Nevada</option>
-                                        <option>New Jersey</option>
-                                        <option>New Mexico</option>
-                                        <option>New York</option>
-                                    </select>
-                                </form>
-                            </div>
-
                             <div class="header-action-icon-2">
                                 <a href="shop-wishlist.html">
                                     <img class="svgInject" alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-heart.svg') }}" />
@@ -187,13 +149,7 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
+    <!--End Search Box-->
 
     <div class="header-bottom header-bottom-bg-color sticky-bar">
         <div class="container">
@@ -201,191 +157,210 @@
                 <div class="logo logo-width-1 d-block d-lg-none">
                     <a href="index.html"><img src="{{ url('frontend/8ray/imgs/theme/logo.svg') }}" alt="logo" /></a>
                 </div>
+
+                <!-- For Big Screen -->
                 <div class="header-nav d-none d-lg-flex">
-                    <div class="main-categori-wrap d-none d-lg-block">
-                        <a class="categories-button-active" href="#">
-                            <span class="fi-rs-apps"></span>   All Categories
-                            <i class="fi-rs-angle-down"></i>
-                        </a>
-                        <div class="categories-dropdown-wrap categories-dropdown-active-large font-heading">
-                            <div class="d-flex categori-dropdown-inner">
-                                <ul>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-1.svg') }}" alt="" />Milks and Dairies</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-2.svg') }}" alt="" />Clothing & beauty</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-3.svg') }}" alt="" />Pet Foods & Toy</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-4.svg') }}" alt="" />Baking material</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-5.svg') }}" alt="" />Fresh Fruit</a>
-                                    </li>
-                                </ul>
-                                <ul class="end">
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-6.svg') }}" alt="" />Wines & Drinks</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-7.svg') }}" alt="" />Fresh Seafood</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-8.svg') }}" alt="" />Fast food</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-9.svg') }}" alt="" />Vegetables</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/category-10.svg') }}" alt="" />Bread and Juice</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="more_slide_open" style="display: none">
-                                <div class="d-flex categori-dropdown-inner">
-                                    <ul>
-                                        <li>
-                                            <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/icon-1.svg') }}" alt="" />Milks and Dairies</a>
-                                        </li>
-                                        <li>
-                                            <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/icon-2.svg') }}" alt="" />Clothing & beauty</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="end">
-                                        <li>
-                                            <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/icon-3.svg') }}" alt="" />Wines & Drinks</a>
-                                        </li>
-                                        <li>
-                                            <a href="shop-grid-right.html"> <img src="{{ url('frontend/8ray/imgs/theme/icons/icon-4.svg') }}" alt="" />Fresh Seafood</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="more_categories"><span class="icon"></span> <span class="heading-sm-1">Show more...</span></div>
-                        </div>
-                    </div>
                     <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
                         <nav>
                             <ul>
+                                <!-- Home -->
+                                <li><a class="active" href="index.html">Home  </a></li>
 
+                                <!-- Products -->
                                 <li>
-                                    <a class="active" href="index.html">Home  </a>
+                                    <a href="shop-grid-right.html">Products <i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        @php
+                                            $categories = App\Models\ProductCategory::orderBy('product_category_name', 'ASC')->get();
+                                        @endphp
 
-                                </li>
-                                <li>
-                                    <a href="page-about.html">About</a>
-                                </li>
-                                <li>
-                                    <a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
-                                        <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
-                                        <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
-                                        <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
-                                        <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
-                                        <li>
-                                            <a href="#">Single Product <i class="fi-rs-angle-right"></i></a>
-                                            <ul class="level-menu">
-                                                <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
-                                                <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
-                                                <li><a href="shop-product-full.html">Product – No sidebar</a></li>
-                                                <li><a href="shop-product-vendor.html">Product – Vendor Info</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop-filter.html">Shop – Filter</a></li>
-                                        <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
-                                        <li><a href="shop-cart.html">Shop – Cart</a></li>
-                                        <li><a href="shop-checkout.html">Shop – Checkout</a></li>
-                                        <li><a href="shop-compare.html">Shop – Compare</a></li>
-                                        <li>
-                                            <a href="#">Shop Invoice<i class="fi-rs-angle-right"></i></a>
-                                            <ul class="level-menu">
-                                                <li><a href="shop-invoice-1.html">Shop Invoice 1</a></li>
-                                                <li><a href="shop-invoice-2.html">Shop Invoice 2</a></li>
-                                                <li><a href="shop-invoice-3.html">Shop Invoice 3</a></li>
-                                                <li><a href="shop-invoice-4.html">Shop Invoice 4</a></li>
-                                                <li><a href="shop-invoice-5.html">Shop Invoice 5</a></li>
-                                                <li><a href="shop-invoice-6.html">Shop Invoice 6</a></li>
-                                            </ul>
-                                        </li>
+                                        <!-- Lighting and Accessories -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 2)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- Microphones -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 3)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- Microphone stand and desk setup stan -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 4)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- Tripods & Selfie Sticks -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 5)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- Stabilizers -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 6)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- Product Photography Accessories -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 7)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- Gopro & Accessories  -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 8)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- It Gadget -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 10)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- Sound Products -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 9)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                        <!-- CCTV -->
+                                        @foreach($categories as $category)
+                                            @if($category->id == 11)
+                                                @if($category->productSubCategories->count() > 0)
+                                                    <li>
+                                                        <a href="#">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
+                                                        <ul class="level-menu">
+                                                            @foreach($category->productSubCategories as $subcategory)
+                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                                @endif
+                                            @endif
+                                        @endforeach
+
                                     </ul>
                                 </li>
-                                <li>
-                                    <a href="#">Vendors <i class="fi-rs-angle-down"></i></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="vendors-grid.html">Vendors Grid</a></li>
-                                        <li><a href="vendors-list.html">Vendors List</a></li>
-                                        <li><a href="vendor-details-1.html">Vendor Details 01</a></li>
-                                        <li><a href="vendor-details-2.html">Vendor Details 02</a></li>
-                                        <li><a href="vendor-dashboard.html">Vendor Dashboard</a></li>
-                                        <li><a href="vendor-guide.html">Vendor Guide</a></li>
-                                    </ul>
-                                </li>
-                                <li class="position-static">
-                                    <a href="#">Mega menu <i class="fi-rs-angle-down"></i></a>
-                                    <ul class="mega-menu">
-                                        <li class="sub-mega-menu sub-mega-menu-width-22">
-                                            <a class="menu-title" href="#">Fruit & Vegetables</a>
-                                            <ul>
-                                                <li><a href="shop-product-right.html">Meat & Poultry</a></li>
-                                                <li><a href="shop-product-right.html">Fresh Vegetables</a></li>
-                                                <li><a href="shop-product-right.html">Herbs & Seasonings</a></li>
-                                                <li><a href="shop-product-right.html">Cuts & Sprouts</a></li>
-                                                <li><a href="shop-product-right.html">Exotic Fruits & Veggies</a></li>
-                                                <li><a href="shop-product-right.html">Packaged Produce</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="sub-mega-menu sub-mega-menu-width-22">
-                                            <a class="menu-title" href="#">Breakfast & Dairy</a>
-                                            <ul>
-                                                <li><a href="shop-product-right.html">Milk & Flavoured Milk</a></li>
-                                                <li><a href="shop-product-right.html">Butter and Margarine</a></li>
-                                                <li><a href="shop-product-right.html">Eggs Substitutes</a></li>
-                                                <li><a href="shop-product-right.html">Marmalades</a></li>
-                                                <li><a href="shop-product-right.html">Sour Cream</a></li>
-                                                <li><a href="shop-product-right.html">Cheese</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="sub-mega-menu sub-mega-menu-width-22">
-                                            <a class="menu-title" href="#">Meat & Seafood</a>
-                                            <ul>
-                                                <li><a href="shop-product-right.html">Breakfast Sausage</a></li>
-                                                <li><a href="shop-product-right.html">Dinner Sausage</a></li>
-                                                <li><a href="shop-product-right.html">Chicken</a></li>
-                                                <li><a href="shop-product-right.html">Sliced Deli Meat</a></li>
-                                                <li><a href="shop-product-right.html">Wild Caught Fillets</a></li>
-                                                <li><a href="shop-product-right.html">Crab and Shellfish</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="sub-mega-menu sub-mega-menu-width-34">
-                                            <div class="menu-banner-wrap">
-                                                <a href="shop-product-right.html"><img src="{{ url('frontend/8ray/imgs/banner/banner-menu.png') }}" alt="Nest" /></a>
-                                                <div class="menu-banner-content">
-                                                    <h4>Hot deals</h4>
-                                                    <h3>
-                                                        Don't miss<br />
-                                                        Trending
-                                                    </h3>
-                                                    <div class="menu-banner-price">
-                                                        <span class="new-price text-success">Save to 50%</span>
-                                                    </div>
-                                                    <div class="menu-banner-btn">
-                                                        <a href="shop-product-right.html">Shop now</a>
-                                                    </div>
-                                                </div>
-                                                <div class="menu-banner-discount">
-                                                    <h3>
-                                                        <span>25%</span>
-                                                        off
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
+
+                                <!-- Brands -->
+                                <li><a href="#">Brand Zone</a></li>
+
+                                <!-- Blogs -->
                                 <li>
                                     <a href="blog-category-grid.html">Blog <i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
@@ -403,35 +378,21 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li>
-                                    <a href="#">Pages <i class="fi-rs-angle-down"></i></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="page-about.html">About Us</a></li>
-                                        <li><a href="page-contact.html">Contact</a></li>
-                                        <li><a href="page-account.html">My Account</a></li>
-                                        <li><a href="page-login.html">Login</a></li>
-                                        <li><a href="page-register.html">Register</a></li>
-                                        <li><a href="page-forgot-password.html">Forgot password</a></li>
-                                        <li><a href="page-reset-password.html">Reset password</a></li>
-                                        <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
-                                        <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
-                                        <li><a href="page-terms.html">Terms of Service</a></li>
-                                        <li><a href="page-404.html">404 Page</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="page-contact.html">Contact</a>
-                                </li>
+
+                                <li><a href="page-about.html">About</a></li>
+
+                                <li><a href="page-contact.html">Contact</a></li>
                             </ul>
                         </nav>
                     </div>
                 </div>
-
-
                 <div class="hotline d-none d-lg-flex">
                     <img src="{{ url('frontend/8ray/imgs/theme/icons/icon-headphone.svg') }}" alt="hotline" />
-                    <p>1900 - 888<span>24/7 Support Center</span></p>
+                    <p>09 450 127 303<span>Open Daily - 10:00AM to 06:00PM</span></p>
                 </div>
+                <!-- End For Big Screen -->
+
+
                 <div class="header-action-icon-2 d-block d-lg-none">
                     <div class="burger-icon burger-icon-white">
                         <span class="burger-icon-top"></span>

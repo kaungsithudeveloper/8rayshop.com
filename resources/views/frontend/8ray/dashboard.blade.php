@@ -3,136 +3,8 @@
 @section('8ray')
 
 <main class="main">
-    <section class="home-slider position-relative mb-30">
-        <div class="container">
-            <div class="home-slide-cover mt-30">
-                <div class="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
-                    <div class="single-hero-slider single-animation-wrap" style="background-image: url({{ url('frontend/8ray/imgs/slider/slider-1.png') }})">
-                        <div class="slider-content">
-                            <h1 class="display-2 mb-40">
-                                Don’t miss amazing<br />
-                                grocery deals
-                            </h1>
-                            <p class="mb-65">Sign up for the daily newsletter</p>
-                            <form class="form-subcriber d-flex">
-                                <input type="email" placeholder="Your emaill address" />
-                                <button class="btn" type="submit">Subscribe</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="single-hero-slider single-animation-wrap" style="background-image: url({{ url('frontend/8ray/imgs/slider/slider-2.png') }})">
-                        <div class="slider-content">
-                            <h1 class="display-2 mb-40">
-                                Fresh Vegetables<br />
-                                Big discount
-                            </h1>
-                            <p class="mb-65">Save up to 50% off on your first order</p>
-                            <form class="form-subcriber d-flex">
-                                <input type="email" placeholder="Your emaill address" />
-                                <button class="btn" type="submit">Subscribe</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="slider-arrow hero-slider-1-arrow"></div>
-            </div>
-        </div>
-    </section>
-    <!--End hero slider-->
-    <section class="popular-categories section-padding">
-        <div class="container wow animate__animated animate__fadeIn">
-            <div class="section-title">
-                <div class="title">
-                    <h3>Featured Categories</h3>
 
-                </div>
-                <div class="slider-arrow slider-arrow-2 flex-right carausel-10-columns-arrow" id="carausel-10-columns-arrows"></div>
-            </div>
-            <div class="carausel-10-columns-cover position-relative">
-                <div class="carausel-10-columns" id="carausel-10-columns">
-                    <div class="card-2 bg-9 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-13.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Cake & Milk</a></h6>
-                        <span>26 items</span>
-                    </div>
-                    <div class="card-2 bg-10 wow animate__animated animate__fadeInUp" data-wow-delay=".2s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-12.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Oganic Kiwi</a></h6>
-                        <span>28 items</span>
-                    </div>
-                    <div class="card-2 bg-11 wow animate__animated animate__fadeInUp" data-wow-delay=".3s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-11.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Peach</a></h6>
-                        <span>14 items</span>
-                    </div>
-                    <div class="card-2 bg-12 wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-9.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Red Apple</a></h6>
-                        <span>54 items</span>
-                    </div>
-                    <div class="card-2 bg-13 wow animate__animated animate__fadeInUp" data-wow-delay=".5s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-3.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Snack</a></h6>
-                        <span>56 items</span>
-                    </div>
-                    <div class="card-2 bg-14 wow animate__animated animate__fadeInUp" data-wow-delay=".6s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-1.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Vegetables</a></h6>
-                        <span>72 items</span>
-                    </div>
-                    <div class="card-2 bg-15 wow animate__animated animate__fadeInUp" data-wow-delay=".7s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-2.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Strawberry</a></h6>
-                        <span>36 items</span>
-                    </div>
-                    <div class="card-2 bg-12 wow animate__animated animate__fadeInUp" data-wow-delay=".8s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-4.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Black plum</a></h6>
-                        <span>123 items</span>
-                    </div>
-                    <div class="card-2 bg-10 wow animate__animated animate__fadeInUp" data-wow-delay=".9s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-5.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Custard apple</a></h6>
-                        <span>34 items</span>
-                    </div>
-                    <div class="card-2 bg-12 wow animate__animated animate__fadeInUp" data-wow-delay="1s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-14.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Coffe & Tea</a></h6>
-                        <span>89 items</span>
-                    </div>
-                    <div class="card-2 bg-11 wow animate__animated animate__fadeInUp" data-wow-delay="0s">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img src="{{ url('frontend/8ray/imgs/shop/cat-5.png') }}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Headphone</a></h6>
-                        <span>87 items</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--End category slider-->
-    <section class="banners mb-25">
+    <section class="banners mt-40 mb-25">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6">
@@ -4586,173 +4458,42 @@
     </section>
     <!--End 4 columns-->
 
-    <!--Vendor List -->
-
-        <div class="container">
-
-            <div class="section-title wow animate__animated animate__fadeIn" data-wow-delay="0">
-                <h3 class="">All Our Vendor List </h3>
-                <a class="show-all" href="shop-grid-right.html">
-                    All Vendors
-                    <i class="fi-rs-angle-right"></i>
-                </a>
+    <!--Start category slider-->
+    <section class="popular-categories section-padding">
+        <div class="container wow animate__animated animate__fadeIn">
+            <div class="section-title">
+                <div class="title">
+                    <h3>Brand Zone</h3>
+                </div>
+                <div class="slider-arrow slider-arrow-2 flex-right carausel-10-columns-arrow" id="carausel-10-columns-arrows"></div>
             </div>
+            <div class="carausel-10-columns-cover position-relative">
+                <div class="carausel-10-columns" id="carausel-10-columns">
+                    @php
+                        $brands = App\Models\Brand::where('id', '<>', 1)
+                ->withCount('products') // Count the number of related products
+                ->orderByDesc('updated_at')
+                ->orderBy('brand_name')
+                ->get();
 
-
-            <div class="row vendor-grid">
-                <div class="col-lg-3 col-md-6 col-12 col-sm-6 justify-content-center">
-                    <div class="vendor-wrap mb-40">
-                        <div class="vendor-img-action-wrap">
-                            <div class="vendor-img">
-                                <a href="vendor-details-1.html">
-                                    <img class="default-img" src="{{ url('frontend/8ray/imgs/vendor/vendor-1.png') }}" alt="" />
-                                </a>
-                            </div>
-                            <div class="product-badges product-badges-position product-badges-mrg">
-                                <span class="hot">Mall</span>
-                            </div>
-                        </div>
-                        <div class="vendor-content-wrap">
-                            <div class="d-flex justify-content-between align-items-end mb-30">
-                                <div>
-                                    <div class="product-category">
-                                        <span class="text-muted">Since 2012</span>
-                                    </div>
-                                    <h4 class="mb-5"><a href="vendor-details-1.html">Nature Food</a></h4>
-                                    <div class="product-rate-cover">
-
-                                       <span class="font-small total-product">380 products</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="vendor-info mb-30">
-                                <ul class="contact-infor text-muted">
-
-                                    <li><img src="{{ url('frontend/8ray/imgs/theme/icons/icon-contact.svg') }}" alt="" /><strong>Call Us:</strong><span>(+91) - 540-025-124553</span></li>
-                                </ul>
-                            </div>
-                            <a href="vendor-details-1.html" class="btn btn-xs">Visit Store <i class="fi-rs-arrow-small-right"></i></a>
-                        </div>
+                    @endphp
+                    @foreach($brands as $brand)
+                    <div class="card-2 bg-9 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
+                        <figure class="img-hover-scale overflow-hidden">
+                            <a href="shop-grid-right.html">
+                                <img src="{{ !empty($brand->brand_image) ? url('upload/brand_images/' . $brand->brand_image) : url('upload/profile.jpg') }}"
+                                alt="{{ $brand->brand_name }}">
+                            </a>
+                        </figure>
+                        <h6><a href="shop-grid-right.html">{{ $brand->brand_name }}</a></h6>
+                       <span>{{ $brand->products_count }} items</span>
                     </div>
+                    @endforeach
                 </div>
-                <!--end vendor card-->
-                <div class="col-lg-3 col-md-6 col-12 col-sm-6 justify-content-center">
-                    <div class="vendor-wrap mb-40">
-                        <div class="vendor-img-action-wrap">
-                            <div class="vendor-img">
-                                <a href="vendor-details-1.html">
-                                    <img class="default-img" src="{{ url('frontend/8ray/imgs/vendor/vendor-2.png') }}" alt="" />
-                                </a>
-                            </div>
-                            <div class="product-badges product-badges-position product-badges-mrg">
-                                <span class="hot">Mall</span>
-                            </div>
-                        </div>
-                        <div class="vendor-content-wrap">
-                            <div class="d-flex justify-content-between align-items-end mb-30">
-                                <div>
-                                    <div class="product-category">
-                                        <span class="text-muted">Since 2012</span>
-                                    </div>
-                                    <h4 class="mb-5"><a href="vendor-details-1.html">Nature Food</a></h4>
-                                    <div class="product-rate-cover">
-
-                                       <span class="font-small total-product">380 products</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="vendor-info mb-30">
-                                <ul class="contact-infor text-muted">
-
-                                    <li><img src="{{ url('frontend/8ray/imgs/theme/icons/icon-contact.svg') }}" alt="" /><strong>Call Us:</strong><span>(+91) - 540-025-124553</span></li>
-                                </ul>
-                            </div>
-                            <a href="vendor-details-1.html" class="btn btn-xs">Visit Store <i class="fi-rs-arrow-small-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!--end vendor card-->
-                <div class="col-lg-3 col-md-6 col-12 col-sm-6 justify-content-center">
-                    <div class="vendor-wrap mb-40">
-                        <div class="vendor-img-action-wrap">
-                            <div class="vendor-img">
-                                <a href="vendor-details-1.html">
-                                    <img class="default-img" src="{{ url('frontend/8ray/imgs/vendor/vendor-3.png') }}" alt="" />
-                                </a>
-                            </div>
-                            <div class="product-badges product-badges-position product-badges-mrg">
-                                <span class="hot">Mall</span>
-                            </div>
-                        </div>
-                        <div class="vendor-content-wrap">
-                            <div class="d-flex justify-content-between align-items-end mb-30">
-                                <div>
-                                    <div class="product-category">
-                                        <span class="text-muted">Since 2012</span>
-                                    </div>
-                                    <h4 class="mb-5"><a href="vendor-details-1.html">Nature Food</a></h4>
-                                    <div class="product-rate-cover">
-
-                                       <span class="font-small total-product">380 products</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="vendor-info mb-30">
-                                <ul class="contact-infor text-muted">
-
-                                    <li><img src="{{ url('frontend/8ray/imgs/theme/icons/icon-contact.svg') }}" alt="" /><strong>Call Us:</strong><span>(+91) - 540-025-124553</span></li>
-                                </ul>
-                            </div>
-                            <a href="vendor-details-1.html" class="btn btn-xs">Visit Store <i class="fi-rs-arrow-small-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!--end vendor card-->
-                <div class="col-lg-3 col-md-6 col-12 col-sm-6 justify-content-center">
-                    <div class="vendor-wrap mb-40">
-                        <div class="vendor-img-action-wrap">
-                            <div class="vendor-img">
-                                <a href="vendor-details-1.html">
-                                    <img class="default-img" src="{{ url('frontend/8ray/imgs/vendor/vendor-4.png') }}" alt="" />
-                                </a>
-                            </div>
-                            <div class="product-badges product-badges-position product-badges-mrg">
-                                <span class="hot">Mall</span>
-                            </div>
-                        </div>
-                        <div class="vendor-content-wrap">
-                            <div class="d-flex justify-content-between align-items-end mb-30">
-                                <div>
-                                    <div class="product-category">
-                                        <span class="text-muted">Since 2012</span>
-                                    </div>
-                                    <h4 class="mb-5"><a href="vendor-details-1.html">Nature Food</a></h4>
-                                    <div class="product-rate-cover">
-
-                                       <span class="font-small total-product">380 products</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="vendor-info mb-30">
-                                <ul class="contact-infor text-muted">
-
-                                    <li><img src="{{ url('frontend/8ray/imgs/theme/icons/icon-contact.svg') }}" alt="" /><strong>Call Us:</strong><span>(+91) - 540-025-124553</span></li>
-                                </ul>
-                            </div>
-                            <a href="vendor-details-1.html" class="btn btn-xs">Visit Store <i class="fi-rs-arrow-small-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!--end vendor card-->
-
             </div>
         </div>
-
-    <!--End Vendor List -->
+    </section>
+    <!--End category slider-->
 
 </main>
 

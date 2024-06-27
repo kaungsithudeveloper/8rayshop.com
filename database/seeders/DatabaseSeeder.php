@@ -28,12 +28,5 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(7)->create();
 
 
-        Product::factory()->count(100)->create()->each(function ($product) {
-
-            $prices = Price::factory()->count(1)->create([
-                'product_id' => $product->id,
-            ]);
-        });
-
     }
 }
