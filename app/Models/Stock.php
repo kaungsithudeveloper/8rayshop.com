@@ -22,4 +22,9 @@ class Stock extends Model
     {
         return $this->belongsTo(Branch::class);
     }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 }

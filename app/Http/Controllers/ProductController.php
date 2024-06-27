@@ -14,6 +14,7 @@ use App\Models\MultiImg;
 use App\Models\Brand;
 use App\Models\Price;
 use App\Models\Stock;
+use App\Models\Branch;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -37,9 +38,10 @@ class ProductController extends Controller
 
         $product_type = ProductType::orderBy('product_type_name','ASC')->get();
         $brands = Brand::orderBy('brand_name','ASC')->get();
+        $branches = Branch::latest()->get();
         $product_categories = ProductCategory::orderBy('product_category_name','ASC')->get();
         $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name','ASC')->get();
-        return view('backend.admin.product.product_add',compact('product_type','brands','product_categories','product_subCategories'));
+        return view('backend.admin.product.product_add',compact('product_type','brands','product_categories','product_subCategories','branches'));
 
     } // End Method
 
@@ -54,7 +56,6 @@ class ProductController extends Controller
     public function StoreProduct(Request $request)
     {
         // Validate the request data
-        //dd($request->all());
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|unique:products,product_code|string|max:255',
             'product_name' => 'required|unique:products,product_name|string|max:255',
@@ -70,9 +71,11 @@ class ProductController extends Controller
             'product_category_id' => 'required|string|max:255',
             'product_subcategory_id' => 'array',
             'product_subcategory_id.*' => 'integer',
+            'branch_id_1' => 'nullable|integer',
+            'stock_qty_1' => 'nullable|integer',
+            'branch_id_2' => 'nullable|integer',
+            'stock_qty_2' => 'nullable|integer',
         ]);
-
-
 
         if ($validator->fails()) {
             $notification = [
@@ -166,10 +169,8 @@ class ProductController extends Controller
         }
         $product->productColor()->attach($colorIds);
 
-
         $product->brands()->attach($validatedData['brand_id']);
         $product->productCategory()->attach($validatedData['product_category_id']);
-
 
         // Create Product SubCategory if product_subcategory_id exists
         if (isset($validatedData['product_subcategory_id'])) {
@@ -183,6 +184,23 @@ class ProductController extends Controller
             $product->productSubCategory()->attach($subCategoryIds);
         }
 
+        // Save stock for each branch if provided
+        $branches = [
+            ['branch_id' => $request->input('branch_id_1'), 'stock_qty' => $request->input('stock_qty_1')],
+            ['branch_id' => $request->input('branch_id_2'), 'stock_qty' => $request->input('stock_qty_2')],
+        ];
+
+        foreach ($branches as $branch) {
+            if (!empty($branch['branch_id']) && !empty($branch['stock_qty'])) {
+                $stock = new Stock();
+                $stock->product_id = $product->id;
+                $stock->brand_id = $validatedData['brand_id'];
+                $stock->branch_id = $branch['branch_id'];
+                $stock->stock_qty = $branch['stock_qty'];
+                $stock->created_at = Carbon::now();
+                $stock->save();
+            }
+        }
 
         $notification = [
             'message' => 'Product created successfully!',
@@ -195,28 +213,32 @@ class ProductController extends Controller
     public function EditProduct($slug)
     {
         // Retrieve the product by slug
-        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
                     ->where('product_slug', $slug)
                     ->firstOrFail();
 
         // Retrieve all necessary related data
         $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();
         $brands = Brand::orderBy('brand_name', 'ASC')->get();
+        $branches = Branch::latest()->get();
         $product_categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
         $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name', 'ASC')->get();
 
+        // Retrieve stock information for branches related to the product
+        $productStock1 = Stock::where('product_id', $product->id)->where('branch_id', 1)->first();
+        $productStock2 = Stock::where('product_id', $product->id)->where('branch_id', 2)->first();
+
         // Pass the data to the view
-        return view('backend.admin.product.product_edit', compact('product', 'product_type', 'brands', 'product_categories', 'product_subCategories'));
+        return view('backend.admin.product.product_edit', compact('product', 'product_type', 'brands', 'product_categories', 'product_subCategories', 'branches', 'productStock1', 'productStock2'));
     }
 
     public function UpdateProduct(Request $request)
     {
-        //dd($request->all());
         $id = $request->id;
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'product_code' => 'required|string|max:255' . $id,
-            'product_name' => 'required|string|max:255' . $id,
+            'product_code' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
             'product_size' => 'required|string|max:255',
@@ -228,6 +250,10 @@ class ProductController extends Controller
             'product_category_id' => 'required|string|max:255',
             'product_subcategory_id' => 'array',
             'product_subcategory_id.*' => 'integer',
+            'branch_id_1' => 'nullable|integer',
+            'stock_qty_1' => 'nullable|integer',
+            'branch_id_2' => 'nullable|integer',
+            'stock_qty_2' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -282,22 +308,21 @@ class ProductController extends Controller
         $product_price->purchase_price = $request->input('purchase_price');
         $product_price->selling_price = $request->input('selling_price');
         $product_price->discount_price = $request->input('discount_price');
-        $product_price->created_at = Carbon::now();
+        $product_price->updated_at = Carbon::now();
         $product_price->save();
-
 
         if ($request->file('multi_img')) {
             // Remove old images
             foreach ($product->multiImages as $img) {
-                if (file_exists(public_path('upload/product_multi_images/'.$img->photo_name))) {
-                    unlink(public_path('upload/product_multi_images/'.$img->photo_name));
+                if (file_exists(public_path('upload/product_multi_images/' . $img->photo_name))) {
+                    unlink(public_path('upload/product_multi_images/' . $img->photo_name));
                 }
                 $img->delete();
             }
 
             // Upload new images
             foreach ($request->file('multi_img') as $file) {
-                $filename = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+                $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('upload/product_multi_images'), $filename);
 
                 MultiImg::create([
@@ -322,7 +347,6 @@ class ProductController extends Controller
 
         // Update Product Brand
         $product->brands()->sync($validatedData['brand_id']);
-
         $product->productCategory()->sync($validatedData['product_category_id']);
 
         // Update Product SubCategory if product_subcategory_id exists
@@ -337,6 +361,34 @@ class ProductController extends Controller
             $product->productSubCategory()->sync($subCategoryIds);
         }
 
+        // Update stock for each branch if provided
+        $branches = [
+            ['branch_id' => $request->input('branch_id_1'), 'stock_qty' => $request->input('stock_qty_1')],
+            ['branch_id' => $request->input('branch_id_2'), 'stock_qty' => $request->input('stock_qty_2')],
+        ];
+
+        foreach ($branches as $branch) {
+            if (!empty($branch['branch_id'])) {
+                $stock = Stock::where('product_id', $product->id)
+                    ->where('branch_id', $branch['branch_id'])
+                    ->first();
+
+                if ($stock) {
+                    $stock->stock_qty = $branch['stock_qty'];
+                    $stock->updated_at = Carbon::now();
+                    $stock->save();
+                } elseif (!empty($branch['stock_qty'])) {
+                    $newStock = new Stock();
+                    $newStock->product_id = $product->id;
+                    $newStock->brand_id = $validatedData['brand_id'];
+                    $newStock->branch_id = $branch['branch_id'];
+                    $newStock->stock_qty = $branch['stock_qty'];
+                    $newStock->created_at = Carbon::now();
+                    $newStock->save();
+                }
+            }
+        }
+
         $notification = [
             'message' => 'Product updated successfully!',
             'alert-type' => 'success',
@@ -344,6 +396,7 @@ class ProductController extends Controller
 
         return redirect()->route('all.product')->with($notification);
     }
+
 
     public function deleteMultiImage($id)
     {

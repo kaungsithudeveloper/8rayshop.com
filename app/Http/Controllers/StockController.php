@@ -17,7 +17,7 @@ class StockController extends Controller
 
     public function AllStock()
     {
-        $products = Product::latest()->get();
+        $products = Product::with(['stocks.branch'])->latest()->get();
         $productStock = Stock::with('product')->latest()->get();  // Eager load the product relationship
         $branches = Branch::latest()->get();
         $brands = Brand::latest()->get();

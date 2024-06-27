@@ -80,6 +80,27 @@
                                             </div>
                                         </div>
 
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">Product Photo</div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="product_photo">Photo</label>
+                                                    <input type="file" name="product_photo" class="form-control" id="image" />
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0"></h6>
+                                                    </div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <img id="showImage" src="{{ (!empty($product->photo))?url('upload/admin_images/'.$product->photo):url('upload/profile.jpg') }}" alt="Admin" style="width:100px; height: 100px;" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
 
                                         <div class="card">
                                             <div class="card-header">
@@ -148,6 +169,48 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-6">
+                                                    <div class="form-group mb-4">
+                                                        <label for="branch_id_1" class="form-label">Shop Branch 1:</label>
+                                                        <select name="branch_id_1" class="form-control select2-show-search form-select" id="branch_id_1">
+                                                            @foreach($branches as $branch)
+                                                                <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="stock_qty_1" class="form-label">Product Stock for Branch 1:<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="stock_qty_1" id="stock_qty_1" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-4">
+                                                        <label for="branch_id_2" class="form-label">Shop Branch 2:</label>
+                                                        <select name="branch_id_2" class="form-control select2-show-search form-select" id="branch_id_2">
+                                                            @foreach($branches as $branch)
+                                                                <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="stock_qty_2" class="form-label">Product Stock for Branch 2:<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="stock_qty_2" id="stock_qty_2" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="product_size" class="form-label">Product Size :<span
                                                                 class="text-red">*</span></label>
@@ -183,27 +246,6 @@
                                         <div class="card-body">
                                             <label for="url" class="form-label">YouTube Link</label>
                                             <input type="url" class="form-control" id="url" name="url" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <div class="card-title">Product Photo</div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <label for="product_photo">Photo</label>
-                                                <input type="file" name="product_photo" class="form-control" id="image" />
-                                            </div>
-
-                                            <div class="row mb-3">
-                                                <div class="col-sm-3">
-                                                    <h6 class="mb-0"></h6>
-                                                </div>
-                                                <div class="col-sm-9 text-secondary">
-                                                    <img id="showImage" src="{{ (!empty($product->photo))?url('upload/admin_images/'.$product->photo):url('upload/profile.jpg') }}" alt="Admin" style="width:100px; height: 100px;" >
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
 

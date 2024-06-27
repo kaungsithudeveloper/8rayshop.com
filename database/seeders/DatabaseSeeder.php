@@ -1,6 +1,10 @@
 <?php
 
 namespace Database\Seeders;
+use App\Models\Product;
+use App\Models\Brand;
+use App\Models\Price;
+use App\Models\Stock;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,5 +26,14 @@ class DatabaseSeeder extends Seeder
         $this->call([ProductSeeder::class]);
 
         \App\Models\User::factory(7)->create();
+
+
+        Product::factory()->count(100)->create()->each(function ($product) {
+
+            $prices = Price::factory()->count(1)->create([
+                'product_id' => $product->id,
+            ]);
+        });
+
     }
 }
