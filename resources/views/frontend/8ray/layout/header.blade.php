@@ -18,7 +18,7 @@
                         <div id="news-flash" class="d-inline-block">
                             <ul>
                                 <li>Open Daily : 10:00AM to 06:00PM </li>
-                                <li>We sell not only goods but also customers' satisfaction and smile. :)</li>
+                                <li>We sell not only goods but also customers' satisfaction and smile.</li>
                                 <li>Live Sale,Vlogging  ,Game Streaming</li>
                             </ul>
                         </div>
@@ -155,7 +155,7 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="{{ url('frontend/8ray/imgs/theme/logo.svg') }}" alt="logo" /></a>
+                    <a href="index.html"><img src="{{ url('frontend/8ray/imgs/theme/logo-darks.png') }}" alt="logo" /></a>
                 </div>
 
                 <!-- For Big Screen -->
@@ -392,7 +392,7 @@
                 </div>
                 <!-- End For Big Screen -->
 
-
+                <!-- For Mobile Screen -->
                 <div class="header-action-icon-2 d-block d-lg-none">
                     <div class="burger-icon burger-icon-white">
                         <span class="burger-icon-top"></span>

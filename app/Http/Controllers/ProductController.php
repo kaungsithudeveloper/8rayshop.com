@@ -184,22 +184,26 @@ class ProductController extends Controller
             $product->productSubCategory()->attach($subCategoryIds);
         }
 
-        // Save stock for each branch if provided
-        $branches = [
-            ['branch_id' => $request->input('branch_id_1'), 'stock_qty' => $request->input('stock_qty_1')],
-            ['branch_id' => $request->input('branch_id_2'), 'stock_qty' => $request->input('stock_qty_2')],
-        ];
+        // Save stock for branch_id_1
+        if (!empty($validatedData['branch_id_1']) && !empty($validatedData['stock_qty_1'])) {
+            $stock1 = new Stock();
+            $stock1->product_id = $product->id;
+            $stock1->brand_id = $validatedData['brand_id'];
+            $stock1->branch_id = $validatedData['branch_id_1'];
+            $stock1->stock_qty = !empty($validatedData['stock_qty_1']) ? $validatedData['stock_qty_1'] : 0;
+            $stock1->created_at = Carbon::now();
+            $stock1->save();
+        }
 
-        foreach ($branches as $branch) {
-            if (!empty($branch['branch_id']) && !empty($branch['stock_qty'])) {
-                $stock = new Stock();
-                $stock->product_id = $product->id;
-                $stock->brand_id = $validatedData['brand_id'];
-                $stock->branch_id = $branch['branch_id'];
-                $stock->stock_qty = $branch['stock_qty'];
-                $stock->created_at = Carbon::now();
-                $stock->save();
-            }
+        // Save stock for branch_id_2 with default stock_qty = 0 if not provided
+        if (!empty($validatedData['branch_id_2'])) {
+            $stock2 = new Stock();
+            $stock2->product_id = $product->id;
+            $stock2->brand_id = $validatedData['brand_id'];
+            $stock2->branch_id = $validatedData['branch_id_2'];
+            $stock2->stock_qty = !empty($validatedData['stock_qty_2']) ? $validatedData['stock_qty_2'] : 0;
+            $stock2->created_at = Carbon::now();
+            $stock2->save();
         }
 
         $notification = [

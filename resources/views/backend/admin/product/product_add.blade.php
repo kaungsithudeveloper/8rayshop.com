@@ -171,10 +171,14 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="branch_id_1" class="form-label">Shop Branch 1:</label>
-                                                        <select name="branch_id_1" class="form-control select2-show-search form-select" id="branch_id_1">
+                                                        <select name="branch_id_1" class="form-control select2-show-search form-select" id="branch_id_1" disabled>
+
                                                             @foreach($branches as $branch)
-                                                                <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                                                @if($branch->id == 1)
+                                                                    <option value="{{ $branch->id }}" selected>{{ $branch->branch_name }}</option>
+                                                                @endif
                                                             @endforeach
+
                                                         </select>
                                                     </div>
                                                 </div>
@@ -182,16 +186,18 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="stock_qty_1" class="form-label">Product Stock for Branch 1:<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="stock_qty_1" id="stock_qty_1" required>
+                                                        <input type="text" class="form-control" name="stock_qty_1" id="stock_qty_1">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="branch_id_2" class="form-label">Shop Branch 2:</label>
-                                                        <select name="branch_id_2" class="form-control select2-show-search form-select" id="branch_id_2">
+                                                        <select name="branch_id_2" class="form-control select2-show-search form-select" id="branch_id_2" disabled>
                                                             @foreach($branches as $branch)
-                                                                <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                                                @if($branch->id == 2)
+                                                                    <option value="{{ $branch->id }}" selected>{{ $branch->branch_name }}</option>
+                                                                @endif
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -200,7 +206,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="stock_qty_2" class="form-label">Product Stock for Branch 2:<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="stock_qty_2" id="stock_qty_2" required>
+                                                        <input type="text" class="form-control" name="stock_qty_2" id="stock_qty_2">
                                                     </div>
                                                 </div>
                                             </div>

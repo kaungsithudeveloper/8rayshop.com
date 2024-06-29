@@ -126,7 +126,7 @@ a {
 }
 
 a:hover {
-  color: #FDC040;
+  color: #68a7fa;
 }
 
 li.hr span {
@@ -319,7 +319,7 @@ input[type=number]:focus,
 }
 
 .text-brand-2 {
-  color: #FDC040 !important;
+  color: #68a7fa !important;
 }
 
 .text-primary {
@@ -1144,7 +1144,7 @@ button.submit:hover, button[type='submit']:hover {
 }
 
 .btn:hover, .button:hover {
-  background-color: #FDC040;
+  background-color: #40c7fd;
 }
 
 .btn.btn-sm, .button.btn-sm {
@@ -3566,7 +3566,7 @@ table .product-thumbnail img {
 }
 
 .banner-big .btn:hover {
-  background: #FDC040 !important;
+  background: #40c7fd !important;
 }
 
 /*Deal banners*/
@@ -4006,7 +4006,7 @@ table .product-thumbnail img {
 .product-cart-wrap .product-action-1 {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 90%;
   -webkit-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
   opacity: 0;
@@ -4103,7 +4103,7 @@ table .product-thumbnail img {
 }
 
 .product-cart-wrap .product-action-1 button:hover, .product-cart-wrap .product-action-1 a.action-btn:hover {
-  color: #FDC040;
+  color: #40c7fd;
 }
 
 .product-cart-wrap .product-action-1 button:hover:after, .product-cart-wrap .product-action-1 a.action-btn:hover:after {
@@ -4121,7 +4121,7 @@ table .product-thumbnail img {
 }
 
 .product-cart-wrap .product-action-1 button:hover i, .product-cart-wrap .product-action-1 a.action-btn:hover i {
-  color: #FDC040;
+  color: #40c7fd;
 }
 
 .product-cart-wrap .product-badges {
@@ -4288,7 +4288,7 @@ table .product-thumbnail img {
   display: inline-block;
   padding: 6px 20px 6px 20px;
   border-radius: 4px;
-  background-color: #DEF9EC;
+  background-color: #deeef9;
   font-size: 14px;
   font-weight: 700;
 }
@@ -5149,7 +5149,7 @@ table .product-thumbnail img {
 }
 
 .stock-status.in-stock {
-  background: #DEF9EC;
+  background: #deeef9;
   color: #006eff;
 }
 
@@ -5204,7 +5204,7 @@ table .product-thumbnail img {
   font-weight: 600;
   margin-bottom: 6px;
   display: block;
-  color: #FDC040;
+  color: #40c7fd;
 }
 
 .detail-info .product-meta {
@@ -6095,7 +6095,7 @@ h6.post-title {
 .post-thumb .entry-meta a {
   display: inline-block;
   color: #fff !important;
-  background-color: #FDC040;
+  background-color: #40c7fd;
   border-radius: 4px;
   width: 32px;
   height: 32px;
@@ -6192,7 +6192,7 @@ h6.post-title {
   z-index: 3;
   display: inline-block;
   color: #fff !important;
-  background-color: #FDC040;
+  background-color: #40c7fd;
   border-radius: 4px;
   width: 32px;
   height: 32px;
@@ -6834,7 +6834,7 @@ h6.post-title {
   display: inline-block;
   padding: 6px 20px 6px 20px;
   border-radius: 4px;
-  background-color: #DEF9EC;
+  background-color: #deeef9;
   font-size: 14px;
   font-weight: 700;
   color: #006eff;
@@ -6890,7 +6890,7 @@ h6.post-title {
   display: inline-block;
   padding: 6px 20px 6px 20px;
   border-radius: 4px;
-  background-color: #DEF9EC;
+  background-color: #deeef9;
   font-size: 14px;
   font-weight: 700;
   color: #006eff;
@@ -7558,7 +7558,7 @@ h6.post-title {
 }
 
 .cart-dropdown-wrap .shopping-cart-footer .shopping-cart-button a:hover {
-  background-color: #FDC040;
+  background-color: #40c7fd;
 }
 
 .sticky-bar.stick {
@@ -7573,7 +7573,7 @@ h6.post-title {
   left: 0;
   -webkit-transition: all .3s ease 0s;
   transition: all .3s ease 0s;
-  border-bottom: 2px solid #FDC040;
+  border-bottom: 2px solid #40c7fd;
   background: #fff;
 }
 
@@ -7809,7 +7809,7 @@ h6.post-title {
   border: none;
   width: 26px;
   height: 26px;
-  background-color: #DEF9EC;
+  background-color: #deeef9;
   border-radius: 30px;
 }
 
@@ -8441,7 +8441,7 @@ h6.post-title {
 }
 
 .header-style-1.header-style-5 .header-bottom-bg-color .main-categori-wrap > a {
-  background: #FDC040;
+  background: #40c7fd;
 }
 
 .header-style-1.header-style-5 .main-menu > nav > ul > li > a {
@@ -12398,3 +12398,17 @@ footer .hotline img {
   }
 }
 /*# sourceMappingURL=main.css.map */
+
+
+/* Custom Css */
+.custom-button {
+    max-width: 300px !important;
+    height: 40px !important;
+    line-height: 40px !important;
+    padding: 0 !important;
+    border-color: transparent;
+}
+
+.custom-button:hover {
+    border-color: transparent; /* Remove the border color on hover */
+}
