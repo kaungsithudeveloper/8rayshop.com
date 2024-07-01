@@ -29,8 +29,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if ($request->user()->role === 'admin' && $request->user()->status === 'inactive') {
-            Auth::logout(); // Logout the user
+        $user = $request->user();
+
+        if ($user->role === 'admin' && $user->status === 'inactive') {
+            Auth::logout();
             $notification = array(
                 'message' => 'Your account is inactive. Please contact the administrator.',
                 'alert-type' => 'error'
@@ -38,10 +40,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.login')->with($notification);
         }
 
-
-        // Check if the user is an employee and inactive
-        if ($request->user()->role === 'employee' && $request->user()->status === 'inactive') {
-            Auth::logout(); // Logout the user
+        if ($user->role === 'employee' && $user->status === 'inactive') {
+            Auth::logout();
             $notification = array(
                 'message' => 'Your account is inactive. Please contact the administrator.',
                 'alert-type' => 'error'
@@ -49,8 +49,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('employee.login')->with($notification);
         }
 
-        if ($request->user()->role === 'user' && $request->user()->status === 'inactive') {
-            Auth::logout(); // Logout the user
+        if ($user->role === 'user' && $user->status === 'inactive') {
+            Auth::logout();
             $notification = array(
                 'message' => 'Your account is inactive. Please contact the administrator.',
                 'alert-type' => 'error'
@@ -58,13 +58,18 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('login')->with($notification);
         }
 
+
+
         $url = '';
-        if ($request->user()->role === 'admin') {
-            $url = 'admin/dashboard';
+
+        if (strpos($request->path(), '8ray/login') !== false) {
+            $url = '/8ray';
+        } elseif (strpos($request->path(), 'datacentre/login') !== false) {
+            $url = '/datacentre';
+        } elseif ($request->user()->role === 'admin') {
+            $url = '/admin/dashboard';
         } elseif ($request->user()->role === 'employee') {
-            $url = 'employee/page';
-        } elseif ($request->user()->role === 'user') {
-            $url = '/dashboard';
+            $url = '/employee/page';
         }
 
         return redirect()->intended($url);
@@ -78,8 +83,19 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
+
+        // Redirect based on the current URL
+        $url = $request->fullUrl();
+        if (strpos($url, '/8ray') !== false) {
+            return redirect('/8ray/login');
+        } elseif (strpos($url, '/datacentre') !== false) {
+            return redirect('/datacentre/login');
+        } elseif ($request->user()->role === 'admin') {
+            $url = '/admin/login';
+        } elseif ($request->user()->role === 'employee') {
+            $url = '/employee/login';
+        }
 
         return redirect('/');
     }

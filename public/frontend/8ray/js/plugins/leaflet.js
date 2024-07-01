@@ -5,7 +5,7 @@
         if ($('#map-basic').length) {
             var mymap = L.map('map-basic').setView([51.505, -0.09], 13);
 
-            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            L.tileLayer('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1909.4649986141449!2d96.12848784143804!3d16.82982853516475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c194c9ad607547%3A0x88ce8c9fad1b0ddb!2s8Ray!5e0!3m2!1sen!2sus!4v1719653592813!5m2!1sen!2sus', {
                 maxZoom: 18,
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                     '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -47,7 +47,7 @@
         if ($('#map-choropleth').length) {
             var map = L.map('map-choropleth').setView([37.8, -96], 4);
 
-            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            L.tileLayer('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1909.4649986141449!2d96.12848784143804!3d16.82982853516475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c194c9ad607547%3A0x88ce8c9fad1b0ddb!2s8Ray!5e0!3m2!1sen!2sus!4v1719653592813!5m2!1sen!2sus', {
                 maxZoom: 18,
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                     '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -266,7 +266,7 @@
                 attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(leaflet);
 
-            
+
 
             // Define Marker Layer
             var markerLayer = L.layerGroup().addTo(leaflet);
@@ -357,7 +357,7 @@
         multiMarkColors();
         MultiMark();
         interactiveMap();
-        
+
     });
 
 })(jQuery);

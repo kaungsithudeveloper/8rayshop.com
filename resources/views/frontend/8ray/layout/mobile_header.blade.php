@@ -23,7 +23,7 @@
                 <nav>
                     <ul class="mobile-menu font-heading">
                         <li class="menu-item-has-children">
-                            <a href="index.html">Home</a>
+                            <a href="{{ route('8ray.frontend') }}">Home</a>
 
                         </li>
                         <li class="menu-item-has-children">
@@ -215,10 +215,10 @@
                             </ul>
                         </li>
                         <li class="menu-item-has-children">
-                            <a href="index.html">About Us</a>
+                            <a href="{{ route('8ray.aboutus') }}">About Us</a>
                         </li>
                         <li class="menu-item-has-children">
-                            <a href="index.html">About Us</a>
+                            <a href="{{ route('8ray.contactus') }}">Contact Us</a>
                         </li>
                     </ul>
                 </nav>

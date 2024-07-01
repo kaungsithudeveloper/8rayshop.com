@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RoleController;
@@ -59,6 +60,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/admin/login', [AdminController::class, 'AdminLogin'])->name('admin.login')->middleware(RedirectIfAuthenticated::class);
 Route::get('/employee/login', [EmployeeController::class, 'EmployeeLogin'])->name('employee.login')->middleware(RedirectIfAuthenticated::class);
 
+Route::get('/8ray/login', [FrontendController::class, 'EightRayLogin'])->name('8ray.login')->middleware('guest');
+Route::post('/8ray/login', [AuthenticatedSessionController::class, 'store'])->name('8ray.login.post');
+Route::get('/8ray/logout', [FrontendController::class, 'EightRayLogOut'])->name('8ray.logout');
+
+Route::get('/datacentre/login', [FrontendController::class, 'DatacentreLogin'])->name('datacentre.login')->middleware('guest');
+Route::post('/datacentre/login', [AuthenticatedSessionController::class, 'store'])->name('datacentre.login.post');
+Route::post('/datacentre/logout', [AuthenticatedSessionController::class, 'destroy'])->name('datacentre.logout');
 
 Route::middleware(['auth','role:admin'])->group(function () {
 
@@ -320,6 +328,8 @@ Route::controller(FrontendController::class)->group(function(){
 
     //8Ray Route
     Route::get('/8ray',  'EightRayFrontend')->name('8ray.frontend');
+    Route::get('/8ray/contact_us',  'contactUs')->name('8ray.contactus');
+    Route::get('/8ray/about_us',  'aboutUs')->name('8ray.aboutus');
 
     //Datacentre Route
     Route::get('/datacentre',  'DatacentreFrontend')->name('datacentre.frontend');

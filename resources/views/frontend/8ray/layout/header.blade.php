@@ -115,34 +115,46 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="header-action-icon-2">
-                                <a href="page-account.html">
-                                    <img class="svgInject" alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-user.svg') }}" />
-                                </a>
-                                <a href="page-account.html"><span class="lable ml-0">Account</span></a>
-                                <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
-                                    <ul>
-                                        <li>
-                                            <a href="page-account.html"><i class="fi fi-rs-user mr-10"></i>My Account</a>
-                                        </li>
-                                        <li>
-                                            <a href="page-account.html"><i class="fi fi-rs-location-alt mr-10"></i>Order Tracking</a>
-                                        </li>
-                                        <li>
-                                            <a href="page-account.html"><i class="fi fi-rs-label mr-10"></i>My Voucher</a>
-                                        </li>
-                                        <li>
-                                            <a href="shop-wishlist.html"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a>
-                                        </li>
-                                        <li>
-                                            <a href="page-account.html"><i class="fi fi-rs-settings-sliders mr-10"></i>Setting</a>
-                                        </li>
-                                        <li>
-                                            <a href="page-login.html"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
-                                        </li>
-                                    </ul>
+
+                            @auth
+                                <div class="header-action-icon-2">
+                                    <a href="page-account.html">
+                                        <img class="svgInject" alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-user.svg') }}" />
+                                    </a>
+
+                                    <a href="page-account.html"><span class="lable ml-0">Account</span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                        <ul>
+                                            <li>
+                                                <a href="page-account.html"><i class="fi fi-rs-user mr-10"></i>My Account</a>
+                                            </li>
+                                            <li>
+                                                <a href="page-account.html"><i class="fi fi-rs-location-alt mr-10"></i>Order Tracking</a>
+                                            </li>
+                                            <li>
+                                                <a href="page-account.html"><i class="fi fi-rs-label mr-10"></i>My Voucher</a>
+                                            </li>
+                                            <li>
+                                                <a href="shop-wishlist.html"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a>
+                                            </li>
+                                            <li>
+                                                <a href="page-account.html"><i class="fi fi-rs-settings-sliders mr-10"></i>Setting</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('8ray.logout') }}"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+
+                                <div class="header-action-icon-2">
+                                    <a href="page-account.html">
+                                        <img class="svgInject" alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-user.svg') }}" />
+                                    </a>
+                                    <a href="{{ route('8ray.login') }}"><span class="lable ml-0">Login</span></a>
+                                </div>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -164,7 +176,7 @@
                         <nav>
                             <ul>
                                 <!-- Home -->
-                                <li><a class="active" href="index.html">Home  </a></li>
+                                <li><a class="active" href="{{ route('8ray.frontend') }}">Home  </a></li>
 
                                 <!-- Products -->
                                 <li>
@@ -379,9 +391,9 @@
                                     </ul>
                                 </li>
 
-                                <li><a href="page-about.html">About</a></li>
+                                <li><a href="{{ route('8ray.aboutus') }}">About</a></li>
 
-                                <li><a href="page-contact.html">Contact</a></li>
+                                <li><a href="{{ route('8ray.contactus') }}">Contact</a></li>
                             </ul>
                         </nav>
                     </div>

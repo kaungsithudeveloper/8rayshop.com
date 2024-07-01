@@ -12412,3 +12412,26 @@ footer .hotline img {
 .custom-button:hover {
     border-color: transparent; /* Remove the border color on hover */
 }
+
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 30%; /* 16:9 aspect ratio */
+}
+.map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.bg-info-transparent {
+    background-color: #c7e0fd !important;
+}
+
+.text-info {
+    color: #fff !important;
+}

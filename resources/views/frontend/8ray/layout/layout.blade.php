@@ -28,7 +28,7 @@
 
     @include('frontend.8ray.layout.header')
 
-    @include('frontend.8ray.layout.mobile_header')
+    @include('frontend.8ray.layout.mobile_header ')
 
     <!--End header-->
 
@@ -61,6 +61,7 @@
     <script src="{{ url('frontend/8ray/js/plugins/jquery.vticker-min.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/jquery.theia.sticky.j') }}s"></script>
     <script src="{{ url('frontend/8ray/js/plugins/jquery.elevatezoom.js') }}"></script>
+    <script src="{{ url('frontend/8ray/js/plugins/leaflet.js') }}"></script>
     <!-- Template  JS -->
     <script src="{{ url('frontend/8ray/js/main.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/shop.js') }}"></script>

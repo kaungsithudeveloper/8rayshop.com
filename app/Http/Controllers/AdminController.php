@@ -63,60 +63,48 @@ class AdminController extends Controller
 
     public function AdminProfileStore(Request $request)
     {
-        try {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . Auth::id(),
+            'phone' => 'required|string|max:15|unique:users,phone,' . Auth::id(),
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . Auth::id(),
-                'phone' => 'required|string|max:15|unique:users,phone,' . Auth::id(),
-                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
-
-            if ($validator->fails()) {
-                return back()->withErrors($validator)->withInput();
-            }
-
-            $user = Auth::user();
-            $user->name = $request->name;
-            $user->username = $request->username;
-            $user->email = $request->email;
-            $user->phone = $request->phone;
-            $user->aboutme = $request->aboutme;
-
-            // Handle photo upload
-            if ($request->hasFile('photo')) {
-                $image = $request->file('photo');
-                $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-                $imagePath = 'upload/admin_images/' . $imageName;
-
-                // Save the image and update user's photo field
-                Image::make($image)->resize(300, 400)->save(public_path($imagePath));
-                $user->photo = $imageName;
-
-                // Delete the old photo if it exists
-                if ($user->photo) {
-                    Storage::delete('upload/admin_images/' . $user->photo);
-                }
-            }
-
-            $user->save();
-
-            $notification = [
-                'message' => 'Admin Profile Updated Successfully',
-                'alert-type' => 'success',
-            ];
-
-            return redirect()->back()->with($notification);
-        } catch (\Exception $e) {
-            Log::error('Error updating admin profile: ' . $e->getMessage());
-
-            $notification = [
-                'message' => 'An error occurred while updating the profile.',
-                'alert-type' => 'error',
-            ];
-
-            return back()->with($notification);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
         }
+
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->aboutme = $request->aboutme;
+
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'upload/admin_images/' . $imageName;
+
+            // Save the image and update user's photo field
+            Image::make($image)->resize(300, 400)->save(public_path($imagePath));
+            $user->photo = $imageName;
+
+            // Delete the old photo if it exists
+            if ($user->photo) {
+                Storage::delete('upload/admin_images/' . $user->photo);
+            }
+        }
+
+        $user->save();
+
+        $notification = [
+            'message' => 'Admin Profile Updated Successfully',
+            'alert-type' => 'success',
+        ];
+
+        return redirect()->back()->with($notification);
     }
 
     public function LogOut(Request $request)
