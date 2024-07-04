@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RoleController;
@@ -31,6 +32,7 @@ use App\Models\Brand;
 use App\Models\ProductCategory;
 use App\Models\ProductColor;
 use App\Models\ProductSubCategory;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,13 +45,6 @@ use App\Models\ProductSubCategory;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -62,10 +57,14 @@ Route::get('/employee/login', [EmployeeController::class, 'EmployeeLogin'])->nam
 
 Route::get('/8ray/login', [FrontendController::class, 'EightRayLogin'])->name('8ray.login')->middleware('guest');
 Route::post('/8ray/login', [AuthenticatedSessionController::class, 'store'])->name('8ray.login.post');
+Route::get('/8ray/register', [FrontendController::class, 'EightRayRegister'])->name('8ray.register')->middleware('guest');
+Route::post('/8ray/register', [RegisteredUserController::class, 'store'])->name('8ray.register.post');
 Route::get('/8ray/logout', [FrontendController::class, 'EightRayLogOut'])->name('8ray.logout');
 
 Route::get('/datacentre/login', [FrontendController::class, 'DatacentreLogin'])->name('datacentre.login')->middleware('guest');
 Route::post('/datacentre/login', [AuthenticatedSessionController::class, 'store'])->name('datacentre.login.post');
+Route::get('/datacentre/register', [FrontendController::class, 'DatacentreRegister'])->name('datacentre.register')->middleware('guest');
+Route::post('/datacentre/register', [RegisteredUserController::class, 'store'])->name('datacentre.register.post');
 Route::post('/datacentre/logout', [AuthenticatedSessionController::class, 'destroy'])->name('datacentre.logout');
 
 Route::middleware(['auth','role:admin'])->group(function () {
@@ -327,7 +326,7 @@ Route::get('/product-subcategory', function() {
 Route::controller(FrontendController::class)->group(function(){
 
     //8Ray Route
-    Route::get('/8ray',  'EightRayFrontend')->name('8ray.frontend');
+    Route::get('/',  'EightRayFrontend')->name('8ray.frontend');
     Route::get('/8ray/contact_us',  'contactUs')->name('8ray.contactus');
     Route::get('/8ray/about_us',  'aboutUs')->name('8ray.aboutus');
 

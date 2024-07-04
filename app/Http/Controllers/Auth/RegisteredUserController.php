@@ -50,6 +50,16 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        // Redirect based on the origin of the registration request
+        $url = '';
+        if (strpos($request->path(), '8ray/register') !== false) {
+            $url = '/';
+        } elseif (strpos($request->path(), 'datacentre/register') !== false) {
+            $url = '/datacentre';
+        } else {
+            $url = RouteServiceProvider::HOME;
+        }
+
+        return redirect($url);
     }
 }

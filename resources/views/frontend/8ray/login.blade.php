@@ -7,7 +7,7 @@
         <div class="container">
             <div class="breadcrumb">
                 <a href="{{ route('8ray.frontend') }}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
-                <span></span> Pages <span></span> My Account
+                <span></span> Pages <span></span> Login
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
                                             <div class="padding_eight_all bg-white">
                                                 <div class="heading_s1">
                                                     <h1 class="mb-5">Login</h1>
-                                                    <p class="mb-30">Don't have an account? <a href="page-register.html">Create here</a></p>
+                                                    <p class="mb-30">Don't have an account? <a href="{{ route('8ray.register') }}">Create here</a></p>
                                                 </div>
                                                 <form method="post">
                                                     <div class="form-group">

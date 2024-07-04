@@ -49,21 +49,10 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('employee.login')->with($notification);
         }
 
-        if ($user->role === 'user' && $user->status === 'inactive') {
-            Auth::logout();
-            $notification = array(
-                'message' => 'Your account is inactive. Please contact the administrator.',
-                'alert-type' => 'error'
-            );
-            return redirect()->route('login')->with($notification);
-        }
-
-
-
         $url = '';
 
         if (strpos($request->path(), '8ray/login') !== false) {
-            $url = '/8ray';
+            $url = '/';
         } elseif (strpos($request->path(), 'datacentre/login') !== false) {
             $url = '/datacentre';
         } elseif ($request->user()->role === 'admin') {

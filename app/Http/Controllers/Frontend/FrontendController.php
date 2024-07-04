@@ -14,6 +14,10 @@ class FrontendController extends Controller
         return view('frontend.8ray.login');
     }
 
+    public function EightRayRegister(){
+        return view('frontend.8ray.register');
+    }
+
     public function EightRayLogOut(Request $request)
     {
         Auth::guard('web')->logout();
