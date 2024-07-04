@@ -27,7 +27,7 @@
 
                         </li>
                         <li class="menu-item-has-children">
-                            <a href="shop-grid-right.html">Products</a>
+                            <a href="#">Products</a>
                             @php
                                 $categories = App\Models\ProductCategory::orderBy('product_category_name', 'ASC')->get();
                             @endphp
@@ -220,20 +220,42 @@
                         <li class="menu-item-has-children">
                             <a href="{{ route('8ray.contactus') }}">Contact Us</a>
                         </li>
+                        @auth
+                        <li class="menu-item-has-children">
+                            <a href="#">Account</a>
+                            <ul class="dropdown">
+                                <li><a href="{{ route('8ray.user.profile.edit') }}">{{ Auth::user()->name }}</a></li>
+                                <li><a href="{{ route('8ray.user.order') }}">Order</a></li>
+                                <li><a href="{{ route('8ray.user.track.order') }}">Order Tracking</a></li>
+                            </ul>
+                        </li>
+                        @endauth
                     </ul>
                 </nav>
                 <!-- mobile menu end -->
             </div>
             <div class="mobile-header-info-wrap">
                 <div class="single-mobile-header-info">
-                    <a href="page-contact.html"><i class="fi-rs-marker"></i> Our location </a>
+                    <a class="btn btn-xs text-white" href="{{ route('8ray.contactus') }}"><i class="fi-rs-marker"></i> Our location </a>
                 </div>
+
                 <div class="single-mobile-header-info">
-                    <a href="page-login.html"><i class="fi-rs-user"></i>Log In / Sign Up </a>
+                    <a class="btn btn-xs text-white" href="{{ route('8ray.contactus') }}"><i class="fi-rs-headphones"></i>09 450127303 </a>
                 </div>
+
+                @auth
+                <div class="single-mobile-header-info ">
+                    <a class="btn btn-xs text-white" style="background-color: red" href="{{ route('8ray.logout') }}">
+                        <i class="fi-rs-user text-white"></i>Log out
+                    </a>
+                </div>
+                @else
                 <div class="single-mobile-header-info">
-                    <a href="#"><i class="fi-rs-headphones"></i>09 450127303 </a>
+                    <a class="btn btn-xs text-white" style="background-color: red" href="{{ route('8ray.login') }}">
+                        <i class="fi-rs-user text-white"></i>Log in
+                    </a>
                 </div>
+                @endauth
             </div>
         </div>
     </div>

@@ -46,11 +46,6 @@ use App\Models\Product;
 */
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 Route::get('/admin/login', [AdminController::class, 'AdminLogin'])->name('admin.login')->middleware(RedirectIfAuthenticated::class);
 Route::get('/employee/login', [EmployeeController::class, 'EmployeeLogin'])->name('employee.login')->middleware(RedirectIfAuthenticated::class);
@@ -326,13 +321,26 @@ Route::get('/product-subcategory', function() {
 Route::controller(FrontendController::class)->group(function(){
 
     //8Ray Route
-    Route::get('/',  'EightRayFrontend')->name('8ray.frontend');
+    Route::get('/', 'EightRayFrontend')->name('8ray.frontend');
     Route::get('/8ray/contact_us',  'contactUs')->name('8ray.contactus');
     Route::get('/8ray/about_us',  'aboutUs')->name('8ray.aboutus');
 
     //Datacentre Route
     Route::get('/datacentre',  'DatacentreFrontend')->name('datacentre.frontend');
 
+});
+
+Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function () {
+
+    //8ray Profile Route
+    Route::get('/8ray/user/profile', [ProfileController::class, 'EditEightRayUserProfile'])->name('8ray.user.profile.edit');
+    Route::post('/8ray/user/profile/update', [ProfileController::class, 'UpdateEightRayUserProfile'])->name('8ray.user.profile.update');
+    Route::post('/admin/update/password', [ProfileController::class, 'UpdateEightRayUserPassword'])->name('8ray.user.profile.update.password');
+    Route::get('/8ray/user/order', [ProfileController::class, 'EditEightRayUserOrder'])->name('8ray.user.order');
+    Route::get('/8ray/user/password', [ProfileController::class, 'EditEightRayUserPassword'])->name('8ray.user.password');
+    Route::get('/8ray/user/track-order', [ProfileController::class, 'EditEightRayUserTrackOrder'])->name('8ray.user.track.order');
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
