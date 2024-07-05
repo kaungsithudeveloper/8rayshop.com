@@ -31,15 +31,33 @@
                                         <div class="card-body">
                                             <form method="post" action="{{ route('8ray.user.profile.update') }}" enctype="multipart/form-data">
                                                 @csrf
+
                                                 <div class="row">
-                                                    <div class="form-group col-md-6">
-                                                        <label>Name <span class="required">*</span></label>
-                                                        <input required="" class="form-control" name="name" type="text" value="{{ $user->name }}" />
+                                                    <div class="col-md-4">
+                                                        <div class="form-group col-md-12">
+                                                            <label>Profile Photo</label>
+                                                            <div class="file-input-container" id="fileInputContainer">
+                                                                <span class="file-input-label">Drag and drop or click to upload</span>
+                                                                <input class="file-input" name="photo" type="file" id="photoInput" accept="image/*"/>
+                                                                <img id="photoPreview" class="file-input-preview" alt="Profile Photo Preview"
+                                                                src="{{ !empty($user->photo) ? url('upload/user_images/' . $user->photo) : url('upload/profile.jpg') }}">
+                                                                <button class="remove-button" id="removeButton">&times;</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label>Username <span class="required">*</span></label>
-                                                        <input required="" class="form-control" name="username" type="text" value="{{ $user->username }}"/>
+
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label>Name <span class="required">*</span></label>
+                                                            <input required="" class="form-control " name="name" type="text" value="{{ $user->name }}" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Username <span class="required">*</span></label>
+                                                            <input required="" class="form-control" name="username" type="text" value="{{ $user->username }}"/>
+                                                        </div>
                                                     </div>
+                                                </div>
+                                                <div class="row">
                                                     <div class="form-group col-md-6">
                                                         <label>Email Address <span class="required">*</span></label>
                                                         <input required="" class="form-control" name="email" type="email" value="{{ $user->email }}"/>
@@ -68,6 +86,72 @@
             </div>
         </div>
     </main>
+    <script>
+        const fileInputContainer = document.getElementById('fileInputContainer');
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const fileInputLabel = document.querySelector('.file-input-label');
+        const removeButton = document.getElementById('removeButton');
+
+        // Show existing image on page load if exists
+        window.addEventListener('load', () => {
+            if (photoPreview.src) {
+                photoPreview.style.display = 'block';
+                fileInputLabel.style.display = 'none';
+                removeButton.style.display = 'block';
+            }
+        });
+
+        function previewPhoto(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                photoPreview.src = e.target.result;
+                photoPreview.style.display = 'block';
+                fileInputLabel.style.display = 'none';
+                removeButton.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+
+        fileInputContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileInputContainer.classList.add('dragover');
+        });
+
+        fileInputContainer.addEventListener('dragleave', () => {
+            fileInputContainer.classList.remove('dragover');
+        });
+
+        fileInputContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileInputContainer.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                previewPhoto(file);
+            }
+        });
+
+        fileInputContainer.addEventListener('click', () => {
+            photoInput.click();
+        });
+
+        photoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                previewPhoto(file);
+            }
+        });
+
+        removeButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            photoPreview.src = '';
+            photoPreview.style.display = 'none';
+            fileInputLabel.style.display = 'block';
+            removeButton.style.display = 'none';
+            photoInput.value = '';
+        });
+    </script>
 
 </main>
 

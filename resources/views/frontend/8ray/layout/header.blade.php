@@ -366,7 +366,7 @@
                                 </li>
 
                                 <!-- Brands -->
-                                <li><a href="#">Brand Zone</a></li>
+                                <li><a href="{{ route('8ray.brandzone') }}">Brand Zone</a></li>
 
                                 <!-- Blogs -->
                                 <li>

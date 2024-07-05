@@ -34,6 +34,7 @@ class ProfileController extends Controller
 
     public function UpdateEightRayUserProfile(Request $request)
     {
+        //dd($request->all());
         $id = Auth::user()->id;
         $user = User::find($id);
         $user->name = $request->name;
@@ -41,6 +42,23 @@ class ProfileController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->aboutme = $request->aboutme;
+
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'upload/user_images/' . $imageName;
+
+            // Save the image and update user's photo field
+            Image::make($image)->resize(300, 300)->save(public_path($imagePath));
+            $user->photo = $imageName;
+
+            // Delete the old photo if it exists
+            if ($user->photo) {
+                Storage::delete('upload/user_images/' . $user->photo);
+            }
+        }
+
         $user->save();
 
         $notification = array(

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Brand;
 
 class FrontendController extends Controller
 {
@@ -88,6 +89,29 @@ class FrontendController extends Controller
     {
         return view('frontend.8ray.about_us');
     }
+
+    public function brandZone()
+    {
+        $brands = Brand::latest()->get();
+        return view('frontend.8ray.brandzone',compact('brands'));
+    }
+
+    public function ProductDetails($id,$slug){
+
+        $product = Product::with([
+            'productInfo',
+            'productColor',
+            'brands',
+            'categories',
+            'productSubCategory',
+            'multiImages',
+            'price',
+            'stocks.branch'
+        ])->findOrFail($id);
+
+        return view('frontend.8ray.product_details',compact('product'));
+
+     }
 
 
     public function DatacentreFrontend()

@@ -64,7 +64,7 @@
                             <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn card-container" data-wow-delay=".1s">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
-                                        <a href="shop-product-right.html">
+                                        <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">
                                             <img class="default-img" src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
 
                                             @php
@@ -74,9 +74,9 @@
                                         </a>
                                     </div>
                                     <div class="product-action-1">
-                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
                                         @if ($product->productInfo)
@@ -92,7 +92,7 @@
                                             <a href="shop-grid-right.html">{{ $category->brand_name }}</a>
                                         @endforeach
                                     </div>
-                                    <h2><a href="shop-product-right.html">{{ $product->product_name }}</a></h2>
+                                    <h2><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">{{ $product->product_name }}</a></h2>
                                     <div class="product-rate d-inline-block">
                                         <div class="product-rating" style="width: 80%"></div>
                                     </div>

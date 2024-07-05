@@ -11,11 +11,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.8rayshop.com" />
     <meta property="og:image" content="https://www.yourshopdomain.com/path-to-your-image.jpg" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ url('frontend/8ray/imgs/theme/logo-darks2.png') }}" />
+
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ url('frontend/8ray/css/plugins/animate.min.css') }}" />
     <link rel="stylesheet" href="{{ url('frontend/8ray/css/main.css') }}" />
+    <link rel="stylesheet" href="{{ url('frontend/8ray/css/plugins/slider-range.css') }}" />
     <!-- View Message CSS-->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -48,13 +51,13 @@
     <script src="{{ url('frontend/8ray/js/vendor/modernizr-3.6.0.min.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/vendor/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/vendor/jquery-migrate-3.3.0.min.js') }}"></script>
-    <script src="{{ url('frontend/8ray/js/vendor/bootstrap.bundle.min.j') }}s"></script>
+    <script src="{{ url('frontend/8ray/js/vendor/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/slick.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/jquery.syotimer.min.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/waypoints.js') }}"></script>
-    <script src="{{ url('frontend/8ray/js/plugins/wow.j') }}s"></script>
+    <script src="{{ url('frontend/8ray/js/plugins/wow.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/perfect-scrollbar.js') }}"></script>
-    <script src="{{ url('frontend/8ray/js/plugins/magnific-popup.j') }}s"></script>
+    <script src="{{ url('frontend/8ray/js/plugins/magnific-popup.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/select2.min.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/counterup.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/jquery.countdown.min.js') }}"></script>
@@ -62,7 +65,7 @@
     <script src="{{ url('frontend/8ray/js/plugins/isotope.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/scrollup.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/jquery.vticker-min.js') }}"></script>
-    <script src="{{ url('frontend/8ray/js/plugins/jquery.theia.sticky.j') }}s"></script>
+    <script src="{{ url('frontend/8ray/js/plugins/jquery.theia.sticky.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/jquery.elevatezoom.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/plugins/leaflet.js') }}"></script>
     <!-- Template  JS -->
@@ -96,6 +99,16 @@
                     break;
             }
         @endif
+    </script>
+
+    <script type="text/javascript">
+
+        $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('centent')
+            }
+        })
+        /// Start product view with Modal
     </script>
 
     @stack('scripts')

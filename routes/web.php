@@ -324,6 +324,8 @@ Route::controller(FrontendController::class)->group(function(){
     Route::get('/', 'EightRayFrontend')->name('8ray.frontend');
     Route::get('/8ray/contact_us',  'contactUs')->name('8ray.contactus');
     Route::get('/8ray/about_us',  'aboutUs')->name('8ray.aboutus');
+    Route::get('/8ray/brandzone',  'brandZone')->name('8ray.brandzone');
+    Route::get('/product/details/{id}/{slug}', 'ProductDetails')->name('8ray.productDetails');
 
     //Datacentre Route
     Route::get('/datacentre',  'DatacentreFrontend')->name('datacentre.frontend');
