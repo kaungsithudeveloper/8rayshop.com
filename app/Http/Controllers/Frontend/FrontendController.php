@@ -106,10 +106,17 @@ class FrontendController extends Controller
             'productSubCategory',
             'multiImages',
             'price',
-            'stocks.branch'
+            'stocks.branch',
+            'comments' => function($query) {
+                $query->whereNull('parent_id');
+            },
+            'comments.user',
+            'comments.replies.user' // Eager load replies and their users
         ])->findOrFail($id);
 
-        return view('frontend.8ray.product_details',compact('product'));
+        $commentCount = $product->comments->count();
+
+        return view('frontend.8ray.product_details',compact('product', 'commentCount'));
 
      }
 

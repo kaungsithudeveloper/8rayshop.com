@@ -22,6 +22,7 @@ use App\Http\Controllers\EmployeeBrandController;
 use App\Http\Controllers\EmployeeProductController;
 use App\Http\Controllers\EmployeeUserController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\CommentController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -343,6 +344,11 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
     Route::get('/8ray/user/track-order', [ProfileController::class, 'EditEightRayUserTrackOrder'])->name('8ray.user.track.order');
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
 });
+
+
 
 require __DIR__.'/auth.php';

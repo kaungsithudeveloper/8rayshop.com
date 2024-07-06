@@ -71,6 +71,11 @@ class Product extends Model
         return $this->hasOne(Price::class, 'product_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     protected $appends = ['total_stock'];
 
     public function getTotalStockAttribute()

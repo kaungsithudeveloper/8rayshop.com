@@ -171,7 +171,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="branch_id_1" class="form-label">Shop Branch 1:</label>
-                                                        <select name="branch_id_1" class="form-control select2-show-search form-select" id="branch_id_1" disabled>
+                                                        <select name="branch_id_1" class="form-control select2-show-search form-select" id="branch_id_1" >
 
                                                             @foreach($branches as $branch)
                                                                 @if($branch->id == 1)
@@ -193,7 +193,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="branch_id_2" class="form-label">Shop Branch 2:</label>
-                                                        <select name="branch_id_2" class="form-control select2-show-search form-select" id="branch_id_2" disabled>
+                                                        <select name="branch_id_2" class="form-control select2-show-search form-select" id="branch_id_2" >
                                                             @foreach($branches as $branch)
                                                                 @if($branch->id == 2)
                                                                     <option value="{{ $branch->id }}" selected>{{ $branch->branch_name }}</option>
