@@ -93,7 +93,8 @@ class FrontendController extends Controller
     public function brandZone()
     {
         $brands = Brand::latest()->get();
-        return view('frontend.8ray.brandzone',compact('brands'));
+        $products = Product::with('multiImages')->first(); // Fetch a specific product or use find($id) to fetch by ID
+        return view('frontend.8ray.brandzone', compact('brands', 'products'));
     }
 
     public function ProductDetails($id,$slug){

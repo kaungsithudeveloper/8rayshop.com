@@ -80,7 +80,13 @@
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
                                         @if ($product->productInfo)
-                                            @if ($product->productInfo->best_sale)
+                                            @if ($product->productInfo->new)
+                                                <span class="new">Best Sale</span>
+                                            @elseif ($product->productInfo->hot)
+                                                <span class="hot">Best Sale</span>
+                                            @elseif ($product->productInfo->sale)
+                                                <span class="sale">Best Sale</span>
+                                            @elseif ($product->productInfo->best_sale)
                                                 <span class="best">Best Sale</span>
                                             @endif
                                         @endif
@@ -149,7 +155,7 @@
                                         <div class="product-cart-wrap">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
-                                                    <a href="shop-product-right.html">
+                                                    <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">
                                                         <img class="default-img" src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
 
                                                         @php
@@ -238,7 +244,7 @@
                                     <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="shop-product-right.html">
+                                                <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">
                                                     <img class="default-img" src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
 
                                                     @php
@@ -254,7 +260,13 @@
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 @if ($product->productInfo)
-                                                    @if ($product->productInfo->best_sale)
+                                                    @if ($product->productInfo->new)
+                                                        <span class="new">Best Sale</span>
+                                                    @elseif ($product->productInfo->hot)
+                                                        <span class="hot">Best Sale</span>
+                                                    @elseif ($product->productInfo->sale)
+                                                        <span class="sale">Best Sale</span>
+                                                    @elseif ($product->productInfo->best_sale)
                                                         <span class="best">Best Sale</span>
                                                     @endif
                                                 @endif
@@ -321,7 +333,7 @@
                                     <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="shop-product-right.html">
+                                                <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">
                                                     <img class="default-img" src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
 
                                                     @php
@@ -336,11 +348,19 @@
                                                 <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                @if ($product->productInfo)
-                                                    @if ($product->productInfo->best_sale)
-                                                        <span class="best">Best Sale</span>
+                                                <div class="product-badges product-badges-position product-badges-mrg">
+                                                    @if ($product->productInfo)
+                                                        @if ($product->productInfo->new)
+                                                            <span class="new">Best Sale</span>
+                                                        @elseif ($product->productInfo->hot)
+                                                            <span class="hot">Best Sale</span>
+                                                        @elseif ($product->productInfo->sale)
+                                                            <span class="sale">Best Sale</span>
+                                                        @elseif ($product->productInfo->best_sale)
+                                                            <span class="best">Best Sale</span>
+                                                        @endif
                                                     @endif
-                                                @endif
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
@@ -403,7 +423,7 @@
                             <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
-                                        <a href="shop-product-right.html">
+                                        <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">
                                             <img class="default-img" src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
 
                                             @php
@@ -418,11 +438,19 @@
                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                        @if ($product->productInfo)
-                                            @if ($product->productInfo->best_sale)
-                                                <span class="best">Best Sale</span>
+                                        <div class="product-badges product-badges-position product-badges-mrg">
+                                            @if ($product->productInfo)
+                                                @if ($product->productInfo->new)
+                                                    <span class="new">Best Sale</span>
+                                                @elseif ($product->productInfo->hot)
+                                                    <span class="hot">Best Sale</span>
+                                                @elseif ($product->productInfo->sale)
+                                                    <span class="sale">Best Sale</span>
+                                                @elseif ($product->productInfo->best_sale)
+                                                    <span class="best">Best Sale</span>
+                                                @endif
                                             @endif
-                                        @endif
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="product-content-wrap">
