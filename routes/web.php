@@ -71,8 +71,12 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::controller(AdminController::class)->group(function(){
         Route::get('/admin/logout',  'LogOut')->name('admin.logout');
         Route::get('/admins/profile', 'AdminProfile')->name('admin.profile');
-        Route::post('/admin/update/password',  'AdminUpdatePassword')->name('update.password');
         Route::post('/admin/profile/store',  'AdminProfileStore')->name('admin.profile.store');
+
+
+        Route::get('/admin/password',  'AdminPasswordEdit')->name('admin.password.edit');
+        Route::post('/admin/update/password',  'AdminUpdatePassword')->name('admin.update.password');
+
 
         Route::get('/admins', 'AllAdmin')->name('all.admin');
         Route::get('/add/admin', 'AddAdmin')->name('add.admin');
@@ -338,7 +342,7 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
     //8ray Profile Route
     Route::get('/8ray/user/profile', [ProfileController::class, 'EditEightRayUserProfile'])->name('8ray.user.profile.edit');
     Route::post('/8ray/user/profile/update', [ProfileController::class, 'UpdateEightRayUserProfile'])->name('8ray.user.profile.update');
-    Route::post('/admin/update/password', [ProfileController::class, 'UpdateEightRayUserPassword'])->name('8ray.user.profile.update.password');
+    Route::post('/8ray/update/password', [ProfileController::class, 'UpdateEightRayUserPassword'])->name('8ray.user.profile.update.password');
     Route::get('/8ray/user/order', [ProfileController::class, 'EditEightRayUserOrder'])->name('8ray.user.order');
     Route::get('/8ray/user/password', [ProfileController::class, 'EditEightRayUserPassword'])->name('8ray.user.password');
     Route::get('/8ray/user/track-order', [ProfileController::class, 'EditEightRayUserTrackOrder'])->name('8ray.user.track.order');

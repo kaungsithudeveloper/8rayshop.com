@@ -33,6 +33,14 @@ class AdminController extends Controller
         return view('backend.admin.admins.admin_profile',compact('adminData','roles'));
     }
 
+    public function AdminPasswordEdit()
+    {
+        $id = Auth::user()->id;
+        $adminData = User::find($id);
+        $roles = Role::all();
+        return view('backend.admin.admins.admin_password',compact('adminData','roles'));
+    }
+
     public function AdminUpdatePassword(Request $request)
     {
         // Validation
@@ -63,32 +71,28 @@ class AdminController extends Controller
 
     public function AdminProfileStore(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . Auth::id(),
-            'phone' => 'required|string|max:15|unique:users,phone,' . Auth::id(),
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $user = Auth::user();
+        //dd($request->all());
+        $id = Auth::user()->id;
+        $user = User::find($id);
         $user->name = $request->name;
         $user->username = $request->username;
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->aboutme = $request->aboutme;
 
-        // Handle photo upload
         if ($request->hasFile('photo')) {
             $image = $request->file('photo');
             $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
             $imagePath = 'upload/admin_images/' . $imageName;
 
-            // Save the image and update user's photo field
-            Image::make($image)->resize(300, 400)->save(public_path($imagePath));
+            // Compress and save the image
+            Image::make($image)
+                ->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->save(public_path($imagePath), 75); // Adjust the quality to compress
+
             $user->photo = $imageName;
 
             // Delete the old photo if it exists
@@ -99,10 +103,10 @@ class AdminController extends Controller
 
         $user->save();
 
-        $notification = [
+        $notification = array(
             'message' => 'Admin Profile Updated Successfully',
-            'alert-type' => 'success',
-        ];
+            'alert-type' => 'success'
+        );
 
         return redirect()->back()->with($notification);
     }

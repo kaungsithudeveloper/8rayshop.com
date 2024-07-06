@@ -235,7 +235,7 @@
                                     <a class="dropdown-item" href="{{ route('admin.profile') }}">
                                         <i class="dropdown-icon fe fe-user"></i> Profile
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                                    <a class="dropdown-item" href="{{ route('admin.password.edit') }}">
                                         <i class="dropdown-icon fe fe-user"></i> Change Password
                                     </a>
                                     <a class="dropdown-item" href="{{ url('admin/logout') }}">
