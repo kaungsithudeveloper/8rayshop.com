@@ -275,12 +275,12 @@
                                 <div class="col-12">
                                     <h2 class="section-title style-1 mb-30">Related products</h2>
                                 </div>
-                                @include('frontend.8ray.layout.related_product', ['product' => $product])
+                                @include('frontend.8ray.layout.related_product')
                             </div>
                         </div>
                     </div>
 
-                    @include('frontend.8ray.layout.product_sidebar',['product' => $product])
+                    @include('frontend.8ray.layout.product_sidebar')
 
                 </div>
             </div>

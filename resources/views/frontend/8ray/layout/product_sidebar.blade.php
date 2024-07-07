@@ -21,10 +21,14 @@
     </div>
 
     @php
-        $newProducts = App\Models\Product::orderBy('updated_at', 'desc')->take(6)->get();
+        $productTypeId = 1; // Replace with the desired product_type_id
+         $newProducts = App\Models\Product::where('product_type_id', $productTypeId)->orderBy('updated_at', 'desc')
+                        ->take(6)->get();
     @endphp
 
+
     <!-- Product sidebar Widget -->
+    @if($newProducts)
     <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
         <h5 class="section-title style-1 mb-30">New products</h5>
         @foreach ($newProducts as $product)
@@ -46,4 +50,7 @@
             </div>
         @endforeach
     </div>
+    @else
+        <p>No related product found.</p>
+    @endif
 </div>

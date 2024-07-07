@@ -1,8 +1,10 @@
 
 @php
-    $related_product = App\Models\Product::with('multiImages')->first();
+    $productTypeId = 1;
+    $related_product = App\Models\Product::with('multiImages')->where('product_type_id', $productTypeId)->first();
 @endphp
 
+@if($related_product)
 <div class="col-12">
     <div class="row related-products">
         <div class="col-lg-3 col-md-4 col-12 col-sm-6">
@@ -19,14 +21,14 @@
                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
                     </div>
                     <div class="product-badges product-badges-position product-badges-mrg">
-                        @if ($product->productInfo)
-                            @if ($product->productInfo->new)
+                        @if ($related_product->productInfo)
+                            @if ($related_product->productInfo->new)
                                 <span class="new">Best Sale</span>
-                            @elseif ($product->productInfo->hot)
+                            @elseif ($related_product->productInfo->hot)
                                 <span class="hot">Best Sale</span>
-                            @elseif ($product->productInfo->sale)
+                            @elseif ($related_product->productInfo->sale)
                                 <span class="sale">Best Sale</span>
-                            @elseif ($product->productInfo->best_sale)
+                            @elseif ($related_product->productInfo->best_sale)
                                 <span class="best">Best Sale</span>
                             @endif
                         @endif
@@ -47,3 +49,8 @@
         </div>
     </div>
 </div>
+
+@else
+    <p>No related product found.</p>
+@endif
+
