@@ -32,7 +32,10 @@ class FrontendController extends Controller
 
     public function EightRayFrontend()
     {
-        $newProducts = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+        $productTypeId = 1;
+
+
+        $newProducts = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])->where('product_type_id', $productTypeId)
         ->orderByDesc('updated_at')
         ->take(10)
         ->get();
@@ -41,6 +44,7 @@ class FrontendController extends Controller
             $query->whereNotNull('best_sale');
         })
         ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+        ->where('product_type_id', $productTypeId)
         ->orderByDesc('updated_at')
         ->take(12)
         ->get();
@@ -51,6 +55,7 @@ class FrontendController extends Controller
                 $query->whereIn('id', $categoryIds);
             })
             ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+            ->where('product_type_id', $productTypeId)
             ->orderByDesc('updated_at')
             ->take(10)
             ->get();
@@ -63,6 +68,7 @@ class FrontendController extends Controller
                     $query->where('id', $soundProductCategoryId);
                 })
                 ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+                ->where('product_type_id', $productTypeId)
                 ->orderByDesc('updated_at')
                 ->take(10)
                 ->get();
@@ -73,6 +79,7 @@ class FrontendController extends Controller
             $query->where('id', $productPhotographyId);
         })
         ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+        ->where('product_type_id', $productTypeId)
         ->orderByDesc('updated_at')
         ->take(10)
         ->get();
@@ -93,8 +100,7 @@ class FrontendController extends Controller
     public function brandZone()
     {
         $brands = Brand::latest()->get();
-        $products = Product::with('multiImages')->first(); // Fetch a specific product or use find($id) to fetch by ID
-        return view('frontend.8ray.brandzone', compact('brands', 'products'));
+        return view('frontend.8ray.brandzone', compact('brands'));
     }
 
     public function ProductDetails($id,$slug){

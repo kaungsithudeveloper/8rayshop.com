@@ -17,9 +17,7 @@
                     <div class="text-center">
                         <div id="news-flash" class="d-inline-block">
                             <ul>
-                                <li>Open Daily : 10:00AM to 06:00PM </li>
-                                <li>We sell not only goods but also customers' satisfaction and smile.</li>
-                                <li>Live Sale,Vlogging  ,Game Streaming</li>
+
                             </ul>
                         </div>
                     </div>
