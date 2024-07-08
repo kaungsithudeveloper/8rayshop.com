@@ -174,7 +174,7 @@
 
                                 <!-- Products -->
                                 <li>
-                                    <a href="shop-grid-right.html">Products <i class="fi-rs-angle-down"></i></a>
+                                    <a href="{{ route('8ray.allproduct') }}">Products <i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
                                         @php
                                             $categories = App\Models\ProductCategory::orderBy('product_category_name', 'ASC')->get();

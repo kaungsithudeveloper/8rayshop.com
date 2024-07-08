@@ -32,6 +32,11 @@
                                 $categories = App\Models\ProductCategory::orderBy('product_category_name', 'ASC')->get();
                             @endphp
                             <ul class="dropdown">
+
+                                <li class="menu-item-has-children">
+                                    <a href="{{ route('8ray.allproduct') }}">All Products</a>
+                                </li>
+
                                 @foreach($categories as $category)
                                     @if($category->id == 2)
                                         @if($category->productSubCategories->count() > 0)

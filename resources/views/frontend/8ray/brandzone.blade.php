@@ -14,8 +14,6 @@
 
     <div class="container mt-30 mb-30">
         <div class="row flex-row-reverse">
-
-
             <div class="col-xl-9">
                 <div class="row product-grid">
                     @foreach ($brands as $key => $brand)

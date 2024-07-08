@@ -1,5 +1,4 @@
 
-
 <div class="col-xl-3 primary-sidebar sticky-sidebar mt-30">
 
     @php

@@ -330,6 +330,7 @@ Route::controller(FrontendController::class)->group(function(){
     Route::get('/8ray/contact_us',  'contactUs')->name('8ray.contactus');
     Route::get('/8ray/about_us',  'aboutUs')->name('8ray.aboutus');
     Route::get('/8ray/brandzone',  'brandZone')->name('8ray.brandzone');
+    Route::get('/8ray/allproduct',  'AllProductList')->name('8ray.allproduct');
     Route::get('/product/details/{id}/{slug}', 'ProductDetails')->name('8ray.productDetails');
 
     //Datacentre Route

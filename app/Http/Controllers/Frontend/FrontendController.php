@@ -103,7 +103,19 @@ class FrontendController extends Controller
         return view('frontend.8ray.brandzone', compact('brands'));
     }
 
-    public function ProductDetails($id,$slug){
+
+    public function AllProductList(){
+        $productTypeId = 1;
+        $productsList = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+        ->where('product_type_id', $productTypeId)
+        ->orderByDesc('updated_at')
+        ->get();
+
+        return view('frontend.8ray.product_view', compact('productsList'));
+    }
+
+    public function ProductDetails($id,$slug)
+    {
 
         $product = Product::with([
             'productInfo',
@@ -125,7 +137,7 @@ class FrontendController extends Controller
 
         return view('frontend.8ray.product_details',compact('product', 'commentCount'));
 
-     }
+    }
 
 
     public function DatacentreFrontend()
