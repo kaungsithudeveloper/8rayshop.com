@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\ProductSubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Brand;
@@ -36,6 +38,7 @@ class FrontendController extends Controller
 
 
         $newProducts = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])->where('product_type_id', $productTypeId)
+        ->where('status','active')
         ->orderByDesc('updated_at')
         ->take(10)
         ->get();
@@ -43,6 +46,7 @@ class FrontendController extends Controller
         $featureProducts = Product::whereHas('productInfo', function ($query) {
             $query->whereNotNull('best_sale');
         })
+        ->where('status','active')
         ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
         ->where('product_type_id', $productTypeId)
         ->orderByDesc('updated_at')
@@ -54,6 +58,7 @@ class FrontendController extends Controller
         $productCategories  = Product::whereHas('categories', function ($query) use ($categoryIds) {
                 $query->whereIn('id', $categoryIds);
             })
+            ->where('status','active')
             ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
             ->where('product_type_id', $productTypeId)
             ->orderByDesc('updated_at')
@@ -67,6 +72,7 @@ class FrontendController extends Controller
         $soundProductCategories  = Product::whereHas('categories', function ($query) use ($soundProductCategoryId) {
                     $query->where('id', $soundProductCategoryId);
                 })
+                ->where('status','active')
                 ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
                 ->where('product_type_id', $productTypeId)
                 ->orderByDesc('updated_at')
@@ -78,6 +84,7 @@ class FrontendController extends Controller
         $productPhotographys  = Product::whereHas('categories', function ($query) use ($productPhotographyId) {
             $query->where('id', $productPhotographyId);
         })
+        ->where('status','active')
         ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
         ->where('product_type_id', $productTypeId)
         ->orderByDesc('updated_at')
@@ -107,6 +114,7 @@ class FrontendController extends Controller
     public function AllProductList(){
         $productTypeId = 1;
         $productsList = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+        ->where('status','active')
         ->where('product_type_id', $productTypeId)
         ->orderByDesc('updated_at')
         ->get();
@@ -139,6 +147,41 @@ class FrontendController extends Controller
 
     }
 
+    public function CategoryProductList(Request $request, $id, $slug)
+    {
+        $productTypeId = 1;
+        $categoryProducts = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+                            ->where('status', 'active')
+                            ->where('product_type_id', $productTypeId)
+                            ->whereHas('productCategory', function($query) use ($id) {
+                               $query->where('product_category_id', $id);
+                            })
+                            ->orderBy('id', 'DESC')
+                            ->get();
+
+        $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
+        $breadcat = ProductCategory::findOrFail($id);
+
+        return view('frontend.8ray.category_view', compact('categoryProducts', 'categories', 'breadcat'));
+    }
+
+    public function SubcategoryProductList(Request $request, $id, $slug)
+    {
+        $productTypeId = 1;
+        $subcategoryProducts = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
+                            ->where('status', 'active')
+                            ->where('product_type_id', $productTypeId)
+                            ->whereHas('productSubCategory', function($query) use ($id) {
+                               $query->where('product_subcategory_id', $id);
+                            })
+                            ->orderBy('id', 'DESC')
+                            ->get();
+
+        $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
+        $breadsubcat = ProductSubCategory::findOrFail($id);
+
+        return view('frontend.8ray.subcategory_view', compact('subcategoryProducts', 'categories', 'breadsubcat'));
+    }
 
     public function DatacentreFrontend()
     {

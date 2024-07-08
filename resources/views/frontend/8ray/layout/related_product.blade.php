@@ -1,13 +1,13 @@
 
 @php
     $productTypeId = 1;
-    $related_product = App\Models\Product::with('multiImages')->where('product_type_id', $productTypeId)->first();
+    $related_product = App\Models\Product::with('multiImages')->where('status','active')->where('product_type_id', $productTypeId)->first();
 @endphp
 
 @if($related_product)
 <div class="col-12">
     <div class="row related-products">
-        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+        <div class="col-lg-3 col-md-4 col-6 col-sm-6">
             <div class="product-cart-wrap hover-up">
                 <div class="product-img-action-wrap">
                     <div class="product-img product-img-zoom">

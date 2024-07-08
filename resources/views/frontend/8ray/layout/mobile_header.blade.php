@@ -41,7 +41,7 @@
                                     @if($category->id == 2)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -49,7 +49,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -57,7 +57,7 @@
                                     @if($category->id == 3)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -65,7 +65,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -73,7 +73,7 @@
                                     @if($category->id == 4)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -81,7 +81,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -97,7 +97,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -106,7 +106,7 @@
                                     @if($category->id == 6)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -114,7 +114,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -122,7 +122,7 @@
                                     @if($category->id == 7)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -130,7 +130,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -138,7 +138,7 @@
                                     @if($category->id == 8)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -146,7 +146,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -154,7 +154,7 @@
                                     @if($category->id == 9)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -162,7 +162,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -171,7 +171,7 @@
                                     @if($category->id == 10)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -179,7 +179,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -188,7 +188,7 @@
                                     @if($category->id == 11)
                                         @if($category->productSubCategories->count() > 0)
                                             <li class="menu-item-has-children">
-                                                <a href="#">{{ $category->product_category_name }}</a>
+                                                <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a>
                                                  <ul class="dropdown">
                                                     @foreach($category->productSubCategories as $subcategory)
                                                          <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
@@ -196,7 +196,7 @@
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="shop-filter.html">{{ $category->product_category_name }}</a></li>
+                                            <li><a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }}</a></li>
                                         @endif
                                     @endif
                                 @endforeach

@@ -2,7 +2,11 @@
 <div class="col-xl-3 primary-sidebar sticky-sidebar mt-30">
 
     @php
-        $categories = App\Models\ProductCategory::where('id', '!=', 1)->withCount('products')->get();
+        $categories = App\Models\ProductCategory::where('id', '!=', 1)
+            ->withCount(['products as active_products_count' => function ($query) {
+                $query->where('status', 'active');
+            }])
+            ->get();
     @endphp
 
     <div class="sidebar-widget widget-category-2 mb-30">
@@ -12,8 +16,8 @@
                 <li>
                     <a href="shop-grid-right.html">
                         <img src="{{ !empty($category->product_category_image) ? url('upload/product_category_images/' . $category->product_category_image) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
-                            {{ $category->product_category_name }}
-                    </a><span class="count">{{ $category->products_count }}</span>
+                        {{ $category->product_category_name }}
+                    </a><span class="count">{{ $category->active_products_count }}</span>
                 </li>
             @endforeach
         </ul>
@@ -21,7 +25,7 @@
 
     @php
         $productTypeId = 1; // Replace with the desired product_type_id
-         $newProducts = App\Models\Product::where('product_type_id', $productTypeId)->orderBy('updated_at', 'desc')
+         $newProducts = App\Models\Product::where('status','active')->where('product_type_id', $productTypeId)->orderBy('updated_at', 'desc')
                         ->take(6)->get();
     @endphp
 
