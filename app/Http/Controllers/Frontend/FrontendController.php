@@ -106,18 +106,30 @@ class FrontendController extends Controller
 
     public function brandZone()
     {
-        $brands = Brand::latest()->orderByDesc('updated_at')->paginate(6);
+        $brands = Brand::with('products')->latest()->orderByDesc('updated_at')->paginate(18);
         return view('frontend.8ray.brandzone', compact('brands'));
     }
 
+    public function brandZoneProductList($id, $slug)
+    {
+        // Fetch the brand by ID (and validate if necessary)
+        $brand = Brand::findOrFail($id);
 
-    public function AllProductList(){
+        // Load products associated with this brand
+        $products = $brand->products()->paginate(10); // Adjust pagination as needed
+
+        return view('frontend.8ray.brandzone_product_list', compact('brand', 'products'));
+    }
+
+
+    public function AllProductList()
+    {
         $productTypeId = 1;
         $productsList = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
-        ->where('status','active')
-        ->where('product_type_id', $productTypeId)
-        ->orderByDesc('updated_at')
-        ->get();
+            ->where('status', 'active')
+            ->where('product_type_id', $productTypeId)
+            ->orderByDesc('updated_at')
+            ->paginate(16);
 
         return view('frontend.8ray.product_view', compact('productsList'));
     }
@@ -157,7 +169,7 @@ class FrontendController extends Controller
                                $query->where('product_category_id', $id);
                             })
                             ->orderBy('id', 'DESC')
-                            ->paginate(16); // Use paginate instead of get()
+                            ->paginate(16);
 
         $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
         $breadcat = ProductCategory::findOrFail($id);

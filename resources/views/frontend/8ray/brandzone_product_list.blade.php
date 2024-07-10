@@ -8,9 +8,7 @@
         <div class="container">
             <div class="breadcrumb">
                 <a href="{{ route('8ray.frontend') }}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
-                <span></span> <a href="{{ url('product/category/'.$breadcat->id.'/'.$breadcat->product_category_slug) }}" rel="nofollow">
-                    {{ $breadcat->product_category_name }}
-                </a>
+                <span></span> brandzone_product_list
             </div>
         </div>
     </div>
@@ -24,7 +22,7 @@
                     <div class="col-xl-9 mt-30">
                         <div class="row product-grid">
 
-                            @foreach ($categoryProducts as $product)
+                            @foreach ($products as $product)
                                 <div class="col-lg-3 col-md-3 col-6 col-sm-6">
                                     <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn card-container" data-wow-delay=".1s">
                                         <div class="product-img-action-wrap">
@@ -41,7 +39,7 @@
                                             <div class="product-action-1" id="product-action-1">
                                                 <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 @if ($product->productInfo)
@@ -88,50 +86,49 @@
 
                         </div>
                         <!--product grid-->
-                        <!-- Pagination Area -->
                         <div class="pagination-area mt-20 mb-20">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
                                     <!-- Previous Page Link -->
-                                    @if ($categoryProducts->onFirstPage())
+                                    @if ($products->onFirstPage())
                                         <li class="page-item disabled">
                                             <span class="page-link"><i class="fi-rs-arrow-small-left"></i></span>
                                         </li>
                                     @else
                                         <li class="page-item">
-                                            <a class="page-link" href="{{ $categoryProducts->previousPageUrl() }}" rel="prev"><i class="fi-rs-arrow-small-left"></i></a>
+                                            <a class="page-link" href="{{ $products->previousPageUrl() }}" rel="prev"><i class="fi-rs-arrow-small-left"></i></a>
                                         </li>
                                     @endif
 
                                     <!-- First Page -->
-                                    @if ($categoryProducts->currentPage() > 2)
-                                        <li class="page-item"><a class="page-link" href="{{ $categoryProducts->url(1) }}">1</a></li>
-                                        @if ($categoryProducts->currentPage() > 3)
+                                    @if ($products->currentPage() > 2)
+                                        <li class="page-item"><a class="page-link" href="{{ $products->url(1) }}">1</a></li>
+                                        @if ($products->currentPage() > 3)
                                             <li class="page-item"><span class="page-link dot">...</span></li>
                                         @endif
                                     @endif
 
                                     <!-- Pages around the Current Page -->
-                                    @for ($i = max(1, $categoryProducts->currentPage() - 1); $i <= min($categoryProducts->lastPage(), $categoryProducts->currentPage() + 1); $i++)
-                                        @if ($i == $categoryProducts->currentPage())
+                                    @for ($i = max(1, $products->currentPage() - 1); $i <= min($products->lastPage(), $products->currentPage() + 1); $i++)
+                                        @if ($i == $products->currentPage())
                                             <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
                                         @else
-                                            <li class="page-item"><a class="page-link" href="{{ $categoryProducts->url($i) }}">{{ $i }}</a></li>
+                                            <li class="page-item"><a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a></li>
                                         @endif
                                     @endfor
 
                                     <!-- Last Page -->
-                                    @if ($categoryProducts->currentPage() < $categoryProducts->lastPage() - 1)
-                                        @if ($categoryProducts->currentPage() < $categoryProducts->lastPage() - 2)
+                                    @if ($products->currentPage() < $products->lastPage() - 1)
+                                        @if ($products->currentPage() < $products->lastPage() - 2)
                                             <li class="page-item"><span class="page-link dot">...</span></li>
                                         @endif
-                                        <li class="page-item"><a class="page-link" href="{{ $categoryProducts->url($categoryProducts->lastPage()) }}">{{ $categoryProducts->lastPage() }}</a></li>
+                                        <li class="page-item"><a class="page-link" href="{{ $products->url($products->lastPage()) }}">{{ $products->lastPage() }}</a></li>
                                     @endif
 
                                     <!-- Next Page Link -->
-                                    @if ($categoryProducts->hasMorePages())
+                                    @if ($products->hasMorePages())
                                         <li class="page-item">
-                                            <a class="page-link" href="{{ $categoryProducts->nextPageUrl() }}" rel="next"><i class="fi-rs-arrow-small-right"></i></a>
+                                            <a class="page-link" href="{{ $products->nextPageUrl() }}" rel="next"><i class="fi-rs-arrow-small-right"></i></a>
                                         </li>
                                     @else
                                         <li class="page-item disabled">
@@ -158,6 +155,14 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
 
 
 </main>

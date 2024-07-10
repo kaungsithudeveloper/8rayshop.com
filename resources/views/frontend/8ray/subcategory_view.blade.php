@@ -96,10 +96,10 @@
                         <div class="pagination-area mt-20 mb-20">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
-                                    {{-- Previous Page Link --}}
+                                    <!-- Previous Page Link -->
                                     @if ($subcategoryProducts->onFirstPage())
-                                        <li class="page-item disabled" aria-disabled="true">
-                                            <a class="page-link"><i class="fi-rs-arrow-small-left"></i></a>
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="fi-rs-arrow-small-left"></i></span>
                                         </li>
                                     @else
                                         <li class="page-item">
@@ -107,28 +107,45 @@
                                         </li>
                                     @endif
 
-                                    {{-- Pagination Elements --}}
-                                    @foreach ($subcategoryProducts->links()->elements[0] as $page => $url)
-                                        @if ($page == $subcategoryProducts->currentPage())
-                                            <li class="page-item active"><a class="page-link">{{ $page }}</a></li>
-                                        @else
-                                            <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
+                                    <!-- First Page -->
+                                    @if ($subcategoryProducts->currentPage() > 2)
+                                        <li class="page-item"><a class="page-link" href="{{ $subcategoryProducts->url(1) }}">1</a></li>
+                                        @if ($subcategoryProducts->currentPage() > 3)
+                                            <li class="page-item"><span class="page-link dot">...</span></li>
                                         @endif
-                                    @endforeach
+                                    @endif
 
-                                    {{-- Next Page Link --}}
+                                    <!-- Pages around the Current Page -->
+                                    @for ($i = max(1, $subcategoryProducts->currentPage() - 1); $i <= min($subcategoryProducts->lastPage(), $subcategoryProducts->currentPage() + 1); $i++)
+                                        @if ($i == $subcategoryProducts->currentPage())
+                                            <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
+                                        @else
+                                            <li class="page-item"><a class="page-link" href="{{ $subcategoryProducts->url($i) }}">{{ $i }}</a></li>
+                                        @endif
+                                    @endfor
+
+                                    <!-- Last Page -->
+                                    @if ($subcategoryProducts->currentPage() < $subcategoryProducts->lastPage() - 1)
+                                        @if ($subcategoryProducts->currentPage() < $subcategoryProducts->lastPage() - 2)
+                                            <li class="page-item"><span class="page-link dot">...</span></li>
+                                        @endif
+                                        <li class="page-item"><a class="page-link" href="{{ $subcategoryProducts->url($subcategoryProducts->lastPage()) }}">{{ $subcategoryProducts->lastPage() }}</a></li>
+                                    @endif
+
+                                    <!-- Next Page Link -->
                                     @if ($subcategoryProducts->hasMorePages())
                                         <li class="page-item">
                                             <a class="page-link" href="{{ $subcategoryProducts->nextPageUrl() }}" rel="next"><i class="fi-rs-arrow-small-right"></i></a>
                                         </li>
                                     @else
-                                        <li class="page-item disabled" aria-disabled="true">
-                                            <a class="page-link"><i class="fi-rs-arrow-small-right"></i></a>
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="fi-rs-arrow-small-right"></i></span>
                                         </li>
                                     @endif
                                 </ul>
                             </nav>
                         </div>
+
 
                         <div class="row mt-60">
                             <div class="col-12">

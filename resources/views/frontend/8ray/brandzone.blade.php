@@ -23,7 +23,7 @@
                         <div class="product-cart-wrap mb-30">
                             <div class="product-img-action-wrap">
                                 <div class="product-img product-img-zoom">
-                                    <a href="shop-product-right.html">
+                                    <a href="{{ route('8ray.brandzone.productList', ['id' => $product->id, 'slug' => $product->product_slug]) }}">
                                         <img class="default-img" src="{{ !empty($brand->brand_image) ? url('upload/brand_images/' . $brand->brand_image) : url('upload/profile.jpg') }}" alt="" />
                                     </a>
                                 </div>
@@ -49,30 +49,28 @@
                                 </li>
                             @endif
 
-                            <!-- First Page Link -->
+                            <!-- First Page -->
                             @if ($brands->currentPage() > 2)
                                 <li class="page-item"><a class="page-link" href="{{ $brands->url(1) }}">1</a></li>
-                            @endif
-
-                            <!-- Middle Pages with Dots -->
-                            @if ($brands->currentPage() > 3)
-                                <li class="page-item"><span class="page-link dot">...</span></li>
-                            @endif
-
-                            @foreach ($brands->getUrlRange(max(2, $brands->currentPage() - 1), min($brands->lastPage() - 1, $brands->currentPage() + 1)) as $page => $url)
-                                @if ($page == $brands->currentPage())
-                                    <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
-                                @else
-                                    <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
+                                @if ($brands->currentPage() > 3)
+                                    <li class="page-item"><span class="page-link dot">...</span></li>
                                 @endif
-                            @endforeach
-
-                            @if ($brands->currentPage() < $brands->lastPage() - 2)
-                                <li class="page-item"><span class="page-link dot">...</span></li>
                             @endif
 
-                            <!-- Last Page Link -->
+                            <!-- Pages around the current page -->
+                            @for ($i = max(1, $brands->currentPage() - 1); $i <= min($brands->lastPage(), $brands->currentPage() + 1); $i++)
+                                @if ($i == $brands->currentPage())
+                                    <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
+                                @else
+                                    <li class="page-item"><a class="page-link" href="{{ $brands->url($i) }}">{{ $i }}</a></li>
+                                @endif
+                            @endfor
+
+                            <!-- Last Page -->
                             @if ($brands->currentPage() < $brands->lastPage() - 1)
+                                @if ($brands->currentPage() < $brands->lastPage() - 2)
+                                    <li class="page-item"><span class="page-link dot">...</span></li>
+                                @endif
                                 <li class="page-item"><a class="page-link" href="{{ $brands->url($brands->lastPage()) }}">{{ $brands->lastPage() }}</a></li>
                             @endif
 
@@ -89,8 +87,6 @@
                         </ul>
                     </nav>
                 </div>
-
-
 
                 <div class="row mt-60">
                     <div class="col-12">

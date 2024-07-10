@@ -89,20 +89,56 @@
                         <div class="pagination-area mt-20 mb-20">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#"><i class="fi-rs-arrow-small-left"></i></a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#"><i class="fi-rs-arrow-small-right"></i></a>
-                                    </li>
+                                    <!-- Previous Page Link -->
+                                    @if ($productsList->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="fi-rs-arrow-small-left"></i></span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $productsList->previousPageUrl() }}" rel="prev"><i class="fi-rs-arrow-small-left"></i></a>
+                                        </li>
+                                    @endif
+
+                                    <!-- First Page -->
+                                    @if ($productsList->currentPage() > 2)
+                                        <li class="page-item"><a class="page-link" href="{{ $productsList->url(1) }}">1</a></li>
+                                        @if ($productsList->currentPage() > 3)
+                                            <li class="page-item"><span class="page-link dot">...</span></li>
+                                        @endif
+                                    @endif
+
+                                    <!-- Pages around the Current Page -->
+                                    @for ($i = max(1, $productsList->currentPage() - 1); $i <= min($productsList->lastPage(), $productsList->currentPage() + 1); $i++)
+                                        @if ($i == $productsList->currentPage())
+                                            <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
+                                        @else
+                                            <li class="page-item"><a class="page-link" href="{{ $productsList->url($i) }}">{{ $i }}</a></li>
+                                        @endif
+                                    @endfor
+
+                                    <!-- Last Page -->
+                                    @if ($productsList->currentPage() < $productsList->lastPage() - 1)
+                                        @if ($productsList->currentPage() < $productsList->lastPage() - 2)
+                                            <li class="page-item"><span class="page-link dot">...</span></li>
+                                        @endif
+                                        <li class="page-item"><a class="page-link" href="{{ $productsList->url($productsList->lastPage()) }}">{{ $productsList->lastPage() }}</a></li>
+                                    @endif
+
+                                    <!-- Next Page Link -->
+                                    @if ($productsList->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $productsList->nextPageUrl() }}" rel="next"><i class="fi-rs-arrow-small-right"></i></a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="fi-rs-arrow-small-right"></i></span>
+                                        </li>
+                                    @endif
                                 </ul>
                             </nav>
                         </div>
+
 
                         <div class="row mt-60">
                             <div class="col-12">
