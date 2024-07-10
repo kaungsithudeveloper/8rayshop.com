@@ -106,7 +106,7 @@ class FrontendController extends Controller
 
     public function brandZone()
     {
-        $brands = Brand::latest()->get();
+        $brands = Brand::latest()->orderByDesc('updated_at')->paginate(6);
         return view('frontend.8ray.brandzone', compact('brands'));
     }
 
@@ -157,7 +157,7 @@ class FrontendController extends Controller
                                $query->where('product_category_id', $id);
                             })
                             ->orderBy('id', 'DESC')
-                            ->get();
+                            ->paginate(16); // Use paginate instead of get()
 
         $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
         $breadcat = ProductCategory::findOrFail($id);
@@ -172,15 +172,16 @@ class FrontendController extends Controller
                             ->where('status', 'active')
                             ->where('product_type_id', $productTypeId)
                             ->whereHas('productSubCategory', function($query) use ($id) {
-                               $query->where('product_subcategory_id', $id);
+                                $query->where('product_subcategory_id', $id);
                             })
                             ->orderBy('id', 'DESC')
-                            ->get();
+                            ->paginate(16); // Use paginate instead of get()
 
         $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
         $breadsubcat = ProductSubCategory::findOrFail($id);
+        $breadcat = $breadsubcat->productCategories()->firstOrFail();
 
-        return view('frontend.8ray.subcategory_view', compact('subcategoryProducts', 'categories', 'breadsubcat'));
+        return view('frontend.8ray.subcategory_view', compact('subcategoryProducts', 'categories', 'breadcat', 'breadsubcat'));
     }
 
     public function DatacentreFrontend()

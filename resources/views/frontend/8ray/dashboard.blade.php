@@ -60,7 +60,7 @@
                 <div class="row product-grid-4">
                     <!--end product card-->
                     @foreach ($newProducts as $product)
-                        <div class="col-lg-2 col-md-3 col-6 col-sm-6">
+                        <div class="col-lg-3 col-md-3 col-6 col-sm-6">
                             <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn card-container" data-wow-delay=".1s">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
@@ -73,7 +73,7 @@
                                             <img class="hover-img" src="{{ !empty($multiImage) ? url('upload/product_multi_images/' . $multiImage->photo_name) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
                                         </a>
                                     </div>
-                                    <div class="product-action-1">
+                                    <div class="product-action-1" id="product-action-1">
                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                         <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
@@ -164,7 +164,7 @@
                                                         <img class="hover-img" src="{{ !empty($multiImage) ? url('upload/product_multi_images/' . $multiImage->photo_name) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
                                                     </a>
                                                 </div>
-                                                <div class="product-action-1">
+                                                <div class="product-action-1" id="product-action-1">
                                                     <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
                                                     <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                     <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
@@ -240,7 +240,7 @@
                     <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                         <div class="row product-grid-4">
                             @foreach ($productCategories as $product)
-                                <div class="col-lg-2 col-md-3 col-6 col-sm-6">
+                                <div class="col-lg-3 col-md-3 col-6 col-sm-6">
                                     <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
@@ -253,7 +253,7 @@
                                                     <img class="hover-img" src="{{ !empty($multiImage) ? url('upload/product_multi_images/' . $multiImage->photo_name) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
                                                 </a>
                                             </div>
-                                            <div class="product-action-1">
+                                            <div class="product-action-1" id="product-action-1">
                                                 <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
                                                 <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
@@ -329,7 +329,7 @@
                         <div class="row product-grid-4">
 
                             @foreach ($soundProductCategories as $product)
-                                <div class="col-lg-2 col-md-3 col-6 col-sm-6">
+                                <div class="col-lg-4 col-md-3 col-6 col-sm-6">
                                     <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
@@ -342,7 +342,7 @@
                                                     <img class="hover-img" src="{{ !empty($multiImage) ? url('upload/product_multi_images/' . $multiImage->photo_name) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
                                                 </a>
                                             </div>
-                                            <div class="product-action-1">
+                                            <div class="product-action-1" id="product-action-1">
                                                 <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
                                                 <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
@@ -419,7 +419,7 @@
                     <div class="row product-grid-4">
 
                         @foreach ($productPhotographys as $product)
-                        <div class="col-lg-2 col-md-3 col-6 col-sm-6">
+                        <div class="col-lg-4 col-md-3 col-6 col-sm-6">
                             <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
@@ -432,7 +432,7 @@
                                             <img class="hover-img" src="{{ !empty($multiImage) ? url('upload/product_multi_images/' . $multiImage->photo_name) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
                                         </a>
                                     </div>
-                                    <div class="product-action-1">
+                                    <div class="product-action-1" id="product-action-1">
                                         <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>

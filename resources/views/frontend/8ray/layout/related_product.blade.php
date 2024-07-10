@@ -15,10 +15,10 @@
                             <img class="default-img" src="{{ !empty($related_product->product_photo) ? url('upload/product_images/' . $related_product->product_photo) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="" />
                         </a>
                     </div>
-                    <div class="product-action-1">
-                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-search"></i></a>
-                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                        <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
+                    <div class="product-action-1" id="product-action-1">
+                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                        <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                     </div>
                     <div class="product-badges product-badges-position product-badges-mrg">
                         @if ($related_product->productInfo)

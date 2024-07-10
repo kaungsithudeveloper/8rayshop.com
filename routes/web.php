@@ -335,6 +335,7 @@ Route::controller(FrontendController::class)->group(function(){
     Route::get('/product/category/{id}/{slug}','CategoryProductList')->name('8ray.productCategoryList');
     Route::get('/product/subcategory/{id}/{slug}', 'SubcategoryProductList')->name('8ray.productSubcategoryList');
 
+
     //Datacentre Route
     Route::get('/datacentre',  'DatacentreFrontend')->name('datacentre.frontend');
 

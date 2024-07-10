@@ -7,7 +7,9 @@
         <div class="container">
             <div class="breadcrumb">
                 <a href="{{ route('8ray.frontend') }}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
-                <span></span> Pages <span></span> Login
+                <span></span> <a href="{{ route('8ray.brandzone') }}" rel="nofollow">
+                    Brands
+                </a>
             </div>
         </div>
     </div>
@@ -32,24 +34,64 @@
                     <!--end product card-->
                 </div>
 
-                <!--product grid-->
+                <!-- Pagination Area -->
                 <div class="pagination-area mt-20 mb-20">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item">
-                                <a class="page-link" href="#"><i class="fi-rs-arrow-small-left"></i></a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">6</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"><i class="fi-rs-arrow-small-right"></i></a>
-                            </li>
+                            <!-- Previous Page Link -->
+                            @if ($brands->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link"><i class="fi-rs-arrow-small-left"></i></span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $brands->previousPageUrl() }}" rel="prev"><i class="fi-rs-arrow-small-left"></i></a>
+                                </li>
+                            @endif
+
+                            <!-- First Page Link -->
+                            @if ($brands->currentPage() > 2)
+                                <li class="page-item"><a class="page-link" href="{{ $brands->url(1) }}">1</a></li>
+                            @endif
+
+                            <!-- Middle Pages with Dots -->
+                            @if ($brands->currentPage() > 3)
+                                <li class="page-item"><span class="page-link dot">...</span></li>
+                            @endif
+
+                            @foreach ($brands->getUrlRange(max(2, $brands->currentPage() - 1), min($brands->lastPage() - 1, $brands->currentPage() + 1)) as $page => $url)
+                                @if ($page == $brands->currentPage())
+                                    <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
+                                @else
+                                    <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
+                                @endif
+                            @endforeach
+
+                            @if ($brands->currentPage() < $brands->lastPage() - 2)
+                                <li class="page-item"><span class="page-link dot">...</span></li>
+                            @endif
+
+                            <!-- Last Page Link -->
+                            @if ($brands->currentPage() < $brands->lastPage() - 1)
+                                <li class="page-item"><a class="page-link" href="{{ $brands->url($brands->lastPage()) }}">{{ $brands->lastPage() }}</a></li>
+                            @endif
+
+                            <!-- Next Page Link -->
+                            @if ($brands->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $brands->nextPageUrl() }}" rel="next"><i class="fi-rs-arrow-small-right"></i></a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link"><i class="fi-rs-arrow-small-right"></i></span>
+                                </li>
+                            @endif
                         </ul>
                     </nav>
                 </div>
+
+
+
                 <div class="row mt-60">
                     <div class="col-12">
                         <h2 class="section-title style-1 mb-30">Related products</h2>
