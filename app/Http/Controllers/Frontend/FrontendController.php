@@ -110,15 +110,16 @@ class FrontendController extends Controller
         return view('frontend.8ray.brandzone', compact('brands'));
     }
 
-    public function brandZoneProductList($id, $slug)
+    public function BrandZoneProductList(Request $request, $id, $slug)
     {
-        // Fetch the brand by ID (and validate if necessary)
-        $brand = Brand::findOrFail($id);
+        $productTypeId = 1;
+        $breadbrands = Brand::findOrFail($id);
+        $brand = Brand::with(['products' => function ($query) {
+            $query->orderByDesc('updated_at');
+        }])->findOrFail($id);
 
-        // Load products associated with this brand
-        $products = $brand->products()->paginate(10); // Adjust pagination as needed
-
-        return view('frontend.8ray.brandzone_product_list', compact('brand', 'products'));
+        $productsList = $brand->products()->where('product_type_id', $productTypeId)->where('status', 'active')->paginate(16);
+        return view('frontend.8ray.brandzone_product_list',compact('breadbrands','productsList'));
     }
 
 

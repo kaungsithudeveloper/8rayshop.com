@@ -23,7 +23,7 @@
                         <div class="product-cart-wrap mb-30">
                             <div class="product-img-action-wrap">
                                 <div class="product-img product-img-zoom">
-                                    <a href="{{ route('8ray.brandzone.productList', ['id' => $product->id, 'slug' => $product->product_slug]) }}">
+                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
                                         <img class="default-img" src="{{ !empty($brand->brand_image) ? url('upload/brand_images/' . $brand->brand_image) : url('upload/profile.jpg') }}" alt="" />
                                     </a>
                                 </div>
