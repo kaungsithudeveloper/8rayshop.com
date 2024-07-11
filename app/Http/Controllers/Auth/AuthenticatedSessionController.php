@@ -63,7 +63,12 @@ class AuthenticatedSessionController extends Controller
                 $url = '/employee/page';
             }
 
-            return redirect()->intended($url);
+            $notification = array(
+                'message' => 'Successfully logged in',
+                'alert-type' => 'success',
+            );
+
+            return redirect()->intended($url)->with($notification);
         } catch (ValidationException $e) {
             $notification = array(
                 'message' => 'Username, Email or Password are incorrect',
@@ -95,6 +100,11 @@ class AuthenticatedSessionController extends Controller
             $url = '/employee/login';
         }
 
-        return redirect('/');
+        $notification = array(
+            'message' => 'Successfully logged Out',
+            'alert-type' => 'success',
+        );
+
+        return redirect('/')->with($notification);
     }
 }

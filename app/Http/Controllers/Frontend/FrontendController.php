@@ -29,7 +29,12 @@ class FrontendController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/8ray/login');
+        $notification = array(
+            'message' => 'Successfully logged Out',
+            'alert-type' => 'success',
+        );
+
+        return redirect('/8ray/login')->with($notification);
     }
 
     public function EightRayFrontend()
