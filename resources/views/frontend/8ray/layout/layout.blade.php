@@ -101,15 +101,101 @@
         @endif
     </script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-        $.ajaxSetup({
-            headers:{
-                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('centent')
+    // Start product view with Modal
+    function productView(id){
+        $.ajax({
+            type: 'GET',
+            url: '/product/view/modal/' + id,
+            dataType: 'json',
+            success: function(data){
+                $('#pname').text(data.product.product_name);
+                $('#pcode').text(data.product.product_code);
+                // Display brand name
+                if (data.product.brands && data.product.brands.length > 0) {
+                    $('#pbrand').text(data.product.brands[0].brand_name); // Assuming each product has one brand
+                } else {
+                    $('#pbrand').text('N/A');
+                }
+
+                // Display category names
+                if (data.product.categories && data.product.categories.length > 0) {
+                    var categories = data.product.categories.map(function(category) {
+                        return category.product_category_name;
+                    }).join(', ');
+                    $('#pcategory').text(categories);
+                } else {
+                    $('#pcategory').text('N/A');
+                }
+
+                var sellingPrice = parseFloat(data.product.price.selling_price);
+                var discountPrice = parseFloat(data.product.price.discount_price);
+                var finalPrice = sellingPrice;
+                var percentOff = 0;
+
+                if (discountPrice && discountPrice > 0) {
+                    finalPrice = sellingPrice - discountPrice;
+                    percentOff = ((discountPrice / sellingPrice) * 100).toFixed(0);
+                    $('#oldprice').text(sellingPrice +' Ks' ).show();
+                    $('#offprice').text(percentOff + '% Off').show();
+                } else {
+                    $('#oldprice').hide();
+                    $('#offprice').hide();
+                }
+
+                $('#pprice').text( finalPrice + ' Ks');
+
+                // Display stock information
+                var totalStock = 0;
+                if (data.product.stocks && data.product.stocks.length > 0) {
+                    data.product.stocks.forEach(function(stock) {
+                        totalStock += stock.stock_qty;
+                    });
+                }
+
+                // Display colors
+                $('#color').empty();
+                if (data.product.colors && data.product.colors.length > 0) {
+                    data.product.colors.forEach(function(color) {
+                        var colorItem = '<option value="' + color.color_name + '">' + color.color_name + '</option>';
+                        $('#color').append(colorItem);
+                    });
+                    $('#colorArea').show();
+                } else {
+                    $('#colorArea').hide();
+                }
+
+
+                if (totalStock > 0) {
+                    $('#aviable').text( ' InStock'  ).show();
+                    $('#stockout').hide();
+                } else {
+                    $('#aviable').hide();
+                    $('#stockout').text('Out of Stock').show();
+                }
+
+                // Display main product image
+                if (data.product.product_photo) {
+                    var mainImagePath = '{{ url('/') }}/upload/product_images/' + data.product.product_photo;
+                    $('#pimage').attr('src', mainImagePath);
+                } else {
+                    $('#pimage').attr('src', '{{ asset('images/no-image.jpg') }}');
+                }
             }
-        })
-        /// Start product view with Modal
-    </script>
+        });
+    }
+</script>
+
+
+
+
+
 
     @stack('scripts')
 </body>

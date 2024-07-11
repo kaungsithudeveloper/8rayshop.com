@@ -82,4 +82,9 @@ class Product extends Model
     {
         return $this->stocks()->sum('stock_qty');
     }
+
+    public function colors()
+    {
+        return $this->belongsToMany(ProductColor::class, 'product_color_belongs', 'product_id', 'product_color_id');
+    }
 }

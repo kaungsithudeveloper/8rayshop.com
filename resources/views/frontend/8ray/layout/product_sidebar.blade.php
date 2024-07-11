@@ -39,16 +39,10 @@
                 <div class="image">
                     <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('frontend/8ray/imgs/shop/product-1-2.jpg') }}" alt="#" />
                 </div>
-                <div class="content pt-10">
-                    <h5><a href="shop-product-detail.html">{{ $product->product_name }}</a></h5>
-                    <div class="product-price">
-                        @if (!empty($product->price->discount_price))
-                            <span class="old-price">${{ $product->price->selling_price }}</span>
-                            <span>{{ $product->price->discount_price }}Ks</span>
-                        @else
-                            <span>{{ $product->price->selling_price }}Ks</span>
-                        @endif
-                    </div>
+
+
+                <div class="product-content-wrap">
+                    <h2><a href="shop-product-right.html" tabindex="0">{{ $product->product_name }}</a></h2>
                 </div>
             </div>
         @endforeach

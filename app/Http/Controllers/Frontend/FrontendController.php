@@ -202,6 +202,43 @@ class FrontendController extends Controller
         return view('frontend.8ray.subcategory_view', compact('subcategoryProducts', 'categories', 'breadcat', 'breadsubcat'));
     }
 
+
+    public function ProductViewAjax($id)
+    {
+        $product = Product::with([
+            'productInfo',
+            'brands',
+            'categories',
+            'productSubCategory',
+            'multiImages',
+            'price',
+            'stocks.branch',
+            'comments' => function($query) {
+                $query->whereNull('parent_id');
+            },
+            'colors',
+            'comments.user',
+            'comments.replies.user' // Eager load replies and their users
+        ])->findOrFail($id);
+
+        return response()->json([
+
+            'product' => $product,
+
+
+        ]);
+
+    }
+
+
+
+
+
+
+
+
+
+
     public function DatacentreFrontend()
     {
         return view('frontend.datacentre.dashboard');

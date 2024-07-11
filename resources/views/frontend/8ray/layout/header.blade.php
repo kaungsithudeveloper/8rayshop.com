@@ -161,7 +161,7 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="{{ url('frontend/8ray/imgs/theme/logo-darks.png') }}" alt="logo" /></a>
+                    <a href="index.html"><img src="{{ url('frontend/8ray/imgs/theme/logo-darks.png') }}" id="logo" alt="logo" /></a>
                 </div>
 
                 <!-- For Big Screen -->
@@ -366,7 +366,7 @@
                                 <!-- Brands -->
                                 <li><a href="{{ route('8ray.brandzone') }}">Brand Zone</a></li>
 
-                                <!-- Blogs -->
+                                <!-- Blogs
                                 <li>
                                     <a href="blog-category-grid.html">Blog <i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
@@ -384,6 +384,7 @@
                                         </li>
                                     </ul>
                                 </li>
+                                -->
 
                                 <li><a href="{{ route('8ray.aboutus') }}">About</a></li>
 

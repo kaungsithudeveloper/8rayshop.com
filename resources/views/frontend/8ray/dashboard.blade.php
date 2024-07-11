@@ -76,7 +76,7 @@
                                     <div class="product-action-1" id="product-action-1">
                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fi-rs-eye"></i></a>
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
                                         @if ($product->productInfo)
@@ -103,9 +103,14 @@
                                         <div class="product-rating" style="width: 80%"></div>
                                     </div>
                                     <div class="product-price">
-                                        @if (!empty($product->price->discount_price))
+                                        @if (!empty($product->price->discount_price) && $product->price->discount_price > 0)
                                             <span class="old-price">${{ $product->price->selling_price }}</span>
-                                            <span>{{ $product->price->discount_price }}Ks</span>
+                                            <span>
+                                                @php
+                                                    $finalPrice = $product->price->selling_price - $product->price->discount_price;
+                                                @endphp
+                                                {{ $finalPrice }}Ks
+                                            </span>
                                         @else
                                             <span>{{ $product->price->selling_price }}Ks</span>
                                         @endif
@@ -165,7 +170,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-action-1" id="product-action-1">
-                                                    <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                    <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fi-rs-eye"></i></a>
                                                     <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                     <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                                 </div>
@@ -187,10 +192,15 @@
                                                 <div class="product-rate d-inline-block">
                                                     <div class="product-rating" style="width: 80%"></div>
                                                 </div>
-                                                <div class="product-price mt-10">
-                                                    @if (!empty($product->price->discount_price))
+                                                <div class="product-price">
+                                                    @if (!empty($product->price->discount_price) && $product->price->discount_price > 0)
                                                         <span class="old-price">${{ $product->price->selling_price }}</span>
-                                                        <span>{{ $product->price->discount_price }}Ks</span>
+                                                        <span>
+                                                            @php
+                                                                $finalPrice = $product->price->selling_price - $product->price->discount_price;
+                                                            @endphp
+                                                            {{ $finalPrice }}Ks
+                                                        </span>
                                                     @else
                                                         <span>{{ $product->price->selling_price }}Ks</span>
                                                     @endif
@@ -254,7 +264,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action-1" id="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fi-rs-eye"></i></a>
                                                 <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                             </div>
@@ -283,9 +293,14 @@
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div>
                                             <div class="product-price">
-                                                @if (!empty($product->price->discount_price))
+                                                @if (!empty($product->price->discount_price) && $product->price->discount_price > 0)
                                                     <span class="old-price">${{ $product->price->selling_price }}</span>
-                                                    <span>{{ $product->price->discount_price }}Ks</span>
+                                                    <span>
+                                                        @php
+                                                            $finalPrice = $product->price->selling_price - $product->price->discount_price;
+                                                        @endphp
+                                                        {{ $finalPrice }}Ks
+                                                    </span>
                                                 @else
                                                     <span>{{ $product->price->selling_price }}Ks</span>
                                                 @endif
@@ -343,7 +358,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action-1" id="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fi-rs-eye"></i></a>
                                                 <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                             </div>
@@ -374,9 +389,14 @@
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div>
                                             <div class="product-price">
-                                                @if (!empty($product->price->discount_price))
+                                                @if (!empty($product->price->discount_price) && $product->price->discount_price > 0)
                                                     <span class="old-price">${{ $product->price->selling_price }}</span>
-                                                    <span>{{ $product->price->discount_price }}Ks</span>
+                                                    <span>
+                                                        @php
+                                                            $finalPrice = $product->price->selling_price - $product->price->discount_price;
+                                                        @endphp
+                                                        {{ $finalPrice }}Ks
+                                                    </span>
                                                 @else
                                                     <span>{{ $product->price->selling_price }}Ks</span>
                                                 @endif
@@ -433,7 +453,7 @@
                                         </a>
                                     </div>
                                     <div class="product-action-1" id="product-action-1">
-                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                        <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fi-rs-eye"></i></a>
                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                     </div>
@@ -464,9 +484,14 @@
                                         <div class="product-rating" style="width: 80%"></div>
                                     </div>
                                     <div class="product-price">
-                                        @if (!empty($product->price->discount_price))
+                                        @if (!empty($product->price->discount_price) && $product->price->discount_price > 0)
                                             <span class="old-price">${{ $product->price->selling_price }}</span>
-                                            <span>{{ $product->price->discount_price }}Ks</span>
+                                            <span>
+                                                @php
+                                                    $finalPrice = $product->price->selling_price - $product->price->discount_price;
+                                                @endphp
+                                                {{ $finalPrice }}Ks
+                                            </span>
                                         @else
                                             <span>{{ $product->price->selling_price }}Ks</span>
                                         @endif
