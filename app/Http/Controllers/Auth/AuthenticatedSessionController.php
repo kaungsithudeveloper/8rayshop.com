@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -25,43 +26,51 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        try {
+            $request->authenticate();
 
-        $request->session()->regenerate();
+            $request->session()->regenerate();
 
-        $user = $request->user();
+            $user = $request->user();
 
-        if ($user->role === 'admin' && $user->status === 'inactive') {
-            Auth::logout();
+            if ($user->role === 'admin' && $user->status === 'inactive') {
+                Auth::logout();
+                $notification = array(
+                    'message' => 'Your account is inactive. Please contact the administrator.',
+                    'alert-type' => 'error'
+                );
+                return redirect()->route('admin.login')->with($notification);
+            }
+
+            if ($user->role === 'employee' && $user->status === 'inactive') {
+                Auth::logout();
+                $notification = array(
+                    'message' => 'Your account is inactive. Please contact the administrator.',
+                    'alert-type' => 'error'
+                );
+                return redirect()->route('employee.login')->with($notification);
+            }
+
+            $url = '';
+
+            if (strpos($request->path(), '8ray/login') !== false) {
+                $url = '/';
+            } elseif (strpos($request->path(), 'datacentre/login') !== false) {
+                $url = '/datacentre';
+            } elseif ($request->user()->role === 'admin') {
+                $url = '/admin/dashboard';
+            } elseif ($request->user()->role === 'employee') {
+                $url = '/employee/page';
+            }
+
+            return redirect()->intended($url);
+        } catch (ValidationException $e) {
             $notification = array(
-                'message' => 'Your account is inactive. Please contact the administrator.',
+                'message' => 'Username, Email or Password are incorrect',
                 'alert-type' => 'error'
             );
-            return redirect()->route('admin.login')->with($notification);
+            return redirect()->back()->withErrors($e->errors())->withInput()->with($notification);
         }
-
-        if ($user->role === 'employee' && $user->status === 'inactive') {
-            Auth::logout();
-            $notification = array(
-                'message' => 'Your account is inactive. Please contact the administrator.',
-                'alert-type' => 'error'
-            );
-            return redirect()->route('employee.login')->with($notification);
-        }
-
-        $url = '';
-
-        if (strpos($request->path(), '8ray/login') !== false) {
-            $url = '/';
-        } elseif (strpos($request->path(), 'datacentre/login') !== false) {
-            $url = '/datacentre';
-        } elseif ($request->user()->role === 'admin') {
-            $url = '/admin/dashboard';
-        } elseif ($request->user()->role === 'employee') {
-            $url = '/employee/page';
-        }
-
-        return redirect()->intended($url);
     }
 
     /**

@@ -22,7 +22,6 @@
                                     <div class="col-lg-6 pr-30 d-none d-lg-block">
                                         <img class="border-radius-15" src="{{ url('frontend/8ray/imgs/page/login-1.png') }}" alt="" />
                                     </div>
-
                                     <div class="col-lg-6 col-md-8 mt-10">
                                         <div class="login_wrap widget-taber-content background-white">
                                             <div class="padding_eight_all bg-white">

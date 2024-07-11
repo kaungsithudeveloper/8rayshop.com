@@ -48,9 +48,9 @@ class LoginRequest extends FormRequest
         $user = User::where('email', $this->login)
                 ->orWhere('username', $this->login)
                 ->orWhere('phone', $this->login)
-                ->firstOrFail();
+                ->first();
 
-        if (! $user || !Hash::check($this->password, $user->password)) {
+        if (!$user || !Hash::check($this->password, $user->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
