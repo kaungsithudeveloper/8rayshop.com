@@ -13,11 +13,13 @@ use App\Models\Brand;
 class FrontendController extends Controller
 {
 
-    public function EightRayLogin(){
+    public function EightRayLogin()
+    {
         return view('frontend.8ray.login');
     }
 
-    public function EightRayRegister(){
+    public function EightRayRegister()
+    {
         return view('frontend.8ray.register');
     }
 
@@ -127,7 +129,6 @@ class FrontendController extends Controller
         return view('frontend.8ray.brandzone_product_list',compact('breadbrands','productsList'));
     }
 
-
     public function AllProductList()
     {
         $productTypeId = 1;
@@ -202,7 +203,6 @@ class FrontendController extends Controller
         return view('frontend.8ray.subcategory_view', compact('subcategoryProducts', 'categories', 'breadcat', 'breadsubcat'));
     }
 
-
     public function ProductViewAjax($id)
     {
         $product = Product::with([
@@ -229,15 +229,6 @@ class FrontendController extends Controller
         ]);
 
     }
-
-
-
-
-
-
-
-
-
 
     public function DatacentreFrontend()
     {

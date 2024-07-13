@@ -63,7 +63,7 @@
                                         @else
                                             <span class="stock-status out-stock">Out Of Stock </span>
                                         @endif
-                                        <h2 class="title-detail">{{ $product->product_name }}</h2>
+                                        <h2 class="title-detail" id="dpname"> {{ $product->product_name }} </h2>
 
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
@@ -71,7 +71,10 @@
                                                     @if($product->price->discount_price && $product->price->discount_price > 0)
                                                         <!-- Show discount price and old price -->
                                                         <span class="current-price text-brand">
-                                                            {{ $product->price->discount_price }}Ks
+                                                            @php
+                                                                $finalPrice = $product->price->selling_price - $product->price->discount_price;
+                                                            @endphp
+                                                            {{ $finalPrice }}Ks
                                                         </span>
                                                         <span>
                                                             <span class="save-price font-md color3 ml-15">
@@ -97,9 +100,7 @@
 
                                         <div class="attr-detail attr-size mb-30">
                                             <strong class="mr-10" style="width:60px;">Color :</strong>
-                                            <select class="form-control unicase-form-control" id="size">
-                                                <option selected="" disabled="">--Choose Color--</option>
-
+                                            <select class="form-control unicase-form-control" id="dcolor">
                                                     @foreach($product->productColor as $color)
                                                         <option value="{{ $color->id }}">{{ $color->color_name }}</option>
                                                     @endforeach
@@ -110,11 +111,12 @@
                                         <div class="detail-extralink mb-50">
                                             <div class="detail-qty border radius">
                                                 <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                <input type="text" name="quantity" class="qty-val" value="1" min="1">
+                                                <input type="text" name="quantity" id="dqty" class="qty-val" value="1" min="1">
                                                 <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                             </div>
                                             <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart"><i class="fi-rs-shopping-cart"></i>Add to cart</button>
+                                                <input type="hidden" id="dproduct_id" value="{{ $product->id }}">
+                                                <button type="submit" class="button button-add-to-cart" onclick="addToCartDetails()"><i class="fi-rs-shopping-cart"></i>Add to cart</button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                             </div>

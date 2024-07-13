@@ -12520,3 +12520,12 @@ footer .hotline img {
     }
 }
 
+.detail-info .product-price .old-price {
+    text-decoration: line-through;
+    color: #B6B6B6;
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    display: block;
+}
+

@@ -26,6 +26,7 @@ use App\Http\Controllers\CommentController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\Frontend\CartController;
 
 use App\Http\Controllers\PosController;
 
@@ -362,5 +363,9 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
 });
 
 
+Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
+Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
+Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
+Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToCartDetails']);
 
 require __DIR__.'/auth.php';

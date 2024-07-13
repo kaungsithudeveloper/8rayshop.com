@@ -171,6 +171,7 @@ return [
 
         Spatie\Permission\PermissionServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class
 
     ])->toArray(),
 
@@ -187,7 +188,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        'OEmbed' => 'Cohensive\OEmbed\Facades\OEmbed'
+        'OEmbed' => 'Cohensive\OEmbed\Facades\OEmbed',
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class
     ])->toArray(),
 
 
