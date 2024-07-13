@@ -62,6 +62,14 @@
                     </div>
                     <div class="header-action-right">
                         <div class="header-action-2">
+
+                            <div class="header-action-icon-2">
+                                <a href="{{ route('compare') }}">
+                                    <img class="svgInject" alt="Nest" src="{{ asset('frontend/8ray/imgs/theme/icons/icon-compare.svg')}}" />
+                                </a>
+                                <a href="{{ route('compare') }}"><span class="lable ml-0">Compare</span></a>
+                            </div>
+
                             <div class="header-action-icon-2">
                                 <a href="{{ route('wishlist') }}">
                                     <img class="svgInject" alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-heart.svg') }}" />

@@ -28,6 +28,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\WishlistController;
+use App\Http\Controllers\Frontend\CompareController;
 
 use App\Http\Controllers\PosController;
 
@@ -367,6 +368,13 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
         Route::get('/get-wishlist-product' , 'GetWishlistProduct');
         Route::get('/wishlist-remove/{id}' , 'WishlistRemove');
     });
+
+    Route::controller(CompareController::class)->group(function(){
+        Route::get('/compare' , 'AllCompare')->name('compare');
+        Route::get('/get-compare-product' , 'GetCompareProduct');
+        Route::get('/compare-remove/{id}' , 'CompareRemove');
+
+    });
 });
 
 
@@ -376,5 +384,6 @@ Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMi
 Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToCartDetails']);
 
 Route::post('/add-to-wishlist/{product_id}', [WishlistController::class, 'AddToWishList']);
+Route::post('/add-to-compare/{product_id}', [CompareController::class, 'AddToCompare']);
 
 require __DIR__.'/auth.php';
