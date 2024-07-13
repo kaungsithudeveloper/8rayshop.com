@@ -27,6 +27,7 @@ use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\WishlistController;
 
 use App\Http\Controllers\PosController;
 
@@ -360,6 +361,12 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
 
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
+
+    Route::controller(WishlistController::class)->group(function(){
+        Route::get('/wishlist' , 'AllWishlist')->name('wishlist');
+        Route::get('/get-wishlist-product' , 'GetWishlistProduct');
+        Route::get('/wishlist-remove/{id}' , 'WishlistRemove');
+    });
 });
 
 
@@ -367,5 +374,7 @@ Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
 Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
 Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
 Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToCartDetails']);
+
+Route::post('/add-to-wishlist/{product_id}', [WishlistController::class, 'AddToWishList']);
 
 require __DIR__.'/auth.php';
