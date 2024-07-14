@@ -284,8 +284,6 @@ Route::middleware(['auth','role:employee'])->group(function () {
         Route::get('/active/employee/product/{id}' ,  'ProductEmployeeActive')->name('active.employee.product');
     });
 
-
-
     Route::controller(EmployeeController::class)->group(function(){
         //8Ray Route
         Route::get('/employee/logout',  'EmployeeLogOut')->name('employee.logout');
@@ -373,16 +371,19 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
         Route::get('/compare' , 'AllCompare')->name('compare');
         Route::get('/get-compare-product' , 'GetCompareProduct');
         Route::get('/compare-remove/{id}' , 'CompareRemove');
+    });
 
+    Route::controller(CartController::class)->group(function(){
+        Route::get('/mycart' , 'MyCart')->name('mycart');
+        Route::get('/get-cart-product' , 'GetCartProduct');
+        Route::get('/cart-remove/{rowId}' , 'CartRemove');
     });
 });
-
 
 Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
 Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
 Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
 Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToCartDetails']);
-
 Route::post('/add-to-wishlist/{product_id}', [WishlistController::class, 'AddToWishList']);
 Route::post('/add-to-compare/{product_id}', [CompareController::class, 'AddToCompare']);
 

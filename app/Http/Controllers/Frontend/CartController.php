@@ -21,7 +21,10 @@ class CartController extends Controller
                  ? $product->price->selling_price - $product->price->discount_price
                  : $product->price->selling_price;
 
-        $cartItem = Cart::content()->where('id', $id)->first();
+        $cartItem = Cart::content()->where('id', $id)
+                        ->where('options.color', $request->color)
+                        ->first();
+
         if ($cartItem) {
             Cart::update($cartItem->rowId, $cartItem->qty + $request->quantity);
         } else {
@@ -52,7 +55,10 @@ class CartController extends Controller
                  ? $product->price->selling_price - $product->price->discount_price
                  : $product->price->selling_price;
 
-        $cartItem = Cart::content()->where('id', $id)->first();
+        $cartItem = Cart::content()->where('id', $id)
+                        ->where('options.color', $request->color)
+                        ->first();
+
         if ($cartItem) {
             Cart::update($cartItem->rowId, $cartItem->qty + $request->quantity);
         } else {
@@ -70,7 +76,6 @@ class CartController extends Controller
 
         return response()->json(['success' => 'Successfully Added to Your Cart']);
     }
-
     public function AddMiniCart(){
 
         $carts = Cart::content();
@@ -88,6 +93,34 @@ class CartController extends Controller
     public function RemoveMiniCart($rowId){
         Cart::remove($rowId);
         return response()->json(['success' => 'Product Remove From Cart']);
+
+    }// End Method
+
+
+    public function MyCart(){
+
+        return view('frontend.8ray.view_mycart');
+
+    }// End Method
+
+    public function GetCartProduct(){
+
+        $carts = Cart::content();
+        $cartQty = Cart::count();
+        $cartTotal = Cart::total();
+
+        return response()->json(array(
+            'carts' => $carts,
+            'cartQty' => $cartQty,
+            'cartTotal' => $cartTotal
+
+        ));
+
+    }// End Method
+
+    public function CartRemove($rowId){
+        Cart::remove($rowId);
+        return response()->json(['success' => 'Successfully Remove From Cart']);
 
     }// End Method
 }

@@ -159,8 +159,8 @@
 
                     // Display colors
                     $('#color').empty();
-                    if (data.product.productColor && data.product.productColor.length > 0) {
-                        data.product.productColor.forEach(function(color) {
+                    if (data.product.colors && data.product.colors.length > 0) {
+                        data.product.colors.forEach(function(color) {
                             var colorItem = '<option value="' + color.color_name + '">' + color.color_name + '</option>';
                             $('#color').append(colorItem);
                         });
@@ -270,17 +270,17 @@
 
     <script>
 
-        function miniCart(){
+        function miniCart() {
             $.ajax({
                 type: 'GET',
                 url: '/product/mini/cart',
                 dataType: 'json',
-                success:function(response){
-                    $('span[id="cartSubTotal"]').text(response.cartTotal + ' Ks');
+                success: function(response) {
+                    $('span[id="cartSubTotal"]').text('Ks ' + response.cartTotal);
                     $('#cartQty').text(response.cartQty);
 
                     var miniCart = "";
-                    $.each(response.carts, function(key, value){
+                    $.each(response.carts, function(key, value) {
                         miniCart +=
                             `<ul>
                                 <li>
@@ -291,7 +291,8 @@
                                     </div>
                                     <div class="shopping-cart-title" style="margin: -73px 74px 14px; width: 146px;">
                                         <h4><a href="shop-product-right.html"> ${value.name} </a></h4>
-                                        <h4><span>${value.qty} × </span>${value.price}Ks</h4>
+                                        <h4><span>${value.qty} × </span>Ks ${value.price}</h4>
+                                        <p>Color: ${value.options.color}</p>
                                     </div>
                                     <div class="shopping-cart-delete" style="margin: -85px 1px 0px;">
                                         <a type="submit" id="${value.rowId}" onclick="miniCartRemove(this.id)">
@@ -346,96 +347,94 @@
     </script>
 
 
-<!--  /// Start Wishlist Add -->
-<script type="text/javascript">
-    function addToWishList(product_id) {
-        $.ajax({
-            type: "POST",
-            dataType: 'json',
-            url: "/add-to-wishlist/" + product_id,
-            success: function(data) {
+    <!--  /// Start Wishlist Add -->
+    <script type="text/javascript">
+        function addToWishList(product_id) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/add-to-wishlist/" + product_id,
+                success: function(data) {
 
-                wishlist();
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-                if ($.isEmptyObject(data.error)) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: data.success
+                    wishlist();
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
                     });
-                } else {
-                    Toast.fire({
-                        icon: 'error',
-                        title: data.error
-                    });
+                    if ($.isEmptyObject(data.error)) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.success
+                        });
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.error
+                        });
+                    }
                 }
-            }
-        });
-    }
-</script>
-
-<!--  /// End Wishlist Add -->
-
-
-<!--  /// Start Load Wishlist Data -->
-<script type="text/javascript">
-
-function wishlist() {
-    $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: "/get-wishlist-product/",
-        success: function(response) {
-
-            $('#wishQty').text(response.wishQty);
-
-            var rows = "";
-            $.each(response.wishlist, function(key, value) {
-                let totalStock = 0;
-                value.product.stocks.forEach(stock => {
-                    totalStock += stock.stock_qty;
-                });
-
-                rows += `<tr class="pt-30">
-                            <td class="custome-checkbox pl-30"></td>
-                            <td class="image product-thumbnail pt-40"><img src="/upload/product_images/${value.product.product_photo}" alt="#" /></td>
-                            <td class="product-des product-name">
-                                <h6><a class="product-name mb-10" href="shop-product-right.html">${value.product.product_name}</a></h6>
-                                <div class="product-rate-cover">
-                                    <div class="product-rate d-inline-block">
-                                        <div class="product-rating" style="width: 90%"></div>
-                                    </div>
-                                    <span class="font-small ml-5 text-muted">(4.0)</span>
-                                </div>
-                            </td>
-                            <td class="price" data-title="Price">
-                                ${value.product.price.discount_price == null
-                                    ? `<h3 class="text-brand">${value.product.price.selling_price}Ks</h3>`
-                                    : `<h3 class="text-brand">${value.product.price.selling_price - value.product.price.discount_price}Ks</h3>`
-                                }
-                            </td>
-                            <td class="text-center detail-info" data-title="Stock">
-                                ${totalStock > 0
-                                    ? `<span class="stock-status in-stock mb-0">In Stock</span>`
-                                    : `<span class="stock-status out-stock mb-0">Stock Out</span>`
-                                }
-                            </td>
-                            <td class="action text-center" data-title="Remove">
-                                <a type="submit" class="text-body" id="${value.id}" onclick="wishlistRemove(this.id)" ><i class="fi-rs-trash"></i></a>
-                            </td>
-                        </tr>`;
             });
-            $('#wishlist').html(rows);
         }
-    });
-}
+    </script>
+    <!--  /// End Wishlist Add -->
 
-    wishlist();
 
+    <!--  /// Start Load Wishlist Data -->
+    <script type="text/javascript">
+
+        function wishlist() {
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/get-wishlist-product/",
+                success: function(response) {
+
+                    $('#wishQty').text(response.wishQty);
+
+                    var rows = "";
+                    $.each(response.wishlist, function(key, value) {
+                        let totalStock = 0;
+                        value.product.stocks.forEach(stock => {
+                            totalStock += stock.stock_qty;
+                        });
+
+                        rows += `<tr class="pt-30">
+                                    <td class="custome-checkbox pl-30"></td>
+                                    <td class="image product-thumbnail pt-40"><img src="/upload/product_images/${value.product.product_photo}" alt="#" /></td>
+                                    <td class="product-des product-name">
+                                        <h6><a class="product-name mb-10" href="shop-product-right.html">${value.product.product_name}</a></h6>
+                                        <div class="product-rate-cover">
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: 90%"></div>
+                                            </div>
+                                            <span class="font-small ml-5 text-muted">(4.0)</span>
+                                        </div>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                        ${value.product.price.discount_price == null
+                                            ? `<h3 class="text-brand">${value.product.price.selling_price}Ks</h3>`
+                                            : `<h3 class="text-brand">${value.product.price.selling_price - value.product.price.discount_price}Ks</h3>`
+                                        }
+                                    </td>
+                                    <td class="text-center detail-info" data-title="Stock">
+                                        ${totalStock > 0
+                                            ? `<span class="stock-status in-stock mb-0">In Stock</span>`
+                                            : `<span class="stock-status out-stock mb-0">Stock Out</span>`
+                                        }
+                                    </td>
+                                    <td class="action text-center" data-title="Remove">
+                                        <a type="submit" class="text-body" id="${value.id}" onclick="wishlistRemove(this.id)" ><i class="fi-rs-trash"></i></a>
+                                    </td>
+                                </tr>`;
+                    });
+                    $('#wishlist').html(rows);
+                }
+            });
+        }
+
+        wishlist();
 
         // Wishlist Remove Start
         function wishlistRemove(id){
@@ -474,52 +473,51 @@ function wishlist() {
         }
         // Wishlist Remove End
 
-</script>
+    </script>
+    <!--  /// End Load Wishlist Data -->
 
-<!--  /// End Load Wishlist Data -->
+    <!--  /// Start Compare Add -->
+    <script type="text/javascript">
 
-<!--  /// Start Compare Add -->
-<script type="text/javascript">
+        function addToCompare(product_id){
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/add-to-compare/"+product_id,
+                success:function(data){
 
-    function addToCompare(product_id){
-        $.ajax({
-            type: "POST",
-            dataType: 'json',
-            url: "/add-to-compare/"+product_id,
-            success:function(data){
+                    // Start Message
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
 
-                 // Start Message
-        const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            })
+            if ($.isEmptyObject(data.error)) {
 
-              showConfirmButton: false,
-              timer: 3000
-        })
-        if ($.isEmptyObject(data.error)) {
+                    Toast.fire({
+                    type: 'success',
+                    icon: 'success',
+                    title: data.success,
+                    })
+            }else{
 
-                Toast.fire({
-                type: 'success',
-                icon: 'success',
-                title: data.success,
-                })
-        }else{
-
-       Toast.fire({
-                type: 'error',
-                icon: 'error',
-                title: data.error,
-                })
-            }
-          // End Message
-            }
-        })
-    }
-</script>
-<!--  /// End Compare Add -->
+        Toast.fire({
+                    type: 'error',
+                    icon: 'error',
+                    title: data.error,
+                    })
+                }
+            // End Message
+                }
+            })
+        }
+    </script>
+    <!--  /// End Compare Add -->
 
 
-<!--  /// Start Load Compare Data -->
+    <!--  /// Start Load Compare Data -->
     <script type="text/javascript">
 
         function compare() {
@@ -644,7 +642,109 @@ function wishlist() {
 
     </script>
 
+    <!--  // Start Load MY Cart // -->
+    <script type="text/javascript">
+        function cart() {
+            $.ajax({
+                type: 'GET',
+                url: '/get-cart-product',
+                dataType: 'json',
+                success: function(response) {
+                    var rows = "";
+                    $.each(response.carts, function(key, value) {
+                        rows +=
+                            `
+                            <tr class="pt-30">
+                                <td class="custome-checkbox pl-30">
+                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
+                                    <label class="form-check-label" for="exampleCheckbox1"></label>
+                                </td>
+                                <td class="image product-thumbnail pt-40">
+                                    <img src="/upload/product_images/${value.options.image}" alt="#">
+                                </td>
+                                <td class="product-des product-name">
+                                    <h6 class="mb-5">
+                                        <a class="product-name mb-10 text-heading" href="shop-product-right.html">
+                                            ${value.name}
+                                        </a>
+                                    </h6>
+                                </td>
+                                <td class="price" data-title="Price">
+                                    <h4 class="text-body">${value.price}Ks </h4>
+                                </td>
+                                <td class="price" data-title="Color">
+                                    ${value.options.color ? `<h6 class="text-body">${value.options.color}</h6>` : `<span>....</span>`}
+                                </td>
+                                <td class="text-center detail-info" data-title="Stock">
+                                    <div class="detail-extralink mr-15">
+                                        <div class="detail-qty border radius">
+                                            <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                            <input type="text" name="quantity" class="qty-val" value="${value.qty}" min="1">
+                                            <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                        </div>
+                                    </div>
+                                </td>
 
+                                <td class="price" data-title="Price">
+                                    <h4 class="text-brand">${value.subtotal}Ks </h4>
+                                </td>
+                                <td class="action text-center" data-title="Remove">
+                                    <a type="submit" class="text-body"  id="${value.rowId}" onclick="cartRemove(this.id)">
+                                        <i class="fi-rs-trash"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                            `;
+                    });
+                    $('#cartPage').html(rows);
+                }
+            });
+        }
+        cart();
+
+
+        // Cart Remove Start
+        function cartRemove(id){
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/cart-remove/"+id,
+                success:function(data){
+                    cart();
+                    miniCart();
+                     // Start Message
+            const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+
+                  showConfirmButton: false,
+                  timer: 3000
+            })
+            if ($.isEmptyObject(data.error)) {
+
+                    Toast.fire({
+                    type: 'success',
+                    icon: 'success',
+                    title: data.success,
+                    })
+            }else{
+
+           Toast.fire({
+                    type: 'error',
+                    icon: 'error',
+                    title: data.error,
+                    })
+                }
+              // End Message
+                }
+            })
+        }
+        // Cart Remove End
+
+    </script>
+    <!--  // End Load MY Cart // -->
 
 
 

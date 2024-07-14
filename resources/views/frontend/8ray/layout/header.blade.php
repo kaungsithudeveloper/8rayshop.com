@@ -73,18 +73,18 @@
                             <div class="header-action-icon-2">
                                 <a href="{{ route('wishlist') }}">
                                     <img class="svgInject" alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-heart.svg') }}" />
-                                    <span class="pro-count blue" id="wishQty"> </span>
+                                    <span class="pro-count blue" id="wishQty">0 </span>
                                 </a>
                                 <a href="{{ route('wishlist') }}"><span class="lable">Wishlist</span></a>
                             </div>
                             <div class="header-action-icon-2">
 
-                                <a class="mini-cart-icon" href="shop-cart.html">
+                                <a class="mini-cart-icon" href="{{ route('mycart') }}">
                                     <img alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-cart.svg') }}" />
                                     <span class="pro-count blue" id="cartQty"> </span>
                                 </a>
 
-                                <a href="shop-cart.html"><span class="lable">Cart</span></a>
+                                <a href="{{ route('mycart') }}"><span class="lable">Cart</span></a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                     <!--   // mini cart start with ajax -->
                                     <div id="miniCart">
