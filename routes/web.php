@@ -23,6 +23,7 @@ use App\Http\Controllers\EmployeeProductController;
 use App\Http\Controllers\EmployeeUserController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CouponController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -178,6 +179,16 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
         //Test Youtube video Link Good
         Route::get('/product_infos', 'index');
+    });
+
+    //Backend Cupon Routes
+    Route::controller(CouponController::class)->group(function(){
+        Route::get('/all/coupon' , 'AllCoupon')->name('all.coupon');
+        Route::get('/add/coupon' , 'AddCoupon')->name('add.coupon');
+        Route::post('/store/coupon' , 'StoreCoupon')->name('store.coupon');
+        Route::get('/edit/coupon/{id}' , 'EditCoupon')->name('edit.coupon');
+        Route::post('/update/coupon' , 'UpdateCoupon')->name('update.coupon');
+        Route::get('/delete/coupon/{id}' , 'DeleteCoupon')->name('delete.coupon');
     });
 
 
