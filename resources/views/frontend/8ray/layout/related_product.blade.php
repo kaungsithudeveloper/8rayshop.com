@@ -1,12 +1,16 @@
-
 @php
     $productTypeId = 1;
-    $related_product = App\Models\Product::with('multiImages')->where('status','active')->where('product_type_id', $productTypeId)->first();
+    $related_products = App\Models\Product::with('multiImages')
+                                         ->where('status', 'active')
+                                         ->where('product_type_id', $productTypeId)
+                                         ->limit(4)
+                                         ->get();
 @endphp
 
-@if($related_product)
+@if($related_products->isNotEmpty())
 <div class="col-12">
     <div class="row related-products">
+        @foreach($related_products as $related_product)
         <div class="col-lg-3 col-md-4 col-6 col-sm-6">
             <div class="product-cart-wrap hover-up">
                 <div class="product-img-action-wrap">
@@ -17,21 +21,21 @@
                     </div>
                     <div class="product-action-1" id="product-action-1">
                         <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{ $related_product->id }}" onclick="productView(this.id)"> <i class="fi-rs-eye"></i></a>
-                        <a aria-label="Add To Wishlist" class="action-btn" id="{{ $related_product->id }}" onclick="addToWishList(this.id)"  >
+                        <a aria-label="Add To Wishlist" class="action-btn" id="{{ $related_product->id }}" onclick="addToWishList(this.id)">
                             <i class="fi-rs-heart"></i>
                         </a>
-                        <a aria-label="Compare" class="action-btn"  id="{{ $product->id }}" onclick="addToCompare(this.id)">
+                        <a aria-label="Compare" class="action-btn" id="{{ $related_product->id }}" onclick="addToCompare(this.id)">
                             <i class="fi-rs-shuffle"></i>
                         </a>
                     </div>
                     <div class="product-badges product-badges-position product-badges-mrg">
                         @if ($related_product->productInfo)
                             @if ($related_product->productInfo->new)
-                                <span class="new">Best Sale</span>
+                                <span class="new">New</span>
                             @elseif ($related_product->productInfo->hot)
-                                <span class="hot">Best Sale</span>
+                                <span class="hot">Hot</span>
                             @elseif ($related_product->productInfo->sale)
-                                <span class="sale">Best Sale</span>
+                                <span class="sale">Sale</span>
                             @elseif ($related_product->productInfo->best_sale)
                                 <span class="best">Best Sale</span>
                             @endif
@@ -51,10 +55,9 @@
                 </div>
             </div>
         </div>
+        @endforeach
     </div>
 </div>
-
 @else
-    <p>No related product found.</p>
+    <p>No related products found.</p>
 @endif
-

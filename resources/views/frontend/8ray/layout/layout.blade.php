@@ -286,7 +286,7 @@
                                 <li>
                                     <div class="shopping-cart-img">
                                         <a href="shop-product-right.html">
-                                            <img style="width:50px;height:70px;" src="/upload/product_images/${value.options.image}" alt="Product" />
+                                            <img style=max-width:70px;" src="/upload/product_images/${value.options.image}" alt="Product" />
                                         </a>
                                     </div>
                                     <div class="shopping-cart-title" style="margin: -73px 74px 14px; width: 146px;">
@@ -652,6 +652,9 @@
                 success: function(response) {
                     var rows = "";
                     $.each(response.carts, function(key, value) {
+                        var productName = value.name;
+                        var truncatedName = productName.length > 20 ? productName.substring(0, 20) + '...' : productName;
+
                         rows +=
                             `
                             <tr class="pt-30">
@@ -665,7 +668,7 @@
                                 <td class="product-des product-name">
                                     <h6 class="mb-5">
                                         <a class="product-name mb-10 text-heading" href="shop-product-right.html">
-                                            ${value.name}
+                                            ${truncatedName}
                                         </a>
                                     </h6>
                                 </td>

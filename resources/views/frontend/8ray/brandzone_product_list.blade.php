@@ -49,11 +49,11 @@
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 @if ($product->productInfo)
                                                     @if ($product->productInfo->new)
-                                                        <span class="new">Best Sale</span>
+                                                        <span class="new">New</span>
                                                     @elseif ($product->productInfo->hot)
-                                                        <span class="hot">Best Sale</span>
+                                                        <span class="hot">Hot</span>
                                                     @elseif ($product->productInfo->sale)
-                                                        <span class="sale">Best Sale</span>
+                                                        <span class="sale">Sale</span>
                                                     @elseif ($product->productInfo->best_sale)
                                                         <span class="best">Best Sale</span>
                                                     @endif

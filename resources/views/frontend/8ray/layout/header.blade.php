@@ -195,7 +195,7 @@
                                                         <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
                                                         <ul class="level-menu">
                                                             @foreach($category->productSubCategories as $subcategory)
-                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                                <li><a href="{{ url('product/subcategory/'.$subcategory->id.'/'.$subcategory->product_subcategory_slug) }}">{{ $subcategory->product_subcategory_name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </li>
@@ -213,7 +213,7 @@
                                                         <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
                                                         <ul class="level-menu">
                                                             @foreach($category->productSubCategories as $subcategory)
-                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                                <li><a href="{{ url('product/subcategory/'.$subcategory->id.'/'.$subcategory->product_subcategory_slug) }}">{{ $subcategory->product_subcategory_name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </li>
@@ -231,7 +231,7 @@
                                                         <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
                                                         <ul class="level-menu">
                                                             @foreach($category->productSubCategories as $subcategory)
-                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                                <li><a href="{{ url('product/subcategory/'.$subcategory->id.'/'.$subcategory->product_subcategory_slug) }}">{{ $subcategory->product_subcategory_name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </li>
@@ -249,7 +249,7 @@
                                                         <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
                                                         <ul class="level-menu">
                                                             @foreach($category->productSubCategories as $subcategory)
-                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                                <li><a href="{{ url('product/subcategory/'.$subcategory->id.'/'.$subcategory->product_subcategory_slug) }}">{{ $subcategory->product_subcategory_name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </li>
@@ -267,7 +267,7 @@
                                                         <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
                                                         <ul class="level-menu">
                                                             @foreach($category->productSubCategories as $subcategory)
-                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                                <li><a href="{{ url('product/subcategory/'.$subcategory->id.'/'.$subcategory->product_subcategory_slug) }}">{{ $subcategory->product_subcategory_name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </li>
@@ -285,7 +285,7 @@
                                                         <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
                                                         <ul class="level-menu">
                                                             @foreach($category->productSubCategories as $subcategory)
-                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                                <li><a href="{{ url('product/subcategory/'.$subcategory->id.'/'.$subcategory->product_subcategory_slug) }}">{{ $subcategory->product_subcategory_name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </li>
@@ -303,7 +303,7 @@
                                                         <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
                                                         <ul class="level-menu">
                                                             @foreach($category->productSubCategories as $subcategory)
-                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                                <li><a href="{{ url('product/subcategory/'.$subcategory->id.'/'.$subcategory->product_subcategory_slug) }}">{{ $subcategory->product_subcategory_name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </li>
@@ -321,7 +321,7 @@
                                                         <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}">{{ $category->product_category_name }} <i class="fi-rs-angle-right"></i></a>
                                                         <ul class="level-menu">
                                                             @foreach($category->productSubCategories as $subcategory)
-                                                                <li><a href="vendors-grid.html">{{ $subcategory->product_subcategory_name }}</a></li>
+                                                                <li><a href="{{ url('product/subcategory/'.$subcategory->id.'/'.$subcategory->product_subcategory_slug) }}">{{ $subcategory->product_subcategory_name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </li>

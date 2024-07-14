@@ -4,6 +4,10 @@
 
 <main class="main">
 
+    @php
+        use Illuminate\Support\Str;
+    @endphp
+
     <!--Start banners-->
     <section class="banners mt-40 mb-25">
         <div class="container">
@@ -60,7 +64,7 @@
                 <div class="row product-grid-4">
                     <!--end product card-->
                     @foreach ($newProducts as $product)
-                        <div class="col-lg-3 col-md-3 col-6 col-sm-6">
+                        <div class="col-lg-2 col-md-3 col-6 col-sm-6">
                             <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn card-container" data-wow-delay=".1s">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
@@ -85,11 +89,11 @@
                                     <div class="product-badges product-badges-position product-badges-mrg">
                                         @if ($product->productInfo)
                                             @if ($product->productInfo->new)
-                                                <span class="new">Best Sale</span>
+                                                <span class="new">New</span>
                                             @elseif ($product->productInfo->hot)
-                                                <span class="hot">Best Sale</span>
+                                                <span class="hot">Hot</span>
                                             @elseif ($product->productInfo->sale)
-                                                <span class="sale">Best Sale</span>
+                                                <span class="sale">Sale</span>
                                             @elseif ($product->productInfo->best_sale)
                                                 <span class="best">Best Sale</span>
                                             @endif
@@ -98,11 +102,13 @@
                                 </div>
                                 <div class="product-content-wrap">
                                     <div class="product-category">
-                                        @foreach ($product->brands as $category)
-                                            <a href="shop-grid-right.html">{{ $category->brand_name }}</a>
+                                        @foreach ($product->brands as $brand)
+                                        <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
+                                            {{ Str::limit($brand->brand_name, 25) }}
+                                        </a>
                                         @endforeach
                                     </div>
-                                    <h2><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">{{ $product->product_name }}</a></h2>
+                                    <h2><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">{{ Str::limit($product->product_name, 15) }}</a></h2>
                                     <div class="product-rate d-inline-block">
                                         <div class="product-rating" style="width: 80%"></div>
                                     </div>
@@ -154,7 +160,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-9 col-md-12 wow animate__animated animate__fadeIn" data-wow-delay=".4s">
+                <div class="col-lg-9 col-md-6 wow animate__animated animate__fadeIn" data-wow-delay=".4s">
                     <div class="tab-content" id="myTabContent-1">
                         <div class="tab-pane fade show active" id="tab-one-1" role="tabpanel" aria-labelledby="tab-one-1">
                             <div class="carausel-4-columns-cover arrow-center position-relative">
@@ -193,10 +199,12 @@
                                             <div class="product-content-wrap">
                                                 <div class="product-category">
                                                     @foreach ($product->brands as $category)
-                                                        <a href="shop-grid-right.html">{{ $category->brand_name }}</a>
+                                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
+                                                        {{ Str::limit($category->brand_name, 25) }}
+                                                    </a>
                                                     @endforeach
                                                 </div>
-                                                <h2><a href="shop-product-right.html">{{ $product->product_name }}</a></h2>
+                                                <h2><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">{{ Str::limit($product->product_name, 15) }}</a></h2>
                                                 <div class="product-rate d-inline-block">
                                                     <div class="product-rating" style="width: 80%"></div>
                                                 </div>
@@ -258,7 +266,7 @@
                     <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                         <div class="row product-grid-4">
                             @foreach ($productCategories as $product)
-                                <div class="col-lg-3 col-md-3 col-6 col-sm-6">
+                                <div class="col-lg-2 col-md-3 col-6 col-sm-6">
                                     <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
@@ -283,11 +291,11 @@
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 @if ($product->productInfo)
                                                     @if ($product->productInfo->new)
-                                                        <span class="new">Best Sale</span>
+                                                        <span class="new">New</span>
                                                     @elseif ($product->productInfo->hot)
-                                                        <span class="hot">Best Sale</span>
+                                                        <span class="hot">Hot</span>
                                                     @elseif ($product->productInfo->sale)
-                                                        <span class="sale">Best Sale</span>
+                                                        <span class="sale">Sale</span>
                                                     @elseif ($product->productInfo->best_sale)
                                                         <span class="best">Best Sale</span>
                                                     @endif
@@ -296,11 +304,13 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                @foreach ($product->brands as $category)
-                                                    <a href="shop-grid-right.html">{{ $category->brand_name }}</a>
+                                                @foreach ($product->brands as $brand)
+                                                <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
+                                                    {{ Str::limit($brand->brand_name, 25) }}
+                                                </a>
                                                 @endforeach
                                             </div>
-                                            <h2><a href="shop-product-right.html">{{ $product->product_name }}</a></h2>
+                                            <h2><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">{{ Str::limit($product->product_name, 15) }}</a></h2>
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div>
@@ -356,7 +366,7 @@
                         <div class="row product-grid-4">
 
                             @foreach ($soundProductCategories as $product)
-                                <div class="col-lg-4 col-md-3 col-6 col-sm-6">
+                                <div class="col-lg-2 col-md-3 col-6 col-sm-6">
                                     <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
@@ -379,28 +389,28 @@
                                                 </a>
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <div class="product-badges product-badges-position product-badges-mrg">
-                                                    @if ($product->productInfo)
-                                                        @if ($product->productInfo->new)
-                                                            <span class="new">Best Sale</span>
-                                                        @elseif ($product->productInfo->hot)
-                                                            <span class="hot">Best Sale</span>
-                                                        @elseif ($product->productInfo->sale)
-                                                            <span class="sale">Best Sale</span>
-                                                        @elseif ($product->productInfo->best_sale)
-                                                            <span class="best">Best Sale</span>
-                                                        @endif
+                                                @if ($product->productInfo)
+                                                    @if ($product->productInfo->new)
+                                                        <span class="new">New</span>
+                                                    @elseif ($product->productInfo->hot)
+                                                        <span class="hot">Hot</span>
+                                                    @elseif ($product->productInfo->sale)
+                                                        <span class="sale">Sale</span>
+                                                    @elseif ($product->productInfo->best_sale)
+                                                        <span class="best">Best Sale</span>
                                                     @endif
-                                                </div>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                @foreach ($product->brands as $category)
-                                                    <a href="shop-grid-right.html">{{ $category->brand_name }}</a>
+                                                @foreach ($product->brands as $brand)
+                                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
+                                                        {{ Str::limit($brand->brand_name, 25) }}
+                                                    </a>
                                                 @endforeach
                                             </div>
-                                            <h2><a href="shop-product-right.html">{{ $product->product_name }}</a></h2>
+                                            <h2><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">{{ Str::limit($product->product_name, 15) }}</a></h2>
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div>
@@ -455,7 +465,7 @@
                     <div class="row product-grid-4">
 
                         @foreach ($productPhotographys as $product)
-                        <div class="col-lg-4 col-md-3 col-6 col-sm-6">
+                        <div class="col-lg-2 col-md-3 col-6 col-sm-6">
                             <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
@@ -478,28 +488,28 @@
                                         </a>
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                        <div class="product-badges product-badges-position product-badges-mrg">
-                                            @if ($product->productInfo)
-                                                @if ($product->productInfo->new)
-                                                    <span class="new">Best Sale</span>
-                                                @elseif ($product->productInfo->hot)
-                                                    <span class="hot">Best Sale</span>
-                                                @elseif ($product->productInfo->sale)
-                                                    <span class="sale">Best Sale</span>
-                                                @elseif ($product->productInfo->best_sale)
-                                                    <span class="best">Best Sale</span>
-                                                @endif
+                                        @if ($product->productInfo)
+                                            @if ($product->productInfo->new)
+                                                <span class="new">New</span>
+                                            @elseif ($product->productInfo->hot)
+                                                <span class="hot">Hot</span>
+                                            @elseif ($product->productInfo->sale)
+                                                <span class="sale">Sale</span>
+                                            @elseif ($product->productInfo->best_sale)
+                                                <span class="best">Best Sale</span>
                                             @endif
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="product-content-wrap">
                                     <div class="product-category">
-                                        @foreach ($product->brands as $category)
-                                            <a href="shop-grid-right.html">{{ $category->brand_name }}</a>
+                                        @foreach ($product->brands as $brand)
+                                        <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
+                                            {{ Str::limit($brand->brand_name, 25) }}
+                                        </a>
                                         @endforeach
                                     </div>
-                                    <h2><a href="shop-product-right.html">{{ $product->product_name }}</a></h2>
+                                    <h2><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">{{ Str::limit($product->product_name, 15) }}</a></h2>
                                     <div class="product-rate d-inline-block">
                                         <div class="product-rating" style="width: 80%"></div>
                                     </div>
@@ -562,12 +572,16 @@
                     @foreach($brands as $brand)
                     <div class="card-2 bg-9 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
                         <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html">
+                            <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
                                 <img src="{{ !empty($brand->brand_image) ? url('upload/brand_images/' . $brand->brand_image) : url('upload/profile.jpg') }}"
                                 alt="{{ $brand->brand_name }}">
                             </a>
                         </figure>
-                        <h6><a href="shop-grid-right.html">{{ $brand->brand_name }}</a></h6>
+                        <h6>
+                            <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
+                                {{ $brand->brand_name }}
+                            </a>
+                        </h6>
                        <span>{{ $brand->products_count }} items</span>
                     </div>
                     @endforeach
