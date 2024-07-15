@@ -34,6 +34,7 @@
                                             <th class="bg-transparent border-bottom-0">Coupon Name</th>
                                             <th class="bg-transparent border-bottom-0">Coupon Discount</th>
                                             <th class="bg-transparent border-bottom-0">Coupon Validity</th>
+                                            <th class="bg-transparent border-bottom-0">Coupon Qty</th>
                                             <th class="bg-transparent border-bottom-0">Coupon Status</th>
                                             <th class="bg-transparent border-bottom-0 text-center" style="width: 10%;">Action</th>
                                         </tr>
@@ -64,6 +65,13 @@
                                                     <div class="d-flex">
                                                         <div class="mt-0 mt-sm-3 d-block">
                                                             <h6 class="mb-0 fs-14 fw-semibold">{{ Carbon\Carbon::parse($item->coupon_validity)->format('D, d F Y') }}</h6>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <div class="mt-0 mt-sm-3 d-block">
+                                                            <h6 class="mb-0 fs-14 fw-semibold">{{ $item->coupon_qty }}</h6>
                                                         </div>
                                                     </div>
                                                 </td>

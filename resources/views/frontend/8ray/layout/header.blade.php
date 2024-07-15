@@ -81,7 +81,7 @@
 
                                 <a class="mini-cart-icon" href="{{ route('mycart') }}">
                                     <img alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-cart.svg') }}" />
-                                    <span class="pro-count blue" id="cartQty"> </span>
+                                    <span class="pro-count blue" id="cartQty">0</span>
                                 </a>
 
                                 <a href="{{ route('mycart') }}"><span class="lable">Cart</span></a>

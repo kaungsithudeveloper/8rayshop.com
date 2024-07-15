@@ -46,6 +46,11 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="coupon_discount" class="form-label">Coupon Qty:<span class="text-red">*</span></label>
+                                        <input type="number" class="form-control" name="coupon_qty" autocomplete="off" value="{{ $coupon->coupon_qty }}">
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="coupon_validity" class="form-label">Coupon Validity Date:<span class="text-red">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-text">

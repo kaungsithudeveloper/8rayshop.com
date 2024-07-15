@@ -44,6 +44,11 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="coupon_qty">Coupon Quantity</label>
+                                        <input type="number" name="coupon_qty" class="form-control" id="coupon_qty" required min="1">
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="coupon_validity" class="form-label">Coupon Validity Date:<span class="text-red">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-text">

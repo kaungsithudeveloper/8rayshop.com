@@ -18,17 +18,20 @@ class CouponController extends Controller
         return view('backend.admin.coupon.coupon_add');
     }// End Method
 
-    public function StoreCoupon(Request $request){
+    public function StoreCoupon(Request $request)
+    {
         $request->validate([
             'coupon_name' => 'required|string|max:255',
             'coupon_discount' => 'required|integer|min:1|max:100',
             'coupon_validity' => 'required|date_format:m/d/Y',
+            'coupon_qty' => 'required|integer|min:1',
         ]);
 
         Coupon::create([
             'coupon_name' => strtoupper($request->coupon_name),
             'coupon_discount' => $request->coupon_discount,
             'coupon_validity' => Carbon::createFromFormat('m/d/Y', $request->coupon_validity)->format('Y-m-d'),
+            'coupon_qty' => $request->coupon_qty,
             'created_at' => Carbon::now(),
         ]);
 
@@ -48,19 +51,21 @@ class CouponController extends Controller
     }// End Method
 
 
-    public function UpdateCoupon(Request $request){
-
+    public function UpdateCoupon(Request $request)
+    {
         $id = $request->id;
         $request->validate([
             'coupon_name' => 'required|string|max:255',
             'coupon_discount' => 'required|integer|min:1|max:100',
             'coupon_validity' => 'required|date_format:m/d/Y',
+            'coupon_qty' => 'required|integer|min:1',
         ]);
 
         Coupon::findOrFail($id)->update([
             'coupon_name' => strtoupper($request->coupon_name),
             'coupon_discount' => $request->coupon_discount,
             'coupon_validity' => Carbon::createFromFormat('m/d/Y', $request->coupon_validity)->format('Y-m-d'),
+            'coupon_qty' => $request->coupon_qty,
             'updated_at' => Carbon::now(),
         ]);
 

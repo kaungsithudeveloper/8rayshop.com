@@ -31,6 +31,7 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\Frontend\CompareController;
+use App\Http\Controllers\Frontend\CheckoutController;
 
 use App\Http\Controllers\PosController;
 
@@ -419,6 +420,13 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
         Route::get('/cart-decrement/{rowId}' , 'CartDecrement');
         Route::get('/cart-increment/{rowId}' , 'CartIncrement');
     });
+
+    Route::controller(CheckoutController::class)->group(function(){
+        Route::get('/district-get/ajax/{division_id}' , 'DistrictGetAjax');
+        Route::get('/state-get/ajax/{district_id}' , 'StateGetAjax');
+
+
+    });
 });
 
 Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
@@ -427,5 +435,10 @@ Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMi
 Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToCartDetails']);
 Route::post('/add-to-wishlist/{product_id}', [WishlistController::class, 'AddToWishList']);
 Route::post('/add-to-compare/{product_id}', [CompareController::class, 'AddToCompare']);
+Route::post('/coupon-apply', [CartController::class, 'CouponApply'])->name('coupon.apply');
+Route::get('/coupon-calculation', [CartController::class, 'CouponCalculation']);
+Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
+Route::get('/checkout', [CartController::class, 'CheckoutCreate'])->name('checkout');
+
 
 require __DIR__.'/auth.php';

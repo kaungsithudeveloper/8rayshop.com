@@ -715,8 +715,11 @@
                 dataType: 'json',
                 url: "/cart-remove/"+id,
                 success:function(data){
+
                     cart();
                     miniCart();
+                    couponCalculation();
+
                      // Start Message
             const Toast = Swal.mixin({
                   toast: true,
@@ -754,6 +757,7 @@
                 success:function(data){
                     cart();
                     miniCart();
+                    couponCalculation();
                 }
             });
         }
@@ -767,12 +771,174 @@
                 success:function(data){
                     cart();
                     miniCart();
+                    couponCalculation();
                 }
             });
         }
 
     </script>
     <!--  // End Load MY Cart // -->
+
+    <!--  ////////////// Start Apply Coupon ////////////// -->
+    <script type="text/javascript">
+        function applyCoupon(){
+            var coupon_name = $('#coupon_name').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    coupon_name: coupon_name,
+                    _token: '{{ csrf_token() }}' // Add CSRF token
+                },
+                url: "{{ route('coupon.apply') }}",
+                success: function(data){
+
+                    couponCalculation();
+
+                    if (data.validity) {
+                        $('#couponField').hide();
+                    }
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                    if (!$.isEmptyObject(data.error)) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.error,
+                        });
+                    } else {
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.success,
+                        });
+                    }
+                }
+            });
+        }
+
+        // Start CouponCalculation Method
+        function couponCalculation(){
+            $.ajax({
+                type: 'GET',
+                url: "/coupon-calculation",
+                dataType: 'json',
+                success:function(data){
+
+                    function numberWithCommas(x) {
+                        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+
+                    if (data.total) {
+                        $('#couponCalField').html(
+                            `<tr>
+                                <td class="cart_total_label">
+                                    <h6 class="text-muted">Subtotal</h6>
+                                </td>
+                                <td class="cart_total_amount">
+                                    <h4 class="text-brand text-end">${numberWithCommas(data.total)} Ks</h4>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="cart_total_label">
+                                    <h6 class="text-muted">Grand Total</h6>
+                                </td>
+                                <td class="cart_total_amount">
+                                    <h4 class="text-brand text-end">${numberWithCommas(data.total)} Ks</h4>
+                                </td>
+                            </tr>`
+                        )
+                    }else{
+                        $('#couponCalField').html(
+                            `<tr>
+                                <td class="cart_total_label">
+                                    <h6 class="text-muted">Subtotal</h6>
+                                </td>
+                                <td class="cart_total_amount">
+                                    <h4 class="text-brand text-end">${numberWithCommas(data.subtotal)} Ks</h4>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="cart_total_label">
+                                    <h6 class="text-muted">Coupon </h6>
+                                </td>
+                                <td class="cart_total_amount">
+                                    <h6 class="text-brand text-end">
+                                        ${data.coupon_name}
+                                        <a type="submit" onclick="couponRemove()">
+                                            <i class="fi-rs-trash"></i>
+                                        </a>
+                                    </h6>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="cart_total_label">
+                                    <h6 class="text-muted">Discount Amount  </h6>
+                                </td>
+                                <td class="cart_total_amount">
+                                    <h4 class="text-brand text-end">${numberWithCommas(data.discount_amount)} Ks</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="cart_total_label">
+                                    <h6 class="text-muted">Grand Total </h6>
+                                </td>
+                                <td class="cart_total_amount">
+                                    <h4 class="text-brand text-end">${numberWithCommas(data.total_amount)} Ks</h4>
+                                </td>
+                            </tr> `
+                        )
+                    }
+                }
+            })
+        }
+
+        couponCalculation();
+
+        // Start CouponCalculation Method
+
+
+        function couponRemove(){
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/coupon-remove",
+                success:function(data){
+                    couponCalculation();
+                    $('#couponField').show();
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.success,
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            });
+        }
+        // Coupon Remove End
+
+    </script>
+
+     <!--  ////////////// End Apply Coupon ////////////// -->
 
 
 
