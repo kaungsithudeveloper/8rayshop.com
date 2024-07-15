@@ -93,8 +93,8 @@
                         <i class="angle fe fe-chevron-right"></i></a>
                     <ul class="slide-menu">
                         <li class="side-menu-label1"><a href="javascript:void(0)">Shipping Area</a></li>
-                        <li><a href="{{ route('all.division') }}" class="slide-item"> All Coupon  </a></li>
-                        <li><a href="{{ route('add.coupon') }}" class="slide-item"> Add Coupon  </a></li>
+                        <li><a href="{{ route('all.division') }}" class="slide-item"> All Division  </a></li>
+                        <li><a href="{{ route('all.district') }}" class="slide-item"> All District  </a></li>
                     </ul>
                 </li>
 
