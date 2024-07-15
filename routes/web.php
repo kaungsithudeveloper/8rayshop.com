@@ -24,6 +24,7 @@ use App\Http\Controllers\EmployeeUserController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\ShippingAreaController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -189,6 +190,16 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/edit/coupon/{id}' , 'EditCoupon')->name('edit.coupon');
         Route::post('/update/coupon' , 'UpdateCoupon')->name('update.coupon');
         Route::get('/delete/coupon/{id}' , 'DeleteCoupon')->name('delete.coupon');
+    });
+
+    //Backend sHIP Routes
+    Route::controller(ShippingAreaController::class)->group(function(){
+        Route::get('/all/division' , 'AllDivision')->name('all.division');
+        Route::get('/add/division' , 'AddDivision')->name('add.division');
+        Route::post('/store/division' , 'StoreDivision')->name('store.division');
+        Route::get('/edit/division/{id}' , 'EditDivision')->name('edit.division');
+        Route::post('/update/division' , 'UpdateDivision')->name('update.division');
+        Route::get('/delete/division/{id}' , 'DeleteDivision')->name('delete.division');
     });
 
 

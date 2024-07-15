@@ -87,6 +87,18 @@
                 </li>
 
                 <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                        <i class="side-menu__icon fe fe-layers"></i>
+                        <span class="side-menu__label">Shipping Area</span>
+                        <i class="angle fe fe-chevron-right"></i></a>
+                    <ul class="slide-menu">
+                        <li class="side-menu-label1"><a href="javascript:void(0)">Shipping Area</a></li>
+                        <li><a href="{{ route('all.division') }}" class="slide-item"> All Coupon  </a></li>
+                        <li><a href="{{ route('add.coupon') }}" class="slide-item"> Add Coupon  </a></li>
+                    </ul>
+                </li>
+
+                <li class="slide">
                     <a class="side-menu__item has-link"
                         data-bs-toggle="slide" href="{{ route('all.brand') }}">
                         <i class="side-menu__icon fe fe-award"></i>
