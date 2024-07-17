@@ -421,24 +421,26 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
         Route::get('/cart-increment/{rowId}' , 'CartIncrement');
     });
 
-    Route::controller(CheckoutController::class)->group(function(){
-        Route::get('/district-get/ajax/{division_id}' , 'DistrictGetAjax');
-        Route::get('/state-get/ajax/{district_id}' , 'StateGetAjax');
+    Route::post('/checkout/store', [CheckoutController::class, 'CheckoutStore'])->name('checkout.store');
+    Route::post('/cash/order', [CheckoutController::class, 'CashOrder'])->name('cash.order');
 
-
-    });
 });
 
 Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
 Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
 Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
 Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToCartDetails']);
-Route::post('/add-to-wishlist/{product_id}', [WishlistController::class, 'AddToWishList']);
-Route::post('/add-to-compare/{product_id}', [CompareController::class, 'AddToCompare']);
 Route::post('/coupon-apply', [CartController::class, 'CouponApply'])->name('coupon.apply');
 Route::get('/coupon-calculation', [CartController::class, 'CouponCalculation']);
 Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
 Route::get('/checkout', [CartController::class, 'CheckoutCreate'])->name('checkout');
+
+Route::post('/add-to-wishlist/{product_id}', [WishlistController::class, 'AddToWishList']);
+Route::post('/add-to-compare/{product_id}', [CompareController::class, 'AddToCompare']);
+
+Route::get('/district-get/ajax/{division_id}', [CheckoutController::class, 'DistrictGetAjax']);
+Route::get('/state-get/ajax/{district_id}', [CheckoutController::class, 'StateGetAjax']);
+
 
 
 require __DIR__.'/auth.php';

@@ -19,6 +19,7 @@ class ShippingAreaController extends Controller
 
         ShipDivision::insert([
             'division_name' => $request->division_name,
+            'created_at' => Carbon::now(),
         ]);
 
        $notification = array(
@@ -88,6 +89,7 @@ class ShippingAreaController extends Controller
         ShipDistricts::insert([
             'division_id' => $request->division_id,
             'district_name' => $request->district_name,
+            'created_at' => Carbon::now(),
         ]);
 
        $notification = array(
@@ -159,6 +161,7 @@ class ShippingAreaController extends Controller
             'division_id' => $request->division_id,
             'district_id' => $request->district_id,
             'state_name' => $request->state_name,
+            'created_at' => Carbon::now(),
         ]);
 
        $notification = array(
@@ -183,7 +186,7 @@ class ShippingAreaController extends Controller
 
         $state_id = $request->id;
 
-         ShipState::findOrFail($state_id)->update([
+        ShipState::findOrFail($state_id)->update([
             'division_id' => $request->division_id,
             'district_id' => $request->district_id,
             'state_name' => $request->state_name,

@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\ShipDivision;
-
+use App\Models\UserInfo;
 
 class CartController extends Controller
 {
@@ -257,38 +257,34 @@ class CartController extends Controller
         }
     }
 
-    public function CheckoutCreate(){
+    public function CheckoutCreate()
+{
+    if (Auth::check()) {
+        if (Cart::total() > 0) {
+            $carts = Cart::content();
+            $cartQty = Cart::count();
+            $cartTotal = Cart::total();
+            $divisions = ShipDivision::orderBy('division_name', 'ASC')->get();
+            $userInfo = UserInfo::where('user_id', Auth::id())->first();
 
-        if (Auth::check()) {
-
-            if (Cart::total() > 0) {
-                $carts = Cart::content();
-                $cartQty = Cart::count();
-                $cartTotal = Cart::total();
-
-                $divisions = ShipDivision::orderBy('division_name','ASC')->get();
-                return view('frontend.8ray.checkout_view',compact('carts','cartQty','cartTotal','divisions'));
-
-            }else{
-
-                $notification = array(
-                    'message' => 'Shopping At list One Product',
-                    'alert-type' => 'error'
-                );
-
-                return redirect()->to('/')->with($notification);
-            }
-
-        }else{
-
-             $notification = array(
-                'message' => 'You Need to Login First',
+            return view('frontend.8ray.checkout_view', compact('carts', 'cartQty', 'cartTotal', 'divisions', 'userInfo'));
+        } else {
+            $notification = array(
+                'message' => 'Shopping At least One Product',
                 'alert-type' => 'error'
             );
 
-        return redirect()->route('login')->with($notification);
+            return redirect()->to('/')->with($notification);
         }
-    }// End Method
+    } else {
+        $notification = array(
+            'message' => 'You Need to Login First',
+            'alert-type' => 'error'
+        );
+
+        return redirect()->route('8ray.login')->with($notification);
+    }
+}
 
 
 }
