@@ -25,6 +25,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ShippingAreaController;
+use App\Http\Controllers\OrderController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -191,6 +192,11 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/edit/coupon/{id}' , 'EditCoupon')->name('edit.coupon');
         Route::post('/update/coupon' , 'UpdateCoupon')->name('update.coupon');
         Route::get('/delete/coupon/{id}' , 'DeleteCoupon')->name('delete.coupon');
+    });
+
+    Route::controller(OrderController::class)->group(function(){
+        Route::get('/pending/order' , 'PendingOrder')->name('pending.order');
+
     });
 
     //Backend sHIP Routes
