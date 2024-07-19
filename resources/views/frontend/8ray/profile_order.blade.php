@@ -32,35 +32,41 @@
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th>Order</th>
+                                                            <th>Sl</th>
                                                             <th>Date</th>
+                                                            <th>Totaly</th>
+                                                            <th>Payment</th>
+                                                            <th>Invoice</th>
                                                             <th>Status</th>
-                                                            <th>Total</th>
                                                             <th>Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>#1357</td>
-                                                            <td>March 45, 2020</td>
-                                                            <td>Processing</td>
-                                                            <td>$125.00 for 2 item</td>
-                                                            <td><a href="#" class="btn-small d-block">View</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>#2468</td>
-                                                            <td>June 29, 2020</td>
-                                                            <td>Completed</td>
-                                                            <td>$364.00 for 5 item</td>
-                                                            <td><a href="#" class="btn-small d-block">View</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>#2366</td>
-                                                            <td>August 02, 2020</td>
-                                                            <td>Completed</td>
-                                                            <td>$280.00 for 3 item</td>
-                                                            <td><a href="#" class="btn-small d-block">View</a></td>
-                                                        </tr>
+                                                        @foreach($orders as $key=> $order)
+                                                            <tr>
+                                                                <td>{{ $key+1 }}</td>
+                                                                <td> {{ $order->order_date }}</td>
+                                                                <td> ${{ $order->amount }}</td>
+                                                                <td> {{ $order->payment_method }}</td>
+                                                                <td> {{ $order->invoice_no }}</td>
+                                                                <td>
+                                                                    @if($order->status == 'pending')
+                                                                    <span class="badge rounded-pill bg-warning">Pending</span>
+                                                                    @elseif($order->status == 'confirm')
+                                                                    <span class="badge rounded-pill bg-info">Confirm</span>
+                                                                    @elseif($order->status == 'processing')
+                                                                    <span class="badge rounded-pill bg-danger">Processing</span>
+                                                                    @elseif($order->status == 'deliverd')
+                                                                    <span class="badge rounded-pill bg-success">Deliverd</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <a href="{{ url('8ray/user/order_details/'.$order->id) }}" class="btn-sm btn-success">
+                                                                        <i class="fa fa-eye"></i> View
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>

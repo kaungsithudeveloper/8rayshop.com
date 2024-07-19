@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\User;
 
+
+use App\Models\Order;
+use App\Models\OrderItem;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use App\Rules\UsernameRule;
@@ -101,8 +106,33 @@ class ProfileController extends Controller
     {
         $id = Auth::user()->id;
         $user = User::find($id);
-        return view('frontend.8ray.profile_order', compact('user'));
+        $orders = Order::where('user_id',$id)->orderBy('id','DESC')->get();
+        return view('frontend.8ray.profile_order', compact('user', 'orders'));
     }
+
+
+    public function EightRayUserOrderDetails($order_id){
+
+        $order = Order::with('division','district','state','user')->where('id',$order_id)->where('user_id',Auth::id())->first();
+        $orderItem = OrderItem::with('product')->where('order_id',$order_id)->orderBy('id','DESC')->get();
+
+        return view('frontend.8ray.profile_order_details',compact('order','orderItem'));
+
+    }// End Method
+
+    public function EightRayUserOrderInvoice($order_id){
+        $order = Order::with('division','district','state','user')
+                      ->where('id',$order_id)
+                      ->where('user_id', Auth::id())
+                      ->first();
+        $orderItem = OrderItem::with('product')
+                              ->where('order_id', $order_id)
+                              ->orderBy('id', 'DESC')
+                              ->get();
+
+        return view('frontend.8ray.profile_order_invoice',compact('order','orderItem'));
+
+    }// End Method
 
     public function EditEightRayUserTrackOrder(Request $request)
     {

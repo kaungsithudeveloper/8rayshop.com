@@ -258,33 +258,33 @@ class CartController extends Controller
     }
 
     public function CheckoutCreate()
-{
-    if (Auth::check()) {
-        if (Cart::total() > 0) {
-            $carts = Cart::content();
-            $cartQty = Cart::count();
-            $cartTotal = Cart::total();
-            $divisions = ShipDivision::orderBy('division_name', 'ASC')->get();
-            $userInfo = UserInfo::where('user_id', Auth::id())->first();
+    {
+        if (Auth::check()) {
+            if (Cart::total() > 0) {
+                $carts = Cart::content();
+                $cartQty = Cart::count();
+                $cartTotal = Cart::total();
+                $divisions = ShipDivision::orderBy('division_name', 'ASC')->get();
+                $userInfo = UserInfo::where('user_id', Auth::id())->first();
 
-            return view('frontend.8ray.checkout_view', compact('carts', 'cartQty', 'cartTotal', 'divisions', 'userInfo'));
+                return view('frontend.8ray.checkout_view', compact('carts', 'cartQty', 'cartTotal', 'divisions', 'userInfo'));
+            } else {
+                $notification = array(
+                    'message' => 'Shopping At least One Product',
+                    'alert-type' => 'error'
+                );
+
+                return redirect()->to('/')->with($notification);
+            }
         } else {
             $notification = array(
-                'message' => 'Shopping At least One Product',
+                'message' => 'You Need to Login First',
                 'alert-type' => 'error'
             );
 
-            return redirect()->to('/')->with($notification);
+            return redirect()->route('8ray.login')->with($notification);
         }
-    } else {
-        $notification = array(
-            'message' => 'You Need to Login First',
-            'alert-type' => 'error'
-        );
-
-        return redirect()->route('8ray.login')->with($notification);
     }
-}
 
 
 }

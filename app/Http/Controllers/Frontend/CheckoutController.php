@@ -74,7 +74,7 @@ class CheckoutController extends Controller
             'payment_method' => 'Cash On Delivery',
             'currency' => 'Ks',
             'amount' => $total_amount,
-            'invoice_no' => 'EOS'.mt_rand(10000000,99999999),
+            'invoice_no' => 'EOS'.mt_rand(100000000,999999999),
             'order_date' => Carbon::now()->format('d F Y'),
             'order_month' => Carbon::now()->format('F'),
             'order_year' => Carbon::now()->format('Y'),
