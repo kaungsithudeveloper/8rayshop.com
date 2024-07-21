@@ -408,7 +408,7 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
     Route::get('/8ray/user/order', [ProfileController::class, 'EditEightRayUserOrder'])->name('8ray.user.order');
     Route::get('/8ray/user/order_details/{order_id}', [ProfileController::class, 'EightRayUserOrderDetails'])->name('8ray.user.order.details');
     Route::get('/8ray/user/invoice_download/{order_id}', [ProfileController::class, 'EightRayUserOrderInvoice'])->name('8ray.user.order.invoice');
-    Route::post('/return/order/{order_id}' , [ProfileController::class, 'ReturnOrder'])->name('return.order');
+    Route::post('/8ray/return/order/{order_id}' , [ProfileController::class, 'ReturnOrder'])->name('return.order');
 
     Route::get('/8ray/user/password', [ProfileController::class, 'EditEightRayUserPassword'])->name('8ray.user.password');
     Route::get('/8ray/user/track-order', [ProfileController::class, 'EditEightRayUserTrackOrder'])->name('8ray.user.track.order');

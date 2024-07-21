@@ -199,7 +199,7 @@ class ProfileController extends Controller
             'alert-type' => 'success'
         );
 
-        return view('frontend.8ray.profile_order_details')->with($notification);
+        return view('frontend.8ray.profile_order')->with($notification);
 
     }// End Method
 }
