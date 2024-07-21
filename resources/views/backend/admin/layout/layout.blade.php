@@ -77,6 +77,7 @@
     <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
 
     <!-- JQUERY JS -->
+    <script src="{{ url('backend/js/code.js') }}"></script>
     <script src="{{ url('backend/js/jquery.min.js') }}"></script>
 
     <!-- BOOTSTRAP JS -->

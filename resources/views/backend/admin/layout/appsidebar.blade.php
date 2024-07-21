@@ -82,6 +82,9 @@
                     <ul class="slide-menu">
                         <li class="side-menu-label1"><a href="javascript:void(0)">Order Management</a></li>
                         <li><a href="{{ route('pending.order') }}" class="slide-item"> Pending Order  </a></li>
+                        <li><a href="{{ route('admin.confirmed.order') }}" class="slide-item"> Confirmed Order  </a></li>
+                        <li><a href="{{ route('admin.processing.order') }}" class="slide-item">Processing Order  </a></li>
+                        <li><a href="{{ route('admin.delivered.order') }}" class="slide-item"> Delivered Order  </a></li>
                     </ul>
                 </li>
 

@@ -196,6 +196,13 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
     Route::controller(OrderController::class)->group(function(){
         Route::get('/pending/order' , 'PendingOrder')->name('pending.order');
+        Route::get('/admin/order/details/{order_id}' , 'AdminOrderDetails')->name('admin.order.details');
+        Route::get('/admin/confirmed/order' , 'AdminConfirmedOrder')->name('admin.confirmed.order');
+        Route::get('/admin/processing/order' , 'AdminProcessingOrder')->name('admin.processing.order');
+        Route::get('/admin/delivered/order' , 'AdminDeliveredOrder')->name('admin.delivered.order');
+        Route::get('/pending/confirm/{order_id}' , 'PendingToConfirm')->name('pending-confirm');
+        Route::get('/confirm/processing/{order_id}' , 'ConfirmToProcess')->name('confirm-processing');
+        Route::get('/processing/delivered/{order_id}' , 'ProcessToDelivered')->name('processing-delivered');
 
     });
 
@@ -401,6 +408,7 @@ Route::middleware(['auth'],['role'=>'admin','employee','user'])->group(function 
     Route::get('/8ray/user/order', [ProfileController::class, 'EditEightRayUserOrder'])->name('8ray.user.order');
     Route::get('/8ray/user/order_details/{order_id}', [ProfileController::class, 'EightRayUserOrderDetails'])->name('8ray.user.order.details');
     Route::get('/8ray/user/invoice_download/{order_id}', [ProfileController::class, 'EightRayUserOrderInvoice'])->name('8ray.user.order.invoice');
+    Route::post('/return/order/{order_id}' , [ProfileController::class, 'ReturnOrder'])->name('return.order');
 
     Route::get('/8ray/user/password', [ProfileController::class, 'EditEightRayUserPassword'])->name('8ray.user.password');
     Route::get('/8ray/user/track-order', [ProfileController::class, 'EditEightRayUserTrackOrder'])->name('8ray.user.track.order');

@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
@@ -183,4 +184,22 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+
+    public function ReturnOrder(Request $request,$order_id){
+
+        Order::findOrFail($order_id)->update([
+            'return_date' => Carbon::now()->format('d F Y'),
+            'return_reason' => $request->return_reason,
+            'return_order' => 1,
+        ]);
+
+        $notification = array(
+            'message' => 'Return Request Send Successfully',
+            'alert-type' => 'success'
+        );
+
+        return view('frontend.8ray.profile_order_details')->with($notification);
+
+    }// End Method
 }
