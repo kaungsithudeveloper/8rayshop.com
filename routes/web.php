@@ -26,6 +26,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReturnController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -204,6 +205,12 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/confirm/processing/{order_id}' , 'ConfirmToProcess')->name('confirm-processing');
         Route::get('/processing/delivered/{order_id}' , 'ProcessToDelivered')->name('processing-delivered');
 
+    });
+
+    Route::controller(ReturnController::class)->group(function(){
+        Route::get('/return/request' , 'ReturnRequest')->name('return.request');
+        Route::get('/return/request/approved/{order_id}' , 'ReturnRequestApproved')->name('return.request.approved');
+        Route::get('/complete/return/request' , 'CompleteReturnRequest')->name('complete.return.request');
     });
 
     //Backend sHIP Routes

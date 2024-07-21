@@ -91,6 +91,18 @@
                 <li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
                         <i class="side-menu__icon fe fe-layers"></i>
+                        <span class="side-menu__label">Return Order</span>
+                        <i class="angle fe fe-chevron-right"></i></a>
+                    <ul class="slide-menu">
+                        <li class="side-menu-label1"><a href="javascript:void(0)">Return Order</a></li>
+                        <li><a href="{{ route('return.request') }}" class="slide-item"> Return Request  </a></li>
+                        <li><a href="{{ route('complete.return.request') }}" class="slide-item">Complete Request</a></li>
+                    </ul>
+                </li>
+
+                <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                        <i class="side-menu__icon fe fe-layers"></i>
                         <span class="side-menu__label">Coupon Management</span>
                         <i class="angle fe fe-chevron-right"></i></a>
                     <ul class="slide-menu">
