@@ -17,9 +17,16 @@
                     <i class="fi-rs-shopping-bag mr-10"></i>Orders
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('return.order.page') ? 'active' : '' }}" href="{{ route('return.order.page') }}" aria-controls="return orders " aria-selected="false">
+                    <i class="fi-rs-shopping-bag mr-10"></i> Return Orders
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('8ray.user.track.order') ? 'active' : '' }}" href="{{ route('8ray.user.track.order') }}" aria-controls="track-orders" aria-selected="false">
-                    <i class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order
+                    <i class="fi-rs-shopping-cart-check mr-10"></i> Track Your Order
                 </a>
             </li>
 

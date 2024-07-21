@@ -202,4 +202,11 @@ class ProfileController extends Controller
         return view('frontend.8ray.profile_order')->with($notification);
 
     }// End Method
+
+    public function ReturnOrderPage(){
+
+        $orders = Order::where('user_id',Auth::id())->where('return_order','=',1)->orderBy('id','DESC')->get();
+        return view('frontend.8ray.profile_return_order_view',compact('orders'));
+
+    }// End Method
 }

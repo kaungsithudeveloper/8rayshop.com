@@ -12,11 +12,11 @@
 
                 <!-- PAGE-HEADER -->
                 <div class="page-header">
-                    <h1 class="page-title">All Confirmed Order</h1>
+                    <h1 class="page-title">All Processing Order</h1>
                     <div>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">All Confirmed Order</li>
+                            <li class="breadcrumb-item active" aria-current="page">All Processing Order</li>
                         </ol>
                     </div>
                 </div>

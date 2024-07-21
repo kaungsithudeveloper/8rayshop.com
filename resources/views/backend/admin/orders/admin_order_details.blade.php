@@ -195,7 +195,7 @@
                                         @foreach($orderItem as $item)
                                         <tr>
                                             <td class="col-md-1">
-                                                <label><img src="{{ asset($item->product->product_thambnail) }}" style="width:50px; height:50px;" > </label>
+                                                <label><img src="{{ asset('/upload/product_images/' . $item->product->product_photo) }}" style="width:50px; height:50px;" > </label>
                                             </td>
                                             <td class="col-md-2">
                                                 <label>{{ $item->product->product_name }}</label>
