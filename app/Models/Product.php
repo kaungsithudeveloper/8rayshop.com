@@ -83,6 +83,29 @@ class Product extends Model
         return $this->stocks()->sum('stock_qty');
     }
 
+    public function getSoldQuantityAttribute()
+    {
+        return StockMovement::where('product_id', $this->id)
+                         ->where('type', 'sale')
+                         ->sum('quantity');
+    }
+
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
+
+    public function getErrorQuantityAttribute()
+    {
+        return StockErrors::where('product_id', $this->id)
+                        ->sum('error_qty');
+    }
+
+    public function stockErrors()
+    {
+        return $this->hasMany(StockErrors::class, 'product_id');
+    }
+
     public function colors()
     {
         return $this->belongsToMany(ProductColor::class, 'product_color_belongs', 'product_id', 'product_color_id');

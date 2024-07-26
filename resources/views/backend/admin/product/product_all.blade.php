@@ -60,6 +60,8 @@
                                                                         <th class="border-bottom-0">Total Stock</th>
                                                                         <th class="border-bottom-0">8Ray Stock</th>
                                                                         <th class="border-bottom-0">(GP)Stock</th>
+                                                                        <th class="border-bottom-0">Sold Stock</th>
+                                                                        <th class="border-bottom-0">Error Stock</th>
                                                                         <th class="border-bottom-0">Purchase Price</th>
                                                                         <th class="border-bottom-0">Selling Price</th>
                                                                         <th class="border-bottom-0">Status</th>
@@ -90,6 +92,9 @@
                                                                             @endphp
                                                                             {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                         </td>
+
+                                                                        <td> {{ $product->sold_quantity }}</td>
+                                                                        <td> {{ $product->error_quantity }}</td>
                                                                         <td> {{ $product->price->purchase_price }}</td>
                                                                         <td> {{ $product->price->selling_price }}</td>
 
@@ -155,6 +160,8 @@
                                                                                 <th class="border-bottom-0">Total Stock</th>
                                                                                 <th class="border-bottom-0">8Ray Stock</th>
                                                                                 <th class="border-bottom-0">(GP)Stock</th>
+                                                                                <th class="border-bottom-0">Sold Stock</th>
+                                                                                <th class="border-bottom-0">Error Stock</th>
                                                                                 <th class="border-bottom-0">Purchase Price</th>
                                                                                 <th class="border-bottom-0">Selling Price</th>
                                                                                 <th class="border-bottom-0">Status</th>
@@ -185,6 +192,8 @@
                                                                                     @endphp
                                                                                     {{ $stock ? $stock->stock_qty : 'No stock' }}
                                                                                 </td>
+                                                                                <td>{{ $product->sold_quantity }}</td>
+                                                                                <td> {{ $product->error_quantity }}</td>
                                                                                 <td> {{ $product->price->purchase_price }}</td>
                                                                                 <td> {{ $product->price->selling_price }}</td>
 

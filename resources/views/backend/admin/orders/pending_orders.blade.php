@@ -101,7 +101,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="g-2 text-center">
-                                                                <a href="{{ route('admin.order.details',$item->id) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
+                                                                <a href="{{ route('admin.order.details',$order->id) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
                                                                     <span class="fe fe-edit fs-14"></span>
                                                                 </a>
                                                                 <a href="" class="btn text-danger btn-sm" id="delete" data-bs-toggle="tooltip" data-bs-original-title="Delete">

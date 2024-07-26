@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Stock;
+use App\Models\StockMovement;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
@@ -78,17 +80,46 @@ class OrderController extends Controller
     }// End Method
 
 
-      public function ProcessToDelivered($order_id){
-        Order::findOrFail($order_id)->update(['status' => 'deliverd']);
+    public function ProcessToDelivered($order_id) {
+        // Find the order
+        $order = Order::findOrFail($order_id);
 
+        // Update order status to 'delivered'
+        $order->update(['status' => 'deliverd']);
+
+        // Retrieve order items
+        $orderItems = $order->orderItems;
+
+        // Loop through each order item to reduce the stock quantity
+        foreach ($orderItems as $item) {
+            // Find the stock record for the product and branch
+            $stock = Stock::where('product_id', $item->product_id)
+                          ->where('branch_id', 1) // Assuming you want to update stock in branch ID 1
+                          ->first();
+
+            if ($stock) {
+                // Update the stock quantity
+                $stock->stock_qty -= $item->qty;
+                $stock->save();
+
+                // Log the stock movement, including the order_id
+                StockMovement::create([
+                    'product_id' => $item->product_id,
+                    'branch_id' => 1,
+                    'order_id' => $order_id, // Include the order_id
+                    'type' => 'sale',
+                    'quantity' => $item->qty
+                ]);
+            }
+        }
+
+        // Notification
         $notification = array(
-            'message' => 'Order Deliverd Successfully',
+            'message' => 'Order Delivered Successfully',
             'alert-type' => 'success'
         );
 
         return redirect()->route('admin.delivered.order')->with($notification);
-
-
-    }// End Method
+    }
 
 }

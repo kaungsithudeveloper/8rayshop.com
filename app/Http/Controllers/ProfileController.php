@@ -188,7 +188,7 @@ class ProfileController extends Controller
 
     public function ReturnOrder(Request $request,$order_id){
 
-        Order::findOrFail($order_id)->update([
+        $orders = Order::findOrFail($order_id)->update([
             'return_date' => Carbon::now()->format('d F Y'),
             'return_reason' => $request->return_reason,
             'return_order' => 1,
@@ -199,7 +199,7 @@ class ProfileController extends Controller
             'alert-type' => 'success'
         );
 
-        return view('frontend.8ray.profile_order')->with($notification);
+        return redirect()->route('8ray.user.order')->with($notification);
 
     }// End Method
 
