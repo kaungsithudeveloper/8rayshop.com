@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\StockMovement;
 use App\Models\User;
 use App\Models\UserInfo;
 
@@ -92,6 +93,15 @@ class CheckoutController extends Controller
                 'qty' => $cart->qty,
                 'price' => $cart->price,
                 'created_at' =>Carbon::now(),
+            ]);
+
+            StockMovement::insert([
+                'product_id' => $cart->id,
+                'branch_id' => 1,
+                'order_id' => $order_id, // Include the order_id
+                'color' => $cart->options->color,
+                'type' => 'order',
+                'quantity' => $cart->qty,
             ]);
         }
 

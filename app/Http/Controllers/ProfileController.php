@@ -186,22 +186,36 @@ class ProfileController extends Controller
     }
 
 
-    public function ReturnOrder(Request $request,$order_id){
+    public function ReturnOrder(Request $request, $order_id)
+    {
+        // Validate the request data
+        //dd($request->all());
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'return_qty' => 'required|integer|min:1',
+            'return_reason' => 'required|string',
+        ]);
 
-        $orders = Order::findOrFail($order_id)->update([
+        // Find the order
+        $order = Order::findOrFail($order_id);
+
+        // Update the order with return details
+        $order->update([
             'return_date' => Carbon::now()->format('d F Y'),
             'return_reason' => $request->return_reason,
+            'return_qty' => $request->return_qty,
             'return_order' => 1,
         ]);
 
+        // Create a notification
         $notification = array(
-            'message' => 'Return Request Send Successfully',
-            'alert-type' => 'success'
+            'message' => 'Return Request Sent Successfully',
+            'alert-type' => 'success',
         );
 
         return redirect()->route('8ray.user.order')->with($notification);
-
-    }// End Method
+    }
+// End Method
 
     public function ReturnOrderPage(){
 

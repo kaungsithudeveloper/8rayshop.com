@@ -16,8 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('order_id')->nullable(); // Add order_id column
-            $table->enum('type', ['purchase', 'sale']);
-            $table->integer('quantity');
+            $table->string('color')->nullable();
+            $table->string('status')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->integer('return_qty')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

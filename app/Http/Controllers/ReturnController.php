@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Models\StockErrors;
+use App\Models\StockMovement;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ReturnController extends Controller
@@ -30,6 +32,7 @@ class ReturnController extends Controller
             $product = $item->product;
             $branchId = 1; // Assuming a single branch ID for simplicity; modify as needed
             $returnQty = $item->qty;
+            $returnColor = $item->color;
 
             // Store the return quantity in the stock_errors table
             StockErrors::create([
@@ -42,6 +45,17 @@ class ReturnController extends Controller
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
+
+            StockMovement::insert([
+                'product_id' => $product->id,
+                'branch_id' =>  $branchId,
+                'order_id' => $order_id, // Include the order_id
+                'color' => $returnColor,
+                'status' => 'return',
+                'return_qty' => $returnQty,
+                'updated_at' => now()
+            ]);
+
         }
 
         // Return a success notification

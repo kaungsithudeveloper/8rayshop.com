@@ -49,48 +49,27 @@ class OrderController extends Controller
 
 
     public function AdminDeliveredOrder(){
-        $orders = Order::where('status','deliverd')->orderBy('id','DESC')->get();
+        $orders = Order::where('status','delivered')->orderBy('id','DESC')->get();
         return view('backend.admin.orders.delivered_orders',compact('orders'));
     } // End Method
 
     public function PendingToConfirm($order_id){
-        Order::findOrFail($order_id)->update(['status' => 'confirm']);
 
-        $notification = array(
-            'message' => 'Order Confirm Successfully',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->route('admin.confirmed.order')->with($notification);
-
-
-    }// End Method
-
-    public function ConfirmToProcess($order_id){
-        Order::findOrFail($order_id)->update(['status' => 'processing']);
-
-        $notification = array(
-            'message' => 'Order Processing Successfully',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->route('admin.processing.order')->with($notification);
-
-
-    }// End Method
-
-
-    public function ProcessToDelivered($order_id) {
-        // Find the order
         $order = Order::findOrFail($order_id);
 
         // Update order status to 'delivered'
-        $order->update(['status' => 'deliverd']);
+        $order->update([
+            'status' => 'delivered',
+            'picked_date' => Carbon::now()->format('d F Y'),
+            'shipped_date' => Carbon::now()->format('d F Y'),
+            'delivered_date' => Carbon::now()->format('d F Y'),
+            'updated_at' => now(),
+        ]);
 
         // Retrieve order items
         $orderItems = $order->orderItems;
 
-        // Loop through each order item to reduce the stock quantity
+        // Loop through each order item to reduce the stock quantity and log stock movements
         foreach ($orderItems as $item) {
             // Find the stock record for the product and branch
             $stock = Stock::where('product_id', $item->product_id)
@@ -102,14 +81,90 @@ class OrderController extends Controller
                 $stock->stock_qty -= $item->qty;
                 $stock->save();
 
-                // Log the stock movement, including the order_id
-                StockMovement::create([
-                    'product_id' => $item->product_id,
-                    'branch_id' => 1,
-                    'order_id' => $order_id, // Include the order_id
-                    'type' => 'sale',
-                    'quantity' => $item->qty
-                ]);
+                // Find existing stock movement record
+                $stockMovement = StockMovement::where('order_id', $order_id)
+                                              ->where('product_id', $item->product_id)
+                                              ->where('branch_id', 1)
+                                              ->where('color', $item->color)
+                                              ->first();
+
+                if ($stockMovement) {
+                    // Update the existing stock movement record
+                    $stockMovement->update([
+                        'type' => 'sale',
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+        }
+
+        // Notification
+        $notification = array(
+            'message' => 'Order Delivered Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.delivered.order')->with($notification);
+
+
+    }// End Method
+
+    public function ConfirmToProcess($order_id){
+        Order::findOrFail($order_id)->update(['status' => 'processing','processing_date' => Carbon::now()->format('d F Y'),]);
+
+        $notification = array(
+            'message' => 'Order Processing Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.processing.order')->with($notification);
+
+
+
+
+    }// End Method
+
+
+    public function ProcessToDelivered($order_id) {
+        // Find the order
+        $order = Order::findOrFail($order_id);
+
+        // Update order status to 'delivered'
+        $order->update([
+            'status' => 'delivered',
+            'picked_date' => Carbon::now()->format('d F Y'),
+            'shipped_date' => Carbon::now()->format('d F Y'),
+            'delivered_date' => Carbon::now()->format('d F Y'),
+        ]);
+
+        // Retrieve order items
+        $orderItems = $order->orderItems;
+
+        // Loop through each order item to reduce the stock quantity and log stock movements
+        foreach ($orderItems as $item) {
+            // Find the stock record for the product and branch
+            $stock = Stock::where('product_id', $item->product_id)
+                          ->where('branch_id', 1) // Assuming you want to update stock in branch ID 1
+                          ->first();
+
+            if ($stock) {
+                // Update the stock quantity
+                $stock->stock_qty -= $item->qty;
+                $stock->save();
+
+                // Find existing stock movement record
+                $stockMovement = StockMovement::where('order_id', $order_id)
+                                              ->where('product_id', $item->product_id)
+                                              ->where('branch_id', 1)
+                                              ->where('color', $item->color)
+                                              ->first();
+
+                if ($stockMovement) {
+                    // Update the existing stock movement record
+                    $stockMovement->update([
+                        'type' => 'sale',
+                    ]);
+                }
             }
         }
 
@@ -121,5 +176,7 @@ class OrderController extends Controller
 
         return redirect()->route('admin.delivered.order')->with($notification);
     }
+
+
 
 }
