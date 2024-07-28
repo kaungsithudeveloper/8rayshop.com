@@ -80,7 +80,7 @@ class Product extends Model
 
     public function getTotalStockAttribute()
     {
-        return $this->stocks()->sum('stock_qty');
+        return $this->stocks()->sum('purchase_qty');
     }
 
     public function getSoldQuantityAttribute()

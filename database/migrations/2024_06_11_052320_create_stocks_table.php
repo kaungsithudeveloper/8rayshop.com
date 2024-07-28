@@ -16,7 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('branch_id');
-            $table->integer('stock_qty')->nullable();
+            $table->integer('purchase_qty')->nullable();
+            $table->integer('sell_qty')->nullable();
+            $table->integer('return_qty')->nullable();
+            $table->integer('error_qty')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

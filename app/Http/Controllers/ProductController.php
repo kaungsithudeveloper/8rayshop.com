@@ -368,8 +368,8 @@ class ProductController extends Controller
 
         // Update stock for each branch if provided
         $branches = [
-            ['branch_id' => $request->input('branch_id_1'), 'stock_qty' => $request->input('stock_qty_1')],
-            ['branch_id' => $request->input('branch_id_2'), 'stock_qty' => $request->input('stock_qty_2')],
+            ['branch_id' => $request->input('branch_id_1'), 'purchase_qty' => $request->input('stock_qty_1')],
+            ['branch_id' => $request->input('branch_id_2'), 'purchase_qty' => $request->input('stock_qty_2')],
         ];
 
         foreach ($branches as $branch) {
@@ -379,15 +379,15 @@ class ProductController extends Controller
                     ->first();
 
                 if ($stock) {
-                    $stock->stock_qty = $branch['stock_qty'];
+                    $stock->purchase_qty = $branch['purchase_qty'];
                     $stock->updated_at = Carbon::now();
                     $stock->save();
-                } elseif (!empty($branch['stock_qty'])) {
+                } elseif (!empty($branch['purchase_qty'])) {
                     $newStock = new Stock();
                     $newStock->product_id = $product->id;
                     $newStock->brand_id = $validatedData['brand_id'];
                     $newStock->branch_id = $branch['branch_id'];
-                    $newStock->stock_qty = $branch['stock_qty'];
+                    $newStock->purchase_qty = $branch['purchase_qty'];
                     $newStock->created_at = Carbon::now();
                     $newStock->save();
                 }

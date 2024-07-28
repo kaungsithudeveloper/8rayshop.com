@@ -84,13 +84,13 @@
                                                                             @php
                                                                                 $stock = $product->stocks->firstWhere('branch_id', 1);
                                                                             @endphp
-                                                                            {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                            {{ $stock ? $stock->purchase_qty : 'No stock' }}
                                                                         </td>
                                                                         <td>
                                                                             @php
                                                                                 $stock = $product->stocks->firstWhere('branch_id', 2);
                                                                             @endphp
-                                                                            {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                            {{ $stock ? $stock->purchase_qty : 'No stock' }}
                                                                         </td>
 
                                                                         <td> {{ $product->sold_quantity }}</td>
@@ -184,13 +184,13 @@
                                                                                     @php
                                                                                         $stock = $product->stocks->firstWhere('branch_id', 1);
                                                                                     @endphp
-                                                                                    {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                                    {{ $stock ? $stock->purchase_qty : 'No stock' }}
                                                                                 </td>
                                                                                 <td>
                                                                                     @php
                                                                                         $stock = $product->stocks->firstWhere('branch_id', 2);
                                                                                     @endphp
-                                                                                    {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                                    {{ $stock ? $stock->purchase_qty : 'No stock' }}
                                                                                 </td>
                                                                                 <td>{{ $product->sold_quantity }}</td>
                                                                                 <td> {{ $product->error_quantity }}</td>
@@ -282,13 +282,13 @@
                                                                                 @php
                                                                                     $stock = $product->stocks->firstWhere('branch_id', 1);
                                                                                 @endphp
-                                                                                {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                                {{ $stock ? $stock->purchase_qty : 'No stock' }}
                                                                             </td>
                                                                             <td>
                                                                                 @php
                                                                                     $stock = $product->stocks->firstWhere('branch_id', 2);
                                                                                 @endphp
-                                                                                {{ $stock ? $stock->stock_qty : 'No stock' }}
+                                                                                {{ $stock ? $stock->purchase_qty : 'No stock' }}
                                                                             </td>
                                                                             <td> {{ $product->price->purchase_price }}</td>
                                                                             <td> {{ $product->price->selling_price }}</td>
