@@ -69,6 +69,7 @@
                                                                         <th class="border-bottom-0">Action</th>
                                                                     </tr>
                                                                 </thead>
+
                                                                 <tbody>
                                                                     @foreach ($products as $key => $product)
                                                                     <tr>
@@ -91,36 +92,51 @@
                                                                             @endphp
                                                                             {{ $stock ? $stock->purchase_qty : 'No stock' }}
                                                                         </td>
-                                                                        <td>{{ $product->sold_quantity }}</td>
-                                                                        <td>{{ $product->error_quantity }}</td>
-                                                                        <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
-                                                                        <td>{{ $product->price ? $product->price->selling_price : 'No price' }}</td>
+
+                                                                        <td> {{ $product->sold_quantity }}</td>
+                                                                        <td> {{ $product->error_quantity }}</td>
+                                                                        <td> {{ $product->price->purchase_price }}</td>
+                                                                        <td> {{ $product->price->selling_price }}</td>
+
                                                                         <td>
                                                                             @if ($product->status == 'active')
-                                                                                <span class="badge bg-success badge-sm me-1 mb-1 mt-1">
+                                                                                <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
                                                                                     {{ $product->status }}
                                                                                 </span>
                                                                             @else
-                                                                                <span class="badge bg-danger badge-sm me-1 mb-1 mt-1">
+                                                                                <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
                                                                                     {{ $product->status }}
                                                                                 </span>
                                                                             @endif
                                                                         </td>
                                                                         <td>{{ date('F j, Y', strtotime($product['created_at'])) }}</td>
                                                                         <td>
-                                                                            <a href="{{ route('edit.product', $product->product_slug) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
+                                                                            <a href="{{ route('edit.product', $product->product_slug) }}"
+                                                                                class="btn text-primary btn-sm" data-bs-toggle="tooltip"
+                                                                                data-bs-original-title="Edit">
                                                                                 <span class="fe fe-edit fs-14"></span>
                                                                             </a>
+
                                                                             @if ($product->status == 'active')
-                                                                                <a href="{{ route('inactive.product', $product->id) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Inactive">
+                                                                                <a href="{{ route('inactive.product', $product->id) }}"
+                                                                                    class="btn text-primary btn-sm"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-original-title="Inactive">
                                                                                     <span class="fa fa-toggle-on fs-14"></span>
                                                                                 </a>
                                                                             @else
-                                                                                <a href="{{ route('active.product', $product->id) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Active">
+                                                                                <a href="{{ route('active.product', $product->id) }}"
+                                                                                    class="btn text-primary btn-sm"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-original-title="Active">
                                                                                     <span class="fa fa-toggle-off fs-14"></span>
                                                                                 </a>
                                                                             @endif
-                                                                            <a href="{{ route('delete.product', $product->id) }}" class="btn text-danger btn-sm" id="delete" data-bs-toggle="tooltip" data-bs-original-title="Delete">
+
+                                                                            <a href="{{ route('delete.product', $product->id) }}"
+                                                                                class="btn text-danger btn-sm" id="delete"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-original-title="Delete">
                                                                                 <span class="fe fe-trash-2 fs-14"></span>
                                                                             </a>
                                                                         </td>
@@ -128,10 +144,8 @@
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
-
                                                         </div>
                                                     </div>
-
                                                     <div class="tab-pane" id="tab6">
                                                         <div class="table-responsive">
                                                             <div class="table-responsive">
@@ -180,8 +194,8 @@
                                                                                 </td>
                                                                                 <td>{{ $product->sold_quantity }}</td>
                                                                                 <td> {{ $product->error_quantity }}</td>
-                                                                                <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
-                                                                                <td>{{ $product->price ? $product->price->selling_price : 'No price' }}</td>
+                                                                                <td> {{ $product->price->purchase_price }}</td>
+                                                                                <td> {{ $product->price->selling_price }}</td>
 
                                                                                 <td>
                                                                                     @if ($product->status == 'active')
@@ -246,8 +260,6 @@
                                                                             <th class="border-bottom-0">Total Stock</th>
                                                                             <th class="border-bottom-0">8Ray Stock</th>
                                                                             <th class="border-bottom-0">(GP)Stock</th>
-                                                                            <th class="border-bottom-0">Sold Stock</th>
-                                                                            <th class="border-bottom-0">Error Stock</th>
                                                                             <th class="border-bottom-0">Purchase Price</th>
                                                                             <th class="border-bottom-0">Selling Price</th>
                                                                             <th class="border-bottom-0">Status</th>
@@ -278,11 +290,8 @@
                                                                                 @endphp
                                                                                 {{ $stock ? $stock->purchase_qty : 'No stock' }}
                                                                             </td>
-                                                                            <td>{{ $product->sold_quantity }}</td>
-                                                                            <td> {{ $product->error_quantity }}</td>
-                                                                            <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
-                                                                            <td>{{ $product->price ? $product->price->selling_price : 'No price' }}</td>
-
+                                                                            <td> {{ $product->price->purchase_price }}</td>
+                                                                            <td> {{ $product->price->selling_price }}</td>
 
                                                                             <td>
                                                                                 @if ($product->status == 'active')
@@ -333,8 +342,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-
                                                 </div>
                                             </div>
                                         </div>

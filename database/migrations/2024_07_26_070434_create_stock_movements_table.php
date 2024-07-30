@@ -17,9 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('order_id')->nullable(); // Add order_id column
             $table->string('color')->nullable();
-            $table->string('status')->nullable();
+            $table->string('type')->nullable();
             $table->integer('quantity')->nullable();
-            $table->integer('return_qty')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

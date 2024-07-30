@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('product_color_id');
             $table->integer('purchase_qty')->nullable();
             $table->integer('sell_qty')->nullable();
             $table->integer('return_qty')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('product_color_id')->references('id')->on('product_colors')->onDelete('cascade');
         });
     }
 

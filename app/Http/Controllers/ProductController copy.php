@@ -35,7 +35,7 @@ class ProductController extends Controller
                 'categories',
                 'productSubCategory',
                 'multiImages',
-                'price'
+                'prices'
             ])->with(['stocks.branch'])->latest()->get();
 
         $activeProducts = Product::where('status', 'active')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
@@ -243,28 +243,26 @@ class ProductController extends Controller
     }
 
     public function EditProduct($slug)
-{
-    $product = Product::with(['stocks', 'colors'])
-        ->where('product_slug', $slug)
-        ->firstOrFail();
+    {
+        // Retrieve the product by slug
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price','productStock1', 'productStock2'])
+                    ->where('product_slug', $slug)
+                    ->firstOrFail();
 
-    // Group stocks by color ID and include color name
-    $stocksGroupedByColor = $product->stocks->groupBy('product_color_id')
-        ->map(function ($group) {
-            $color = $group->first()->color; // Assuming each stock has a related color
-            return [
-                'product_color_id' => $color->id,
-                'color_name' => $color->color_name,
-                'stock_qty_1' => $group->where('branch_id', 1)->sum('purchase_qty'),
-                'stock_qty_2' => $group->where('branch_id', 2)->sum('purchase_qty'),
-            ];
-        });
+        // Retrieve all necessary related data
+        $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->get();
+        $branches = Branch::latest()->get();
+        $product_categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
+        $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name', 'ASC')->get();
 
-    return view('backend.admin.product.product_edit', [
-        'product' => $product,
-        'stocksGroupedByColor' => $stocksGroupedByColor,
-    ]);
-}
+        // Retrieve stock information for branches related to the product
+        $productStock1 = Stock::where('product_id', $product->id)->where('branch_id', 1)->first();
+        $productStock2 = Stock::where('product_id', $product->id)->where('branch_id', 2)->first();
+
+        // Pass the data to the view
+        return view('backend.admin.product.product_edit', compact('product', 'product_type', 'brands', 'product_categories', 'product_subCategories', 'branches', 'productStock1', 'productStock2'));
+    }
 
     public function UpdateProduct(Request $request)
     {

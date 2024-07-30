@@ -27,4 +27,9 @@ class Stock extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+
+    public function color()
+    {
+        return $this->belongsTo(ProductColor::class, 'product_color_id');
+    }
 }

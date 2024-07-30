@@ -173,6 +173,9 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/backend/product', 'AllProduct')->name('all.product');
         Route::get('/backend/product/add', 'AddProduct')->name('product.add');
         Route::post('/backend/product/store',  'StoreProduct')->name('store.product');
+
+        Route::post('/backend/product/storetest',  'storetest')->name('storetest.product');
+
         Route::post('/backend/product/update', 'UpdateProduct')->name('update.product');
         Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
 
@@ -180,6 +183,9 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/active/product/{id}' ,  'ProductActive')->name('active.product');
 
         Route::get('/backend/product/edit/{slug}','EditProduct')->name('edit.product');
+
+        Route::get('/colors/search', 'search')->name('colors.search');
+        Route::post('/colors/add','store')->name('colors.store');
 
         //Test Youtube video Link Good
         Route::get('/product_infos', 'index');

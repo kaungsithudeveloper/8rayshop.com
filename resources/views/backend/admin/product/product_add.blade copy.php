@@ -3,7 +3,6 @@
 @section('admin')
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <link rel="stylesheet" href="{{ url('backend/plugins/tagify/tagify.min.css') }}">
 
@@ -31,12 +30,13 @@
                         <!-- PAGE-HEADER END -->
 
                         <!-- ROW-1 -->
-                        <form id="myForm" method="post" action="{{ route('storetest.product') }}" enctype="multipart/form-data">
+                        <form id="myForm" method="post" action="{{ route('store.product') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
+
                                 <div class="col-xl-8">
 
-                                    @if ($errors->any())
+                                        @if ($errors->any())
                                             <div class="alert alert-danger">
                                                 @foreach ($errors->all() as $err)
                                                     {{ $err }}
@@ -44,26 +44,26 @@
                                             </div>
                                         @endif
 
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="product_code" class="form-label">Product Code :<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="product_code" autocomplete="product_code" required>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="product_code" class="form-label">Product Code :<span
+                                                                    class="text-red">*</span></label>
+                                                            <input type="text" class="form-control"  name="product_code" autocomplete="product_code" required>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <label for="product_name" class="form-label">Product Name:<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="product_name" autocomplete="product_name" required>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label for="product_name" class="form-label">Product Name:<span
+                                                                    class="text-red">*</span></label>
+                                                            <input type="text" class="form-control"  name="product_name" autocomplete="product_name" required>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
                                         <div class="card">
                                             <div class="card-body">
@@ -84,37 +84,12 @@
                                         </div>
 
                                         <div class="card">
-                                            <div class="card-body">
-                                                <label for="inputProductTitle" class="form-label">Product Color :</label>
-                                                <div id="color-input-container">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                                                            <input type="text" name="product_color_id[]" class="form-control product-color-input" placeholder="Select Color">
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                                                            <input type="text" class="form-control" name="stock_qty_1[]" placeholder="Stock for Branch 1">
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                                                            <div class="d-flex">
-                                                                <input type="text" class="form-control" name="stock_qty_2[]" placeholder="Stock for Branch 2">
-                                                                <a href="javascript:void(0)" class="btn text-danger btn-sm add-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Add Color">
-                                                                    <span class="fe fe-edit fs-14"></span>
-                                                                </a>
-                                                                <a href="javascript:void(0)" class="btn text-danger btn-sm delete-color-btn ms-2" >
-
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="card-header">
+                                                <div class="card-title">Product Photo</div>
                                             </div>
-                                        </div>
-
-
-                                        <div class="card">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label class="form-label"> Product Photo: </label>
+                                                    <label for="product_photo">Photo</label>
                                                     <input type="file" name="product_photo" class="form-control" id="image" />
                                                 </div>
 
@@ -129,28 +104,28 @@
                                             </div>
                                         </div>
 
+
                                         <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">Multiple Image</div>
+                                            </div>
                                             <div class="card-body">
                                                 <div class="mb-3">
-                                                    <label for="inputProductTitle" class="form-label">Multiple Image :</label>
+                                                    <label for="inputProductTitle" class="form-label">Multiple Image</label>
                                                     <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple="">
 
                                                     <div class="row" id="preview_img"></div>
                                                 </div>
                                             </div>
                                         </div>
-
-
                                 </div>
-
-
                                 <div class="col-xl-4">
 
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="row">
 
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Product Category:</label>
                                                         <select name="product_category_id" class="form-control select2-show-search form-select" id="inputVendor">
@@ -162,7 +137,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label class="form-label"> Product SubCategory: </label>
                                                         <select name="product_subcategory_id[]" class="form-select select2" id="inputCollection" multiple>
@@ -171,7 +146,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group mb-4">
                                                         <label for="brand" class="form-label">Brand:</label>
                                                         <select name="brand_id" id="brand_id" class="form-control select2-show-search form-select" data-placeholder="Choose one">
@@ -182,6 +157,15 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-4">
+                                                        <label for="product_colors" class="form-label">Product Colors:</label>
+                                                        <input type="text" name="product_color_id" class="form-control" id="product_colors" required>
+                                                    </div>
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -189,29 +173,153 @@
 
                                     <div class="card">
                                         <div class="card-body">
+
+                                            <a href="" class="btn btn-danger">Add Color</a>
+
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-4">
+                                                    <div class="form-group mb-4">
+                                                        <label for="product_colors" class="form-label">Product Colors:</label>
+                                                        <input type="text" name="product_color_id" id="product_color_input" class="form-control" required>
+                                                    </div>
+                                                </div>
+
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                        const input = document.querySelector('#product_color_input');
+                                                        const tagify = new Tagify(input, {
+                                                            whitelist: [],
+                                                            enforceWhitelist: true,
+                                                            dropdown: {
+                                                                enabled: 1, // show suggestions dropdown
+                                                                closeOnSelect: false // keep dropdown open after selecting a suggestion
+                                                            }
+                                                        });
+
+                                                        tagify.on('input', onInput);
+                                                        tagify.on('add', onAdd);
+
+                                                        function onInput(e) {
+                                                            const value = e.detail.value;
+
+                                                            fetch(`/colors/search?query=${value}`)
+                                                                .then(response => response.json())
+                                                                .then(colors => {
+                                                                    tagify.settings.whitelist.splice(0, tagify.settings.whitelist.length, ...colors.map(color => color.color_name));
+                                                                    tagify.dropdown.show(); // render the suggestions dropdown
+                                                                });
+                                                        }
+
+                                                        function onAdd(e) {
+                                                            if (!e.detail.data.color_id) {
+                                                                // if the color doesn't exist, add it to the database
+                                                                fetch(`/colors/add`, {
+                                                                    method: 'POST',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                                                    },
+                                                                    body: JSON.stringify({ color_name: e.detail.data.value }),
+                                                                })
+                                                                    .then(response => response.json())
+                                                                    .then(color => {
+                                                                        tagify.replaceTag(e.detail.tag, color.color_name);
+                                                                    });
+                                                            }
+                                                        }
+                                                    });
+                                                </script>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="stock_qty_2" class="form-label">Stock for Branch 1:<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="stock_qty_2" id="stock_qty_2">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="stock_qty_2" class="form-label">Stock for Branch 2:<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="stock_qty_2" id="stock_qty_2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-4">
+                                                        <label for="branch_id_1" class="form-label">Shop Branch 1:</label>
+                                                        <select name="branch_id_1" class="form-control select2-show-search form-select" id="branch_id_1" >
+
+                                                            @foreach($branches as $branch)
+                                                                @if($branch->id == 1)
+                                                                    <option value="{{ $branch->id }}" selected>{{ $branch->branch_name }}</option>
+                                                                @endif
+                                                            @endforeach
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="stock_qty_1" class="form-label">Product Stock for Branch 1:<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="stock_qty_1" id="stock_qty_1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-4">
+                                                        <label for="branch_id_2" class="form-label">Shop Branch 2:</label>
+                                                        <select name="branch_id_2" class="form-control select2-show-search form-select" id="branch_id_2" >
+                                                            @foreach($branches as $branch)
+                                                                @if($branch->id == 2)
+                                                                    <option value="{{ $branch->id }}" selected>{{ $branch->branch_name }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="stock_qty_2" class="form-label">Product Stock for Branch 2:<span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="stock_qty_2" id="stock_qty_2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="product_size" class="form-label">Product Size :<span
                                                                 class="text-red">*</span></label>
                                                         <input type="text" class="form-control"  name="product_size" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="purchase_price" class="form-label">Purchase Price:<span
                                                                 class="text-red">*</span></label>
                                                         <input type="text" class="form-control"  name="purchase_price" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="selling_price" class="form-label">Selling Price:<span
                                                                 class="text-red">*</span></label>
                                                         <input type="text" class="form-control"  name="selling_price" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="discount_price" class="form-label">Discount Price:<span
                                                                 class="text-red">*</span></label>
@@ -233,6 +341,7 @@
                                         <div class="card-body">
                                             <div class="form-label">Checkboxes</div>
                                             <div class="row">
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="custom-control custom-checkbox">
@@ -259,6 +368,9 @@
                                                         </label>
                                                     </div>
                                                 </div>
+
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -281,189 +393,103 @@
             </div>
             <!--app-content close-->
 
+            <script>
+                $(function() {
+                    // Bloodhound for product colors
+                    var productColors = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        prefetch: {
+                            url: "/product-colors",
+                            cache: false,
+                        }
+                    });
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        function initializeTagify(input) {
-            const tagify = new Tagify(input, {
-                whitelist: [],
-                enforceWhitelist: false,
-                dropdown: {
-                    enabled: 0, // show suggestions dropdown
-                    closeOnSelect: false // keep dropdown open after selecting a suggestion
-                }
-            });
+                    productColors.initialize();
 
-            tagify.on('input', onInput);
-            tagify.on('add', onAdd);
-        }
+                    $('#product_colors').tagsinput({
+                        typeaheadjs: {
+                            name: 'productColors',
+                            source: productColors.ttAdapter()
+                        },
+                        confirmKeys: [13, 44],
+                    });
 
-        function onInput(e) {
-            const value = e.detail.value;
+                    // Bloodhound for brands
+                    var brands = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        prefetch: {
+                            url: "/brands",
+                            cache: false,
+                        }
+                    });
 
-            fetch(`/product-colors?query=${value}`)
-                .then(response => response.json())
-                .then(colors => {
-                    const tagify = e.detail.tagify;
-                    tagify.settings.whitelist.splice(0, tagify.settings.whitelist.length, ...colors.map(color => color.color_name));
-                    tagify.dropdown.show(); // render the suggestions dropdown
+                    brands.initialize();
+
+                    $('#brand').tagsinput({
+                        typeaheadjs: {
+                            name: 'brands',
+                            source: brands.ttAdapter()
+                        },
+                        confirmKeys: [13, 44],
+                    });
+
+                    // Bloodhound for brands
+                    var product_categories = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        prefetch: {
+                            url: "/product-category",
+                            cache: false,
+                        }
+                    });
+
+                    product_categories.initialize();
+
+                    $('#product_category').tagsinput({
+                        typeaheadjs: {
+                            name: 'product_categories',
+                            source: product_categories.ttAdapter()
+                        },
+                        confirmKeys: [13, 44],
+                    });
+
+
+                    // Bloodhound for brands
+                    var product_subcategories = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        prefetch: {
+                            url: "/product-subcategory",
+                            cache: false,
+                        }
+                    });
+
+                    product_subcategories.initialize();
+
+                    $('#product-subcategory').tagsinput({
+                        typeaheadjs: {
+                            name: 'product_subcategories',
+                            source: product_subcategories.ttAdapter()
+                        },
+                        confirmKeys: [13, 44],
+                    });
+
                 });
-        }
+            </script>
 
-        function onAdd(e) {
-            const colorName = e.detail.data.value;
-
-            // Check if the color exists in the database
-            fetch(`/colors/search?query=${colorName}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        // If color doesn't exist, add it to the database
-                        fetch(`/colors/add`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            },
-                            body: JSON.stringify({ color_name: colorName }),
-                        })
-                            .then(response => response.json())
-                            .then(newColor => {
-                                console.log('Color added:', newColor);
-                            })
-                            .catch(error => {
-                                console.log('Error adding color:', error);
-                            });
-                    }
-                })
-                .catch(error => {
-                    console.log('Error searching color:', error);
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#image').change(function(e){
+                        var reader = new FileReader();
+                        reader.onload = function(e){
+                            $('#showImage').attr('src',e.target.result);
+                        }
+                        reader.readAsDataURL(e.target.files['0']);
+                    });
                 });
-        }
-
-        // Initialize Tagify for the existing input
-        const initialInput = document.querySelector('.product-color-input');
-        initializeTagify(initialInput);
-
-        // Add new color input row
-        document.addEventListener('click', function (event) {
-            if (event.target.closest('.add-color-btn')) {
-                const container = document.getElementById('color-input-container');
-                const newRow = document.createElement('div');
-                newRow.classList.add('row');
-                newRow.innerHTML = `
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                        <input type="text" name="product_color_id[]" class="form-control product-color-input" placeholder="Select Color">
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                        <input type="text" class="form-control" name="stock_qty_1[]" placeholder="Stock for Branch 1">
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                        <div class="d-flex">
-                            <input type="text" class="form-control" name="stock_qty_2[]" placeholder="Stock for Branch 2">
-                            <a href="javascript:void(0)" class="btn text-danger btn-sm add-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Add Color">
-                                <span class="fe fe-edit fs-14"></span>
-                            </a>
-                            <a href="javascript:void(0)" class="btn text-danger btn-sm delete-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Delete">
-                                <span class="fe fe-trash-2 fs-14"></span>
-                            </a>
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(newRow);
-
-                // Initialize Tagify for the new input
-                const newInput = newRow.querySelector('.product-color-input');
-                initializeTagify(newInput);
-            }
-
-            // Add event listener to the delete button
-            if (event.target.closest('.delete-color-btn')) {
-                event.target.closest('.row').remove();
-            }
-        });
-    });
-</script>
-
-
-<script>
-    $(function() {
-        // Bloodhound for brands
-        var brands = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: {
-                url: "/brands",
-                cache: false,
-            }
-        });
-
-        brands.initialize();
-
-        $('#brand').tagsinput({
-            typeaheadjs: {
-                name: 'brands',
-                source: brands.ttAdapter()
-            },
-            confirmKeys: [13, 44],
-        });
-
-        // Bloodhound for brands
-        var product_categories = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: {
-                url: "/product-category",
-                cache: false,
-            }
-        });
-
-        product_categories.initialize();
-
-        $('#product_category').tagsinput({
-            typeaheadjs: {
-                name: 'product_categories',
-                source: product_categories.ttAdapter()
-            },
-            confirmKeys: [13, 44],
-        });
-
-
-        // Bloodhound for brands
-        var product_subcategories = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: {
-                url: "/product-subcategory",
-                cache: false,
-            }
-        });
-
-        product_subcategories.initialize();
-
-        $('#product-subcategory').tagsinput({
-            typeaheadjs: {
-                name: 'product_subcategories',
-                source: product_subcategories.ttAdapter()
-            },
-            confirmKeys: [13, 44],
-        });
-
-    });
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#image').change(function(e){
-            var reader = new FileReader();
-            reader.onload = function(e){
-                $('#showImage').attr('src',e.target.result);
-            }
-            reader.readAsDataURL(e.target.files['0']);
-        });
-    });
-</script>
+            </script>
 
 <script>
     $(document).ready(function(){
@@ -510,35 +536,30 @@
         }
     });
 </script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#inputVendor').on('change', function () {
-            var category_id = $(this).val();
-            if (category_id) {
-                $.ajax({
-                    url: '/subcategory/ajax/' + category_id,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $('#inputCollection').empty();
-                        $.each(data, function (key, value) {
-                            $('#inputCollection').append('<option value="' + value.id + '">' + value.product_subcategory_name + '</option>');
-                        });
-                    }
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#inputVendor').on('change', function () {
+                        var category_id = $(this).val();
+                        if (category_id) {
+                            $.ajax({
+                                url: '/subcategory/ajax/' + category_id,
+                                type: "GET",
+                                dataType: "json",
+                                success: function (data) {
+                                    $('#inputCollection').empty();
+                                    $.each(data, function (key, value) {
+                                        $('#inputCollection').append('<option value="' + value.id + '">' + value.product_subcategory_name + '</option>');
+                                    });
+                                }
+                            });
+                        } else {
+                            $('#inputCollection').empty();
+                            $('#inputCollection').append('<option value="1">None</option>');
+                        }
+                    });
                 });
-            } else {
-                $('#inputCollection').empty();
-                $('#inputCollection').append('<option value="1">None</option>');
-            }
-        });
-    });
-</script>
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+            </script>
 
 <link rel="stylesheet" href="{{ url('backend/plugins/tagify/tagify.min.js') }}">
 
