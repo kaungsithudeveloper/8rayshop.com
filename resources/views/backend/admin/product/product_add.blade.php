@@ -92,16 +92,16 @@
                                                             <input type="text" name="product_color_id[]" class="form-control product-color-input" placeholder="Select Color">
                                                         </div>
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                                                            <input type="text" class="form-control" name="stock_qty_1[]" placeholder="Stock for Branch 1">
+                                                            <input type="number" class="form-control" name="stock_qty_1[]" placeholder="Stock for Branch 1" min="0">
                                                         </div>
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
                                                             <div class="d-flex">
-                                                                <input type="text" class="form-control" name="stock_qty_2[]" placeholder="Stock for Branch 2">
+                                                                <input type="number" class="form-control" name="stock_qty_2[]" placeholder="Stock for Branch 2" min="0">
                                                                 <a href="javascript:void(0)" class="btn text-danger btn-sm add-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Add Color">
                                                                     <span class="fe fe-edit fs-14"></span>
                                                                 </a>
-                                                                <a href="javascript:void(0)" class="btn text-danger btn-sm delete-color-btn ms-2" >
-
+                                                                <a href="javascript:void(0)" class="btn text-danger btn-sm delete-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Delete">
+                                                                    <span class="fe fe-trash-2 fs-14"></span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -109,6 +109,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
 
 
                                         <div class="card">
@@ -284,106 +285,112 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        function initializeTagify(input) {
-            const tagify = new Tagify(input, {
-                whitelist: [],
-                enforceWhitelist: false,
-                dropdown: {
-                    enabled: 0, // show suggestions dropdown
-                    closeOnSelect: false // keep dropdown open after selecting a suggestion
-                }
-            });
-
-            tagify.on('input', onInput);
-            tagify.on('add', onAdd);
-        }
-
-        function onInput(e) {
-            const value = e.detail.value;
-
-            fetch(`/product-colors?query=${value}`)
-                .then(response => response.json())
-                .then(colors => {
-                    const tagify = e.detail.tagify;
-                    tagify.settings.whitelist.splice(0, tagify.settings.whitelist.length, ...colors.map(color => color.color_name));
-                    tagify.dropdown.show(); // render the suggestions dropdown
-                });
-        }
-
-        function onAdd(e) {
-            const colorName = e.detail.data.value;
-
-            // Check if the color exists in the database
-            fetch(`/colors/search?query=${colorName}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        // If color doesn't exist, add it to the database
-                        fetch(`/colors/add`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            },
-                            body: JSON.stringify({ color_name: colorName }),
-                        })
-                            .then(response => response.json())
-                            .then(newColor => {
-                                console.log('Color added:', newColor);
-                            })
-                            .catch(error => {
-                                console.log('Error adding color:', error);
-                            });
-                    }
-                })
-                .catch(error => {
-                    console.log('Error searching color:', error);
-                });
-        }
-
-        // Initialize Tagify for the existing input
-        const initialInput = document.querySelector('.product-color-input');
-        initializeTagify(initialInput);
-
-        // Add new color input row
-        document.addEventListener('click', function (event) {
-            if (event.target.closest('.add-color-btn')) {
-                const container = document.getElementById('color-input-container');
-                const newRow = document.createElement('div');
-                newRow.classList.add('row');
-                newRow.innerHTML = `
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                        <input type="text" name="product_color_id[]" class="form-control product-color-input" placeholder="Select Color">
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                        <input type="text" class="form-control" name="stock_qty_1[]" placeholder="Stock for Branch 1">
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
-                        <div class="d-flex">
-                            <input type="text" class="form-control" name="stock_qty_2[]" placeholder="Stock for Branch 2">
-                            <a href="javascript:void(0)" class="btn text-danger btn-sm add-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Add Color">
-                                <span class="fe fe-edit fs-14"></span>
-                            </a>
-                            <a href="javascript:void(0)" class="btn text-danger btn-sm delete-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Delete">
-                                <span class="fe fe-trash-2 fs-14"></span>
-                            </a>
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(newRow);
-
-                // Initialize Tagify for the new input
-                const newInput = newRow.querySelector('.product-color-input');
-                initializeTagify(newInput);
-            }
-
-            // Add event listener to the delete button
-            if (event.target.closest('.delete-color-btn')) {
-                event.target.closest('.row').remove();
+    function initializeTagify(input) {
+        const tagify = new Tagify(input, {
+            whitelist: [],
+            enforceWhitelist: false,
+            dropdown: {
+                enabled: 0, // show suggestions dropdown
+                closeOnSelect: false // keep dropdown open after selecting a suggestion
             }
         });
+
+        tagify.on('input', onInput);
+        tagify.on('add', onAdd);
+
+        // Add an input event listener to convert value to uppercase
+        input.addEventListener('input', function (e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    }
+
+    function onInput(e) {
+        const value = e.detail.value;
+
+        fetch(`/product-colors?query=${value}`)
+            .then(response => response.json())
+            .then(colors => {
+                const tagify = e.detail.tagify;
+                tagify.settings.whitelist.splice(0, tagify.settings.whitelist.length, ...colors.map(color => color.color_name));
+                tagify.dropdown.show(); // render the suggestions dropdown
+            });
+    }
+
+    function onAdd(e) {
+        let colorName = e.detail.data.value.toUpperCase(); // Convert to uppercase
+
+        // Check if the color exists in the database
+        fetch(`/colors/search?query=${colorName}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    // If color doesn't exist, add it to the database
+                    fetch(`/colors/add`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: JSON.stringify({ color_name: colorName }),
+                    })
+                        .then(response => response.json())
+                        .then(newColor => {
+                            console.log('Color added:', newColor);
+                        })
+                        .catch(error => {
+                            console.log('Error adding color:', error);
+                        });
+                }
+            })
+            .catch(error => {
+                console.log('Error searching color:', error);
+            });
+    }
+
+    // Initialize Tagify for the existing input
+    const initialInput = document.querySelector('.product-color-input');
+    initializeTagify(initialInput);
+
+    // Add new color input row
+    document.addEventListener('click', function (event) {
+        if (event.target.closest('.add-color-btn')) {
+            const container = document.getElementById('color-input-container');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row');
+            newRow.innerHTML = `
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
+                    <input type="text" name="product_color_id[]" class="form-control product-color-input" placeholder="Select Color">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
+                    <input type="number" class="form-control" name="stock_qty_1[]" placeholder="Stock for Branch 1" min="0">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-2">
+                    <div class="d-flex">
+                        <input type="number" class="form-control" name="stock_qty_2[]" placeholder="Stock for Branch 2" min="0">
+                        <a href="javascript:void(0)" class="btn text-danger btn-sm add-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Add Color">
+                            <span class="fe fe-edit fs-14"></span>
+                        </a>
+                        <a href="javascript:void(0)" class="btn text-danger btn-sm delete-color-btn ms-2" data-bs-toggle="tooltip" data-bs-original-title="Delete">
+                            <span class="fe fe-trash-2 fs-14"></span>
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(newRow);
+
+            // Initialize Tagify for the new input
+            const newInput = newRow.querySelector('.product-color-input');
+            initializeTagify(newInput);
+        }
+
+        // Add event listener to the delete button
+        if (event.target.closest('.delete-color-btn')) {
+            event.target.closest('.row').remove();
+        }
     });
+});
+
 </script>
 
 

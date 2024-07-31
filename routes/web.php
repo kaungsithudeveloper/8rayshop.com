@@ -176,7 +176,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
         Route::post('/backend/product/storetest',  'storetest')->name('storetest.product');
 
-        Route::post('/backend/product/update', 'UpdateProduct')->name('update.product');
+        Route::post('/backend/product/update', 'updatetestProduct')->name('update.product');
         Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
 
         Route::get('/inactive/product/{id}' ,  'ProductInactive')->name('inactive.product');
