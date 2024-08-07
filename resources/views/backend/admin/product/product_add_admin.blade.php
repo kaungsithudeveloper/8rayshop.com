@@ -20,18 +20,18 @@
 
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
-                            <h1 class="page-title">Create Product</h1>
+                            <h1 class="page-title">Admin Create Product </h1>
                             <div>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Create Product</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Admin Create Product</li>
                                 </ol>
                             </div>
                         </div>
                         <!-- PAGE-HEADER END -->
 
                         <!-- ROW-1 -->
-                        <form id="myForm" method="post" action="{{ route('store.product') }}" enctype="multipart/form-data">
+                        <form id="myForm" method="post" action="{{ route('admin.store.product') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-xl-8">
@@ -67,24 +67,6 @@
 
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="form-group">
-                                                    <label for="short_descp" class="form-label">Short Description :</label>
-                                                    <textarea class="form-control mb-4" rows="4" name="short_descp"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="form-group">
-                                                    <label for="long_descp" class="form-label">Product Description :</label>
-                                                    <textarea name="long_descp" id="myTextarea" class="content"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="card">
-                                            <div class="card-body">
                                                 <label for="inputProductTitle" class="form-label">Product Color :</label>
                                                 <div id="color-input-container">
                                                     <div class="row">
@@ -110,21 +92,70 @@
                                             </div>
                                         </div>
 
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group mb-4">
+                                                            <label for="brand" class="form-label">Product Category:</label>
+                                                            <select name="product_category_id" class="form-control select2-show-search form-select" id="inputVendor">
+                                                                <option value="1">None</option>
+                                                                @foreach($product_categories as $cat)
+                                                                    <option value="{{ $cat->id }}">{{ $cat->product_category_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group mb-4">
+                                                            <label class="form-label"> Product SubCategory: </label>
+                                                            <select name="product_subcategory_id[]" class="form-select select2" id="inputCollection" multiple>
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group mb-4">
+                                                            <label for="brand" class="form-label">Brand:</label>
+                                                            <select name="brand_id" id="brand_id" class="form-control select2-show-search form-select" data-placeholder="Choose one">
+                                                                <option label="Select Brand"></option>
+                                                                @foreach($brands as $brand)
+                                                                    <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="form-group">
-                                                    <label class="form-label"> Product Photo: </label>
-                                                    <input type="file" name="product_photo" class="form-control" id="image" />
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-3">
-                                                        <h6 class="mb-0"></h6>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="purchase_price" class="form-label">Purchase Price:<span
+                                                                    class="text-red">*</span></label>
+                                                            <input type="text" class="form-control"  name="purchase_price" required>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <img id="showImage" src="{{ (!empty($product->photo))?url('upload/admin_images/'.$product->photo):url('upload/profile.jpg') }}" alt="Admin" style="width:100px; height: 100px;" >
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="selling_price" class="form-label">Selling Price:<span
+                                                                    class="text-red">*</span></label>
+                                                            <input type="text" class="form-control"  name="selling_price" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="discount_price" class="form-label">Discount Price:<span
+                                                                    class="text-red">*</span></label>
+                                                            <input type="text" class="form-control"  name="discount_price" required>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,145 +163,10 @@
 
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="mb-3">
-                                                    <label for="inputProductTitle" class="form-label">Multiple Image :</label>
-                                                    <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple="">
-
-                                                    <div class="row" id="preview_img"></div>
-                                                </div>
+                                                <button type="submit" class="btn btn-primary">Admin Create Product</button>
+                                                <a href="" class="btn btn-danger float-end">Discard</a>
                                             </div>
                                         </div>
-
-
-                                </div>
-
-
-                                <div class="col-xl-4">
-
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-
-                                                <div class="col-md-12">
-                                                    <div class="form-group mb-4">
-                                                        <label for="brand" class="form-label">Product Category:</label>
-                                                        <select name="product_category_id" class="form-control select2-show-search form-select" id="inputVendor">
-                                                            <option value="1">None</option>
-                                                            @foreach($product_categories as $cat)
-                                                                <option value="{{ $cat->id }}">{{ $cat->product_category_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="form-group mb-4">
-                                                        <label class="form-label"> Product SubCategory: </label>
-                                                        <select name="product_subcategory_id[]" class="form-select select2" id="inputCollection" multiple>
-                                                            <option></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="form-group mb-4">
-                                                        <label for="brand" class="form-label">Brand:</label>
-                                                        <select name="brand_id" id="brand_id" class="form-control select2-show-search form-select" data-placeholder="Choose one">
-                                                            <option label="Select Brand"></option>
-                                                            @foreach($brands as $brand)
-                                                                <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="product_size" class="form-label">Product Size :<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="product_size" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="purchase_price" class="form-label">Purchase Price:<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="purchase_price" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="selling_price" class="form-label">Selling Price:<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="selling_price" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="discount_price" class="form-label">Discount Price:<span
-                                                                class="text-red">*</span></label>
-                                                        <input type="text" class="form-control"  name="discount_price" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <label for="url" class="form-label">YouTube Link</label>
-                                            <input type="url" class="form-control" id="url" name="url" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="form-label">Checkboxes</div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="new" value="1" >
-                                                            <span class="custom-control-label">New</span>
-                                                        </label>
-
-                                                        <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="hot" value="1" >
-                                                            <span class="custom-control-label">Hot</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="sale" value="1" >
-                                                            <span class="custom-control-label">Sale</span>
-                                                        </label>
-
-                                                        <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" name="best_sale" value="1" >
-                                                            <span class="custom-control-label">Best sale</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <button type="submit" class="btn btn-primary">Create Product</button>
-                                            <a href="" class="btn btn-danger float-end">Discard</a>
-                                        </div>
-                                    </div>
-                                </div>
 
                             </div>
                         <!-- ROW-1 END -->

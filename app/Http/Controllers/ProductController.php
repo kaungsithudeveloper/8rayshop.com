@@ -27,22 +27,42 @@ class ProductController extends Controller
 {
     public function AllProduct()
     {
-        $products = Product::with(
-            [
-                'productInfo',
-                'productColor',
-                'brands',
-                'categories',
-                'productSubCategory',
-                'multiImages',
-                'price'
-            ])->with(['stocks.branch'])->latest()->get();
+        $products = Product::with([
+            'productInfo',
+            'productColor',
+            'brands',
+            'categories',
+            'productSubCategory',
+            'multiImages',
+            'price',
+            'stocks.branch'
+        ])->latest()->get();
 
-        $activeProducts = Product::where('status', 'active')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
-        $inActiveProduct = Product::where('status', 'inactive')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
+        $activeProducts = Product::where('status', 'active')->with([
+            'productInfo',
+            'productColor',
+            'brands',
+            'categories',
+            'productSubCategory',
+            'multiImages',
+            'price',
+            'stocks.branch'
+        ])->latest()->get();
+
+        $inActiveProduct = Product::where('status', 'inactive')->with([
+            'productInfo',
+            'productColor',
+            'brands',
+            'categories',
+            'productSubCategory',
+            'multiImages',
+            'price',
+            'stocks.branch'
+        ])->latest()->get();
 
         return view('backend.admin.product.product_all', compact('products', 'activeProducts', 'inActiveProduct'));
     }
+
 
     public function AddProduct(){
 
@@ -52,6 +72,17 @@ class ProductController extends Controller
         $product_categories = ProductCategory::orderBy('product_category_name','ASC')->get();
         $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name','ASC')->get();
         return view('backend.admin.product.product_add',compact('product_type','brands','product_categories','product_subCategories','branches'));
+
+    } // End Method
+
+    public function AddProductAdmin(){
+
+        $product_type = ProductType::orderBy('product_type_name','ASC')->get();
+        $brands = Brand::orderBy('brand_name','ASC')->get();
+        $branches = Branch::latest()->get();
+        $product_categories = ProductCategory::orderBy('product_category_name','ASC')->get();
+        $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name','ASC')->get();
+        return view('backend.admin.product.product_add_admin',compact('product_type','brands','product_categories','product_subCategories','branches'));
 
     } // End Method
 
@@ -76,14 +107,27 @@ class ProductController extends Controller
     private function convertToEmbedUrl($url)
     {
         $parsedUrl = parse_url($url);
-        parse_str($parsedUrl['query'], $queryParams);
-        return 'https://www.youtube.com/embed/' . $queryParams['v'];
+
+        // Check if the 'query' key exists and is not empty
+        if (isset($parsedUrl['query']) && !empty($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $queryParams);
+
+            // Check if 'v' key exists in query parameters
+            if (isset($queryParams['v'])) {
+                return 'https://www.youtube.com/embed/' . $queryParams['v'];
+            }
+        }
+
+        // Return the original URL or handle the error appropriately
+        return $url;
     }
+
 
     public function StoreProduct(Request $request)
     {
-        // Validate the request data
+        // Validate request
         //dd($request->all());
+
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|unique:products,product_code|string|max:255',
             'product_name' => 'required|unique:products,product_name|string|max:255',
@@ -95,14 +139,12 @@ class ProductController extends Controller
             'selling_price' => 'required|string|max:255',
             'discount_price' => 'required|string|max:255',
             'brand_id' => 'required|string|max:255',
-            'product_color_id' => 'required|string|max:255',
             'product_category_id' => 'required|string|max:255',
             'product_subcategory_id' => 'array',
             'product_subcategory_id.*' => 'integer',
-            'branch_id_1' => 'nullable|integer',
-            'stock_qty_1' => 'nullable|integer',
-            'branch_id_2' => 'nullable|integer',
-            'stock_qty_2' => 'nullable|integer',
+            'product_color_id.*' => 'required|string|max:255',
+            'stock_qty_1.*' => 'required|integer|min:0',
+            'stock_qty_2.*' => 'required|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -115,7 +157,10 @@ class ProductController extends Controller
 
         $validatedData = $validator->validated();
 
-        // Create the product
+        // Handle file upload
+
+
+        // Create new product
         $product = new Product();
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
@@ -141,6 +186,7 @@ class ProductController extends Controller
         $product->created_at = Carbon::now();
         $product->save();
 
+        // Store product information
         $product_info = new ProductInfo();
         $product_info->product_id = $product->id;
         $product_info->short_descp = $request->input('short_descp');
@@ -154,6 +200,7 @@ class ProductController extends Controller
         $product_info->created_at = Carbon::now();
         $product_info->save();
 
+        // Store product Price
         $product_price = new Price();
         $product_price->product_id = $product->id;
         $product_price->purchase_price = $request->input('purchase_price');
@@ -162,6 +209,7 @@ class ProductController extends Controller
         $product_price->created_at = Carbon::now();
         $product_price->save();
 
+        // Store product multi image
         if ($request->hasFile('multi_img')) {
             foreach ($request->file('multi_img') as $img) {
                 $imageName = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
@@ -184,21 +232,9 @@ class ProductController extends Controller
             }
         }
 
-        // Create Product Color
-        $product_colors = explode(',', $validatedData['product_color_id']);
-        $colorIds = [];
-        foreach ($product_colors as $color_name) {
-            $color_name = trim($color_name);
-            $productColor = ProductColor::firstOrCreate(
-                ['color_name' => $color_name],
-                ['color_slug' => Str::slug($color_name)]
-            );
-            $colorIds[] = $productColor->id;
-        }
-        $product->productColor()->attach($colorIds);
-
         $product->brands()->attach($validatedData['brand_id']);
         $product->productCategory()->attach($validatedData['product_category_id']);
+
 
         // Create Product SubCategory if product_subcategory_id exists
         if (isset($validatedData['product_subcategory_id'])) {
@@ -212,27 +248,45 @@ class ProductController extends Controller
             $product->productSubCategory()->attach($subCategoryIds);
         }
 
-        // Save stock for branch_id_1
-        if (!empty($validatedData['branch_id_1']) && !empty($validatedData['stock_qty_1'])) {
-            $stock1 = new Stock();
-            $stock1->product_id = $product->id;
-            $stock1->brand_id = $validatedData['brand_id'];
-            $stock1->branch_id = $validatedData['branch_id_1'];
-            $stock1->stock_qty = !empty($validatedData['stock_qty_1']) ? $validatedData['stock_qty_1'] : 0;
-            $stock1->created_at = Carbon::now();
-            $stock1->save();
+        // Store stock information
+        $colorNames = $request->input('product_color_id');
+        $stockQuantities1 = $request->input('stock_qty_1');
+        $stockQuantities2 = $request->input('stock_qty_2');
+
+        foreach ($colorNames as $index => $colorName) {
+            // Decode color name
+            $colorArray = json_decode($colorName, true);
+            $colorName = $colorArray[0]['value'] ?? $colorName;
+
+            // Find or create the color
+            $color = ProductColor::firstOrCreate(
+                ['color_name' => $colorName],
+                ['color_slug' => Str::slug($colorName)]
+            );
+
+            // Store stock for branch 1
+            Stock::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'brand_id' => 1, // Replace with actual brand id
+                    'branch_id' => 1,
+                    'product_color_id' => $color->id,
+                ],
+                ['purchase_qty' => (int)$stockQuantities1[$index] ?? 0, 'sell_qty' => 0]
+            );
+
+            // Store stock for branch 2
+            Stock::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'brand_id' => 1, // Replace with actual brand id
+                    'branch_id' => 2,
+                    'product_color_id' => $color->id,
+                ],
+                ['purchase_qty' => (int)$stockQuantities2[$index] ?? 0, 'sell_qty' => 0]
+            );
         }
 
-        // Save stock for branch_id_2 with default stock_qty = 0 if not provided
-        if (!empty($validatedData['branch_id_2'])) {
-            $stock2 = new Stock();
-            $stock2->product_id = $product->id;
-            $stock2->brand_id = $validatedData['brand_id'];
-            $stock2->branch_id = $validatedData['branch_id_2'];
-            $stock2->stock_qty = !empty($validatedData['stock_qty_2']) ? $validatedData['stock_qty_2'] : 0;
-            $stock2->created_at = Carbon::now();
-            $stock2->save();
-        }
 
         $notification = [
             'message' => 'Product created successfully!',
@@ -242,34 +296,56 @@ class ProductController extends Controller
         return redirect()->route('all.product')->with($notification);
     }
 
+
     public function EditProduct($slug)
-{
-    $product = Product::with(['stocks', 'colors'])
-        ->where('product_slug', $slug)
-        ->firstOrFail();
+    {
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price', 'stocks', 'colors'])
+            ->where('product_slug', $slug)
+            ->firstOrFail();
 
-    // Group stocks by color ID and include color name
-    $stocksGroupedByColor = $product->stocks->groupBy('product_color_id')
-        ->map(function ($group) {
-            $color = $group->first()->color; // Assuming each stock has a related color
-            return [
-                'product_color_id' => $color->id,
-                'color_name' => $color->color_name,
-                'stock_qty_1' => $group->where('branch_id', 1)->sum('purchase_qty'),
-                'stock_qty_2' => $group->where('branch_id', 2)->sum('purchase_qty'),
-            ];
-        });
+        // Retrieve all necessary related data
+        $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->get();
+        $branches = Branch::latest()->get();
+        $product_categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
+        $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name', 'ASC')->get();
 
-    return view('backend.admin.product.product_edit', [
-        'product' => $product,
-        'stocksGroupedByColor' => $stocksGroupedByColor,
-    ]);
-}
+        // Group stocks by color ID and include color name
+        $stocksGroupedByColor = $product->stocks->groupBy('product_color_id')
+            ->map(function ($group) {
+                $color = $group->first()->color; // Assuming each stock has a related color
+                return [
+                    'product_color_id' => $color->id,
+                    'color_name' => $color->color_name,
+                    'stock_qty_1' => $group->where('branch_id', 1)->sum('purchase_qty'),
+                    'stock_qty_2' => $group->where('branch_id', 2)->sum('purchase_qty'),
+                    'stocks' => $group->map(function ($stock) {
+                        return [
+                            'id' => $stock->id,
+                            'branch_id' => $stock->branch_id,
+                            'purchase_qty' => $stock->purchase_qty,
+                        ];
+                    })->all()
+                ];
+            });
+
+        return view('backend.admin.product.product_edit', [
+            'product' => $product,
+            'stocksGroupedByColor' => $stocksGroupedByColor,
+            'product_type' => $product_type,
+            'brands' => $brands,
+            'branches' => $branches,
+            'product_categories' => $product_categories,
+            'product_subCategories' => $product_subCategories,
+        ]);
+    }
 
     public function UpdateProduct(Request $request)
     {
         $id = $request->id;
-        // Validate the request data
+
+        //dd($request->all());
+
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|string|max:255',
             'product_name' => 'required|string|max:255',
@@ -280,14 +356,12 @@ class ProductController extends Controller
             'selling_price' => 'required|string|max:255',
             'discount_price' => 'required|string|max:255',
             'brand_id' => 'required|string|max:255',
-            'product_color_id' => 'required|string|max:255',
             'product_category_id' => 'required|string|max:255',
             'product_subcategory_id' => 'array',
             'product_subcategory_id.*' => 'integer',
-            'branch_id_1' => 'nullable|integer',
-            'stock_qty_1' => 'nullable|integer',
-            'branch_id_2' => 'nullable|integer',
-            'stock_qty_2' => 'nullable|integer',
+            'product_color_id.*' => 'required|string|max:255',
+            'stock_qty_1.*' => 'required|integer|min:0',
+            'stock_qty_2.*' => 'required|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -300,7 +374,6 @@ class ProductController extends Controller
 
         $validatedData = $validator->validated();
 
-        // Find the product
         $product = Product::findOrFail($id);
         $product->product_code = $request->input('product_code');
         $product->product_name = $request->input('product_name');
@@ -308,7 +381,6 @@ class ProductController extends Controller
         $product->user_id = auth()->user()->id;
         $product->product_type_id = 1;
         $product->status = 'inactive';
-
         if ($request->hasFile('product_photo')) {
             $image = $request->file('product_photo');
             $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -328,14 +400,22 @@ class ProductController extends Controller
         $product->save();
 
         $product_info = ProductInfo::where('product_id', $product->id)->first();
+
+        if (!$product_info) {
+            $product_info = new ProductInfo();
+            $product_info->product_id = $product->id;
+        }
+
         $product_info->short_descp = $request->input('short_descp');
         $product_info->long_descp = $request->input('long_descp');
         $product_info->product_size = $request->input('product_size');
+        $product_info->url = $this->convertToEmbedUrl($request->input('url'));
         $product_info->new = $request->input('new');
         $product_info->hot = $request->input('hot');
         $product_info->sale = $request->input('sale');
         $product_info->best_sale = $request->input('best_sale');
         $product_info->updated_at = Carbon::now();
+
         $product_info->save();
 
         $product_price = Price::where('product_id', $product->id)->first();
@@ -366,19 +446,6 @@ class ProductController extends Controller
             }
         }
 
-        // Update Product Color
-        $product_colors = explode(',', $validatedData['product_color_id']);
-        $colorIds = [];
-        foreach ($product_colors as $color_name) {
-            $color_name = trim($color_name);
-            $productColor = ProductColor::firstOrCreate(
-                ['color_name' => $color_name],
-                ['color_slug' => Str::slug($color_name)]
-            );
-            $colorIds[] = $productColor->id;
-        }
-        $product->productColor()->sync($colorIds);
-
         // Update Product Brand
         $product->brands()->sync($validatedData['brand_id']);
         $product->productCategory()->sync($validatedData['product_category_id']);
@@ -395,32 +462,48 @@ class ProductController extends Controller
             $product->productSubCategory()->sync($subCategoryIds);
         }
 
-        // Update stock for each branch if provided
-        $branches = [
-            ['branch_id' => $request->input('branch_id_1'), 'purchase_qty' => $request->input('stock_qty_1')],
-            ['branch_id' => $request->input('branch_id_2'), 'purchase_qty' => $request->input('stock_qty_2')],
-        ];
+        $colorIds = $request->input('product_color_id');
+        $stockQty1 = $request->input('stock_qty_1');
+        $stockQty2 = $request->input('stock_qty_2');
 
-        foreach ($branches as $branch) {
-            if (!empty($branch['branch_id'])) {
-                $stock = Stock::where('product_id', $product->id)
-                    ->where('branch_id', $branch['branch_id'])
-                    ->first();
+        foreach ($colorIds as $index => $colorId) {
+            // Decode color ID if needed
+            $colorArray = json_decode($colorId, true);
+            if (is_array($colorArray)) {
+                $colorName = strtoupper($colorArray[0]['value'] ?? $colorId);
 
-                if ($stock) {
-                    $stock->purchase_qty = $branch['purchase_qty'];
-                    $stock->updated_at = Carbon::now();
-                    $stock->save();
-                } elseif (!empty($branch['purchase_qty'])) {
-                    $newStock = new Stock();
-                    $newStock->product_id = $product->id;
-                    $newStock->brand_id = $validatedData['brand_id'];
-                    $newStock->branch_id = $branch['branch_id'];
-                    $newStock->purchase_qty = $branch['purchase_qty'];
-                    $newStock->created_at = Carbon::now();
-                    $newStock->save();
-                }
+                $color = ProductColor::firstOrCreate(
+                    ['color_name' => $colorName],
+                    ['color_slug' => Str::slug($colorName)]
+                );
+                $colorId = $color->id;
             }
+
+            // Update or create stock for branch 1
+            Stock::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'product_color_id' => $colorId,
+                    'branch_id' => 1,
+                ],
+                [
+                    'purchase_qty' => $stockQty1[$index] ?? 0,
+                    'brand_id' => 1,
+                ]
+            );
+
+            // Update or create stock for branch 2
+            Stock::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'product_color_id' => $colorId,
+                    'branch_id' => 2,
+                ],
+                [
+                    'purchase_qty' => $stockQty2[$index] ?? 0,
+                    'brand_id' => 1,
+                ]
+            );
         }
 
         $notification = [
@@ -430,7 +513,6 @@ class ProductController extends Controller
 
         return redirect()->route('all.product')->with($notification);
     }
-
 
     public function deleteMultiImage($id)
     {
@@ -698,5 +780,315 @@ class ProductController extends Controller
 
         return redirect()->route('all.product')->with($notification);
     }
+
+    public function AdminStoreProduct(Request $request)
+    {
+        // Validate request
+        //dd($request->all());
+
+        $validator = Validator::make($request->all(), [
+            'product_code' => 'required|unique:products,product_code|string|max:255',
+            'product_name' => 'required|unique:products,product_name|string|max:255',
+            'purchase_price' => 'required|string|max:255',
+            'selling_price' => 'required|string|max:255',
+            'discount_price' => 'required|string|max:255',
+            'brand_id' => 'required|string|max:255',
+            'product_category_id' => 'required|string|max:255',
+            'product_subcategory_id' => 'array',
+            'product_subcategory_id.*' => 'integer',
+            'product_color_id.*' => 'required|string|max:255',
+            'stock_qty_1.*' => 'required|integer|min:0',
+            'stock_qty_2.*' => 'required|integer|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            $notification = [
+                'message' => 'Validation failed.',
+                'alert-type' => 'error',
+            ];
+            return redirect()->back()->withErrors($validator)->withInput()->with($notification);
+        }
+
+        $validatedData = $validator->validated();
+
+        // Handle file upload
+
+
+        // Create new product
+        $product = new Product();
+        $product->product_code = $request->input('product_code');
+        $product->product_name = $request->input('product_name');
+        $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
+        $product->user_id = auth()->user()->id;
+        $product->product_type_id = 1;
+        $product->status = 'inactive';
+        $product->created_at = Carbon::now();
+        $product->save();
+
+        // Store product Price
+        $product_price = new Price();
+        $product_price->product_id = $product->id;
+        $product_price->purchase_price = $request->input('purchase_price');
+        $product_price->selling_price = $request->input('selling_price');
+        $product_price->discount_price = $request->input('discount_price');
+        $product_price->created_at = Carbon::now();
+        $product_price->save();
+
+        $product->brands()->attach($validatedData['brand_id']);
+        $product->productCategory()->attach($validatedData['product_category_id']);
+
+
+        // Create Product SubCategory if product_subcategory_id exists
+        if (isset($validatedData['product_subcategory_id'])) {
+            $subCategoryIds = [];
+            foreach ($validatedData['product_subcategory_id'] as $subCategoryId) {
+                $productSubCategory = ProductSubCategory::find($subCategoryId);
+                if ($productSubCategory) {
+                    $subCategoryIds[] = $productSubCategory->id;
+                }
+            }
+            $product->productSubCategory()->attach($subCategoryIds);
+        }
+
+        // Store stock information
+        $colorNames = $request->input('product_color_id');
+        $stockQuantities1 = $request->input('stock_qty_1');
+        $stockQuantities2 = $request->input('stock_qty_2');
+
+        foreach ($colorNames as $index => $colorName) {
+            // Decode color name
+            $colorArray = json_decode($colorName, true);
+            $colorName = $colorArray[0]['value'] ?? $colorName;
+
+            // Find or create the color
+            $color = ProductColor::firstOrCreate(
+                ['color_name' => $colorName],
+                ['color_slug' => Str::slug($colorName)]
+            );
+
+            // Store stock for branch 1
+            Stock::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'brand_id' => 1, // Replace with actual brand id
+                    'branch_id' => 1,
+                    'product_color_id' => $color->id,
+                ],
+                ['purchase_qty' => (int)$stockQuantities1[$index] ?? 0, 'sell_qty' => 0]
+            );
+
+            // Store stock for branch 2
+            Stock::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'brand_id' => 1, // Replace with actual brand id
+                    'branch_id' => 2,
+                    'product_color_id' => $color->id,
+                ],
+                ['purchase_qty' => (int)$stockQuantities2[$index] ?? 0, 'sell_qty' => 0]
+            );
+        }
+
+
+        $notification = [
+            'message' => 'Admin Product created successfully!',
+            'alert-type' => 'success',
+        ];
+
+        return redirect()->route('all.product')->with($notification);
+    }
+
+    public function updatetestProduct(Request $request)
+    {
+        $id = $request->id;
+
+        //dd($request->all());
+
+        $validator = Validator::make($request->all(), [
+            'product_code' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',
+            'short_descp' => 'required|string',
+            'long_descp' => 'required|string',
+            'product_size' => 'required|string|max:255',
+            'purchase_price' => 'required|string|max:255',
+            'selling_price' => 'required|string|max:255',
+            'discount_price' => 'required|string|max:255',
+            'brand_id' => 'required|string|max:255',
+            'product_category_id' => 'required|string|max:255',
+            'product_subcategory_id' => 'array',
+            'product_subcategory_id.*' => 'integer',
+            'product_color_id.*' => 'required|string|max:255',
+            'stock_qty_1.*' => 'required|integer|min:0',
+            'stock_qty_2.*' => 'required|integer|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            $notification = [
+                'message' => 'Validation failed.',
+                'alert-type' => 'error',
+            ];
+            return redirect()->back()->withErrors($validator)->withInput()->with($notification);
+        }
+
+        $validatedData = $validator->validated();
+
+        $product = Product::findOrFail($id);
+        $product->product_code = $request->input('product_code');
+        $product->product_name = $request->input('product_name');
+        $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
+        $product->user_id = auth()->user()->id;
+        $product->product_type_id = 1;
+        $product->status = 'inactive';
+        if ($request->hasFile('product_photo')) {
+            $image = $request->file('product_photo');
+            $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'upload/product_images/' . $imageName;
+
+            // Compress and save the image
+            Image::make($image)
+                ->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->save(public_path($imagePath), 75);
+
+            $product->product_photo = $imageName;
+        }
+        $product->updated_at = Carbon::now();
+        $product->save();
+
+        $product_info = ProductInfo::where('product_id', $product->id)->first();
+
+        if (!$product_info) {
+            $product_info = new ProductInfo();
+            $product_info->product_id = $product->id;
+        }
+
+        $product_info->short_descp = $request->input('short_descp');
+        $product_info->long_descp = $request->input('long_descp');
+        $product_info->product_size = $request->input('product_size');
+        $product_info->url = $this->convertToEmbedUrl($request->input('url'));
+        $product_info->new = $request->input('new');
+        $product_info->hot = $request->input('hot');
+        $product_info->sale = $request->input('sale');
+        $product_info->best_sale = $request->input('best_sale');
+        $product_info->updated_at = Carbon::now();
+
+        $product_info->save();
+
+        $product_price = Price::where('product_id', $product->id)->first();
+        $product_price->purchase_price = $request->input('purchase_price');
+        $product_price->selling_price = $request->input('selling_price');
+        $product_price->discount_price = $request->input('discount_price');
+        $product_price->updated_at = Carbon::now();
+        $product_price->save();
+
+        if ($request->file('multi_img')) {
+            // Remove old images
+            foreach ($product->multiImages as $img) {
+                if (file_exists(public_path('upload/product_multi_images/' . $img->photo_name))) {
+                    unlink(public_path('upload/product_multi_images/' . $img->photo_name));
+                }
+                $img->delete();
+            }
+
+            // Upload new images
+            foreach ($request->file('multi_img') as $file) {
+                $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/product_multi_images'), $filename);
+
+                MultiImg::create([
+                    'product_id' => $product->id,
+                    'photo_name' => $filename,
+                ]);
+            }
+        }
+
+        // Update Product Brand
+        $product->brands()->sync($validatedData['brand_id']);
+        $product->productCategory()->sync($validatedData['product_category_id']);
+
+        // Update Product SubCategory if product_subcategory_id exists
+        if (isset($validatedData['product_subcategory_id'])) {
+            $subCategoryIds = [];
+            foreach ($validatedData['product_subcategory_id'] as $subCategoryId) {
+                $productSubCategory = ProductSubCategory::find($subCategoryId);
+                if ($productSubCategory) {
+                    $subCategoryIds[] = $productSubCategory->id;
+                }
+            }
+            $product->productSubCategory()->sync($subCategoryIds);
+        }
+
+        $colorIds = $request->input('product_color_id');
+        $stockQty1 = $request->input('stock_qty_1');
+        $stockQty2 = $request->input('stock_qty_2');
+
+        foreach ($colorIds as $index => $colorId) {
+            // Decode color ID if needed
+            $colorArray = json_decode($colorId, true);
+            if (is_array($colorArray)) {
+                $colorName = strtoupper($colorArray[0]['value'] ?? $colorId);
+
+                $color = ProductColor::firstOrCreate(
+                    ['color_name' => $colorName],
+                    ['color_slug' => Str::slug($colorName)]
+                );
+                $colorId = $color->id;
+            }
+
+            // Update or create stock for branch 1
+            Stock::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'product_color_id' => $colorId,
+                    'branch_id' => 1,
+                ],
+                [
+                    'purchase_qty' => $stockQty1[$index] ?? 0,
+                    'brand_id' => 1,
+                ]
+            );
+
+            // Update or create stock for branch 2
+            Stock::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'product_color_id' => $colorId,
+                    'branch_id' => 2,
+                ],
+                [
+                    'purchase_qty' => $stockQty2[$index] ?? 0,
+                    'brand_id' => 1,
+                ]
+            );
+        }
+
+        $notification = [
+            'message' => 'Product updated successfully!',
+            'alert-type' => 'success',
+        ];
+
+        return redirect()->route('all.product')->with($notification);
+    }
+
+    public function deleteStocksByColor($colorId)
+{
+    // Delete all stocks with the given color ID
+    DB::transaction(function () use ($colorId) {
+        Stock::where('product_color_id', $colorId)->delete();
+    });
+
+    return response()->json(['message' => 'Stocks deleted successfully']);
+}
+
+
+
+
+
+
+
+
+
 
 }

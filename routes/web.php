@@ -172,20 +172,20 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::controller(ProductController::class)->group(function(){
         Route::get('/backend/product', 'AllProduct')->name('all.product');
         Route::get('/backend/product/add', 'AddProduct')->name('product.add');
+        Route::get('/backend/product/add/admin', 'AddProductAdmin')->name('product.add.admin');
         Route::post('/backend/product/store',  'StoreProduct')->name('store.product');
-
-        Route::post('/backend/product/storetest',  'storetest')->name('storetest.product');
-
-        Route::post('/backend/product/update', 'updatetestProduct')->name('update.product');
-        Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
-
-        Route::get('/inactive/product/{id}' ,  'ProductInactive')->name('inactive.product');
-        Route::get('/active/product/{id}' ,  'ProductActive')->name('active.product');
-
+        Route::post('/backend/product/adminstoreproduct',  'AdminStoreProduct')->name('admin.store.product');
         Route::get('/backend/product/edit/{slug}','EditProduct')->name('edit.product');
+        Route::post('/backend/product/update', 'UpdateProduct')->name('update.product');
+        Route::get('/backend/product/delete/{id}' ,  'DestoryProduct')->name('delete.product');
+        Route::get('/backend/inactive/product/{id}' ,  'ProductInactive')->name('inactive.product');
+        Route::get('/backend/active/product/{id}' ,  'ProductActive')->name('active.product');
 
         Route::get('/colors/search', 'search')->name('colors.search');
         Route::post('/colors/add','store')->name('colors.store');
+        Route::delete('/stock/delete/{colorId}', 'deleteStock')->name('stock.delete');
+        Route::delete('/stocks/color/{colorId}', 'deleteStocksByColor')->name('stocks.deleteByColor');
+        Route::delete('/stocks/{id}', 'destroy');
 
         //Test Youtube video Link Good
         Route::get('/product_infos', 'index');

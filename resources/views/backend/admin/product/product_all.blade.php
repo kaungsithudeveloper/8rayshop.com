@@ -58,8 +58,6 @@
                                                                         <th class="border-bottom-0">Product Name</th>
                                                                         <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                         <th class="border-bottom-0">Total Stock</th>
-                                                                        <th class="border-bottom-0">8Ray Stock</th>
-                                                                        <th class="border-bottom-0">(GP)Stock</th>
                                                                         <th class="border-bottom-0">Sold Stock</th>
                                                                         <th class="border-bottom-0">Error Stock</th>
                                                                         <th class="border-bottom-0">Purchase Price</th>
@@ -79,18 +77,6 @@
                                                                             <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                         </td>
                                                                         <td>{{ $product->total_stock }}</td>
-                                                                        <td>
-                                                                            @php
-                                                                                $stock = $product->stocks->firstWhere('branch_id', 1);
-                                                                            @endphp
-                                                                            {{ $stock ? $stock->purchase_qty : 'No stock' }}
-                                                                        </td>
-                                                                        <td>
-                                                                            @php
-                                                                                $stock = $product->stocks->firstWhere('branch_id', 2);
-                                                                            @endphp
-                                                                            {{ $stock ? $stock->purchase_qty : 'No stock' }}
-                                                                        </td>
                                                                         <td>{{ $product->sold_quantity }}</td>
                                                                         <td>{{ $product->error_quantity }}</td>
                                                                         <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
@@ -144,8 +130,6 @@
                                                                                 <th class="border-bottom-0">Product Name</th>
                                                                                 <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                                 <th class="border-bottom-0">Total Stock</th>
-                                                                                <th class="border-bottom-0">8Ray Stock</th>
-                                                                                <th class="border-bottom-0">(GP)Stock</th>
                                                                                 <th class="border-bottom-0">Sold Stock</th>
                                                                                 <th class="border-bottom-0">Error Stock</th>
                                                                                 <th class="border-bottom-0">Purchase Price</th>
@@ -166,18 +150,6 @@
                                                                                     <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                                 </td>
                                                                                 <td>{{ $product->total_stock }}</td>
-                                                                                <td>
-                                                                                    @php
-                                                                                        $stock = $product->stocks->firstWhere('branch_id', 1);
-                                                                                    @endphp
-                                                                                    {{ $stock ? $stock->purchase_qty : 'No stock' }}
-                                                                                </td>
-                                                                                <td>
-                                                                                    @php
-                                                                                        $stock = $product->stocks->firstWhere('branch_id', 2);
-                                                                                    @endphp
-                                                                                    {{ $stock ? $stock->purchase_qty : 'No stock' }}
-                                                                                </td>
                                                                                 <td>{{ $product->sold_quantity }}</td>
                                                                                 <td> {{ $product->error_quantity }}</td>
                                                                                 <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
@@ -244,8 +216,6 @@
                                                                             <th class="border-bottom-0">Product Name</th>
                                                                             <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                             <th class="border-bottom-0">Total Stock</th>
-                                                                            <th class="border-bottom-0">8Ray Stock</th>
-                                                                            <th class="border-bottom-0">(GP)Stock</th>
                                                                             <th class="border-bottom-0">Sold Stock</th>
                                                                             <th class="border-bottom-0">Error Stock</th>
                                                                             <th class="border-bottom-0">Purchase Price</th>
@@ -266,69 +236,42 @@
                                                                                 <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                             </td>
                                                                             <td>{{ $product->total_stock }}</td>
-                                                                            <td>
-                                                                                @php
-                                                                                    $stock = $product->stocks->firstWhere('branch_id', 1);
-                                                                                @endphp
-                                                                                {{ $stock ? $stock->purchase_qty : 'No stock' }}
-                                                                            </td>
-                                                                            <td>
-                                                                                @php
-                                                                                    $stock = $product->stocks->firstWhere('branch_id', 2);
-                                                                                @endphp
-                                                                                {{ $stock ? $stock->purchase_qty : 'No stock' }}
-                                                                            </td>
                                                                             <td>{{ $product->sold_quantity }}</td>
-                                                                            <td> {{ $product->error_quantity }}</td>
+                                                                            <td>{{ $product->error_quantity }}</td>
                                                                             <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
                                                                             <td>{{ $product->price ? $product->price->selling_price : 'No price' }}</td>
 
-
                                                                             <td>
                                                                                 @if ($product->status == 'active')
-                                                                                    <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
-                                                                                        {{ $product->status }}
-                                                                                    </span>
+                                                                                    <span class="badge bg-success badge-sm me-1 mb-1 mt-1">{{ $product->status }}</span>
                                                                                 @else
-                                                                                    <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
-                                                                                        {{ $product->status }}
-                                                                                    </span>
+                                                                                    <span class="badge bg-danger badge-sm me-1 mb-1 mt-1">{{ $product->status }}</span>
                                                                                 @endif
                                                                             </td>
                                                                             <td>{{ date('F j, Y', strtotime($product['created_at'])) }}</td>
                                                                             <td>
-                                                                                <a href="{{ route('edit.product', $product->product_slug) }}"
-                                                                                    class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                                    data-bs-original-title="Edit">
+                                                                                <a href="{{ route('edit.product', $product->product_slug) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
                                                                                     <span class="fe fe-edit fs-14"></span>
                                                                                 </a>
 
                                                                                 @if ($product->status == 'active')
-                                                                                    <a href="{{ route('inactive.product', $product->id) }}"
-                                                                                        class="btn text-primary btn-sm"
-                                                                                        data-bs-toggle="tooltip"
-                                                                                        data-bs-original-title="Inactive">
+                                                                                    <a href="{{ route('inactive.product', $product->id) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Inactive">
                                                                                         <span class="fa fa-toggle-on fs-14"></span>
                                                                                     </a>
                                                                                 @else
-                                                                                    <a href="{{ route('active.product', $product->id) }}"
-                                                                                        class="btn text-primary btn-sm"
-                                                                                        data-bs-toggle="tooltip"
-                                                                                        data-bs-original-title="Active">
+                                                                                    <a href="{{ route('active.product', $product->id) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Active">
                                                                                         <span class="fa fa-toggle-off fs-14"></span>
                                                                                     </a>
                                                                                 @endif
 
-                                                                                <a href="{{ route('delete.product', $product->id) }}"
-                                                                                    class="btn text-danger btn-sm" id="delete"
-                                                                                    data-bs-toggle="tooltip"
-                                                                                    data-bs-original-title="Delete">
+                                                                                <a href="{{ route('delete.product', $product->id) }}" class="btn text-danger btn-sm" id="delete" data-bs-toggle="tooltip" data-bs-original-title="Delete">
                                                                                     <span class="fe fe-trash-2 fs-14"></span>
                                                                                 </a>
                                                                             </td>
                                                                         </tr>
                                                                         @endforeach
                                                                     </tbody>
+
                                                                 </table>
                                                             </div>
                                                         </div>

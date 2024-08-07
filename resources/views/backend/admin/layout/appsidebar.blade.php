@@ -68,6 +68,7 @@
                         <li class="side-menu-label1"><a href="javascript:void(0)">Product Management</a></li>
                         <li><a href="{{ route('all.product') }}" class="slide-item"> All Product  </a></li>
                         <li><a href="{{ route('product.add') }}" class="slide-item"> Add Product  </a></li>
+                        <li><a href="{{ route('product.add.admin') }}" class="slide-item"> Admin Add Product   </a></li>
                         <li><a href="{{ route('all.product.types') }}" class="slide-item"> Product Types </a></li>
                         <li><a href="{{ route('all.product.categories') }}" class="slide-item"> Product Categories </a></li>
                         <li><a href="{{ route('all.product.sub_categories') }}" class="slide-item"> Product Subcategories </a></li>
