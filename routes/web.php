@@ -27,6 +27,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReturnController;
+use App\Http\Controllers\AccountantController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -189,6 +190,12 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
         //Test Youtube video Link Good
         Route::get('/product_infos', 'index');
+    });
+
+
+    Route::controller(AccountantController::class)->group(function(){
+        Route::get('/accountant' , 'index')->name('accountant');
+        Route::get('/accountant/brand/{brand_slug}', 'showBrandDetail')->name('brand.accountant');
     });
 
     //Backend Cupon Routes

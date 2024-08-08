@@ -83,6 +83,16 @@ class Product extends Model
         return $this->stocks()->sum('purchase_qty');
     }
 
+    public function getErrorStockAttribute()
+    {
+        return $this->stocks()->sum('error_qty');
+    }
+
+    public function getSoldStockAttribute()
+    {
+        return $this->stocks()->sum('sell_qty');
+    }
+
     public function getSoldQuantityAttribute()
     {
         return StockMovement::where('product_id', $this->id)
@@ -109,5 +119,29 @@ class Product extends Model
     public function colors()
     {
         return $this->belongsToMany(ProductColor::class, 'product_color_belongs', 'product_id', 'product_color_id');
+    }
+
+    public function calculateProfitLoss()
+    {
+        $totalProfit = 0;
+        $totalLoss = 0;
+        $purchasePrice = $this->price->purchase_price;
+        $sellingPrice = $this->price->selling_price;
+        $discountPrice = $this->price->discount_price ?? $sellingPrice;
+
+        foreach ($this->stocks as $stock) {
+            $soldQuantity = $stock->sell_qty;
+            $profit = ($discountPrice - $purchasePrice) * $soldQuantity;
+            if ($profit > 0) {
+                $totalProfit += $profit;
+            } else {
+                $totalLoss += abs($profit);
+            }
+        }
+
+        return [
+            'profit' => $totalProfit,
+            'loss' => $totalLoss,
+        ];
     }
 }
