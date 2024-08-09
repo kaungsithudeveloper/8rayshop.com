@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\ProductColor;
 
 class OrderController extends Controller
 {
@@ -53,61 +54,52 @@ class OrderController extends Controller
         return view('backend.admin.orders.delivered_orders',compact('orders'));
     } // End Method
 
-    public function PendingToConfirm($order_id){
+    public function PendingToConfirm($order_id)
+{
+    $order = Order::findOrFail($order_id);
 
-        $order = Order::findOrFail($order_id);
+    // Update order status to 'delivered'
+    $order->update([
+        'status' => 'delivered',
+        'picked_date' => Carbon::now()->format('d F Y'),
+        'shipped_date' => Carbon::now()->format('d F Y'),
+        'delivered_date' => Carbon::now()->format('d F Y'),
+        'updated_at' => now(),
+    ]);
 
-        // Update order status to 'delivered'
-        $order->update([
-            'status' => 'delivered',
-            'picked_date' => Carbon::now()->format('d F Y'),
-            'shipped_date' => Carbon::now()->format('d F Y'),
-            'delivered_date' => Carbon::now()->format('d F Y'),
-            'updated_at' => now(),
-        ]);
+    // Retrieve order items
+    $orderItems = $order->orderItems;
 
-        // Retrieve order items
-        $orderItems = $order->orderItems;
-
-        // Loop through each order item to reduce the stock quantity and log stock movements
-        foreach ($orderItems as $item) {
-            // Find the stock record for the product and branch
+    // Loop through each order item to update the stock quantity
+    foreach ($orderItems as $item) {
+        // Get product color ID from color name if necessary
+        $productColor = ProductColor::where('color_name', $item->color)->first();
+        if ($productColor) {
+            // Find the stock record for the product, branch, and color
             $stock = Stock::where('product_id', $item->product_id)
                           ->where('branch_id', 1) // Assuming you want to update stock in branch ID 1
+                          ->where('product_color_id', $productColor->id) // Using the correct product_color_id
                           ->first();
 
             if ($stock) {
-                // Update the stock quantity
-                $stock->stock_qty -= $item->qty;
+                // Update the stock quantities
+                $stock->purchase_qty -= $item->qty;
+                $stock->sell_qty += $item->qty;
                 $stock->save();
-
-                // Find existing stock movement record
-                $stockMovement = StockMovement::where('order_id', $order_id)
-                                              ->where('product_id', $item->product_id)
-                                              ->where('branch_id', 1)
-                                              ->where('color', $item->color)
-                                              ->first();
-
-                if ($stockMovement) {
-                    // Update the existing stock movement record
-                    $stockMovement->update([
-                        'type' => 'sale',
-                        'updated_at' => now()
-                    ]);
-                }
             }
         }
+    }
 
-        // Notification
-        $notification = array(
-            'message' => 'Order Delivered Successfully',
-            'alert-type' => 'success'
-        );
+    // Notification
+    $notification = array(
+        'message' => 'Order Delivered Successfully',
+        'alert-type' => 'success'
+    );
 
-        return redirect()->route('admin.delivered.order')->with($notification);
+    return redirect()->route('admin.delivered.order')->with($notification);
+} // End Method
+ // End Method
 
-
-    }// End Method
 
     public function ConfirmToProcess($order_id){
         Order::findOrFail($order_id)->update(['status' => 'processing','processing_date' => Carbon::now()->format('d F Y'),]);

@@ -15,6 +15,7 @@ use App\Models\Brand;
 use App\Models\Price;
 use App\Models\Stock;
 use App\Models\Branch;
+use App\Models\Accountant;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -209,6 +210,18 @@ class ProductController extends Controller
         $product_price->created_at = Carbon::now();
         $product_price->save();
 
+        // Calculate total quantity and total purchase price
+        $total_qty = array_sum($request->input('stock_qty_1')) + array_sum($request->input('stock_qty_2'));
+        $total_purchase_price = $total_qty * $request->input('purchase_price');
+
+        // Store accountant information
+        $accountant = new Accountant();
+        $accountant->product_id = $product->id;
+        $accountant->brand_id = $validatedData['brand_id'];
+        $accountant->total_purchase_price = $total_purchase_price;
+        $accountant->purchase_date = Carbon::now();
+        $accountant->save();
+
         // Store product multi image
         if ($request->hasFile('multi_img')) {
             foreach ($request->file('multi_img') as $img) {
@@ -231,6 +244,26 @@ class ProductController extends Controller
                 $product_multiImage->save();
             }
         }
+
+        // Handle product colors
+        $colorNames = $request->input('product_color_id');
+        $productColorIds = [];
+
+        foreach ($colorNames as $colorName) {
+            // Decode color name if it's JSON
+            $colorArray = json_decode($colorName, true);
+            $colorName = $colorArray[0]['value'] ?? $colorName;
+
+            // Find or create the color
+            $color = ProductColor::firstOrCreate(
+                ['color_name' => $colorName],
+                ['color_slug' => Str::slug($colorName)]
+            );
+
+            $productColorIds[] = $color->id;
+        }
+
+        $product->productColor()->attach($productColorIds);
 
         $product->brands()->attach($validatedData['brand_id']);
         $product->productCategory()->attach($validatedData['product_category_id']);
