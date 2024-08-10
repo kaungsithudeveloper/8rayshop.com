@@ -373,136 +373,101 @@ class ProductController extends Controller
         ]);
     }
 
-    public function UpdateProduct(Request $request)
+    public function updateProduct(Request $request)
     {
         $id = $request->id;
 
+        // Fetch existing quantities for validation
+        $colorIds = $request->input('product_color_id');
+        $newQty1 = $request->input('stock_qty_1', []);
+        $newQty2 = $request->input('stock_qty_2', []);
+
+        $existingQty1 = [];
+        $existingQty2 = [];
+
+        foreach ($colorIds as $index => $colorId) {
+            $existingStock1 = Stock::where([
+                'product_id' => $id,
+                'product_color_id' => $colorId,
+                'branch_id' => 1,
+            ])->first();
+
+            $existingStock2 = Stock::where([
+                'product_id' => $id,
+                'product_color_id' => $colorId,
+                'branch_id' => 2,
+            ])->first();
+
+            $existingQty1[$index] = $existingStock1 ? $existingStock1->purchase_qty : 0;
+            $existingQty2[$index] = $existingStock2 ? $existingStock2->purchase_qty : 0;
+        }
+
+        // Validation
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|string|max:255',
             'product_name' => 'required|string|max:255',
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
             'product_size' => 'required|string|max:255',
-            'purchase_price' => 'required|string|max:255',
-            'selling_price' => 'required|string|max:255',
-            'discount_price' => 'required|string|max:255',
-            'brand_id' => 'required|string|max:255',
-            'product_category_id' => 'required|string|max:255',
+            'purchase_price' => 'required|numeric',
+            'selling_price' => 'required|numeric',
+            'discount_price' => 'required|numeric',
+            'brand_id' => 'required|numeric',
+            'product_category_id' => 'required|numeric',
             'product_subcategory_id' => 'array',
             'product_subcategory_id.*' => 'integer',
             'product_color_id.*' => 'required|string|max:255',
-            'stock_qty_1.*' => 'required|integer|min:0',
-            'stock_qty_2.*' => 'required|integer|min:0',
+            'stock_qty_1.*' => 'numeric|min:0',
+            'stock_qty_2.*' => 'numeric|min:0',
         ]);
 
         if ($validator->fails()) {
-            $notification = [
-                'message' => 'Validation failed.',
-                'alert-type' => 'error',
-            ];
-            return redirect()->back()->withErrors($validator)->withInput()->with($notification);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $validatedData = $validator->validated();
 
+        // Update Product
         $product = Product::findOrFail($id);
-        $product->product_code = $request->input('product_code');
-        $product->product_name = $request->input('product_name');
-        $product->product_slug = strtolower(str_replace(' ', '-', $request->product_name));
-        $product->user_id = auth()->user()->id;
-        $product->product_type_id = 1;
-        $product->status = 'inactive';
-        if ($request->hasFile('product_photo')) {
-            $image = $request->file('product_photo');
-            $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'upload/product_images/' . $imageName;
+        $product->update([
+            'product_code' => $request->input('product_code'),
+            'product_name' => $request->input('product_name'),
+            'product_slug' => strtolower(str_replace(' ', '-', $request->input('product_name'))),
+            'user_id' => auth()->user()->id,
+            'product_type_id' => 1,
+            'status' => 'inactive',
+            'product_photo' => $request->file('product_photo') ? $this->uploadProductPhoto($request->file('product_photo')) : $product->product_photo,
+        ]);
 
-            // Compress and save the image
-            Image::make($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->save(public_path($imagePath), 75);
+        // Update ProductInfo
+        ProductInfo::updateOrCreate(
+            ['product_id' => $product->id],
+            [
+                'short_descp' => $request->input('short_descp'),
+                'long_descp' => $request->input('long_descp'),
+                'product_size' => $request->input('product_size'),
+                'url' => $this->convertToEmbedUrl($request->input('url')),
+                'new' => $request->input('new'),
+                'hot' => $request->input('hot'),
+                'sale' => $request->input('sale'),
+                'best_sale' => $request->input('best_sale'),
+            ]
+        );
 
-            $product->product_photo = $imageName;
-        }
-        $product->updated_at = Carbon::now();
-        $product->save();
+        // Update or Create ProductPrice
+        Price::updateOrCreate(
+            ['product_id' => $product->id],
+            [
+                'purchase_price' => $request->input('purchase_price'),
+                'selling_price' => $request->input('selling_price'),
+                'discount_price' => $request->input('discount_price'),
+            ]
+        );
 
-        $product_info = ProductInfo::where('product_id', $product->id)->first();
-
-        if (!$product_info) {
-            $product_info = new ProductInfo();
-            $product_info->product_id = $product->id;
-        }
-
-        $product_info->short_descp = $request->input('short_descp');
-        $product_info->long_descp = $request->input('long_descp');
-        $product_info->product_size = $request->input('product_size');
-        $product_info->url = $this->convertToEmbedUrl($request->input('url'));
-        $product_info->new = $request->input('new');
-        $product_info->hot = $request->input('hot');
-        $product_info->sale = $request->input('sale');
-        $product_info->best_sale = $request->input('best_sale');
-        $product_info->updated_at = Carbon::now();
-
-        $product_info->save();
-
-        $product_price = Price::where('product_id', $product->id)->first();
-        $product_price->purchase_price = $request->input('purchase_price');
-        $product_price->selling_price = $request->input('selling_price');
-        $product_price->discount_price = $request->input('discount_price');
-        $product_price->updated_at = Carbon::now();
-        $product_price->save();
-
-        if ($request->file('multi_img')) {
-            // Remove old images
-            foreach ($product->multiImages as $img) {
-                if (file_exists(public_path('upload/product_multi_images/' . $img->photo_name))) {
-                    unlink(public_path('upload/product_multi_images/' . $img->photo_name));
-                }
-                $img->delete();
-            }
-
-            // Upload new images
-            foreach ($request->file('multi_img') as $file) {
-                $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('upload/product_multi_images'), $filename);
-
-                MultiImg::create([
-                    'product_id' => $product->id,
-                    'photo_name' => $filename,
-                ]);
-            }
-        }
-
-        // Handle product colors
-        $colorNames = $request->input('product_color_id');
-        $productColorIds = [];
-
-        foreach ($colorNames as $colorName) {
-            // Decode color name if it's JSON
-            $colorArray = json_decode($colorName, true);
-            $colorName = $colorArray[0]['value'] ?? $colorName;
-
-            // Find or create the color
-            $color = ProductColor::firstOrCreate(
-                ['color_name' => $colorName],
-                ['color_slug' => Str::slug($colorName)]
-            );
-
-            $productColorIds[] = $color->id;
-        }
-
-        $product->productColor()->attach($productColorIds);
-
-
-        // Update Product Brand
+        // Update Product Brand, Category, and SubCategory
         $product->brands()->sync($validatedData['brand_id']);
         $product->productCategory()->sync($validatedData['product_category_id']);
 
-        // Update Product SubCategory if product_subcategory_id exists
         if (isset($validatedData['product_subcategory_id'])) {
             $subCategoryIds = [];
             foreach ($validatedData['product_subcategory_id'] as $subCategoryId) {
@@ -514,28 +479,8 @@ class ProductController extends Controller
             $product->productSubCategory()->sync($subCategoryIds);
         }
 
-        $colorIds = $request->input('product_color_id');
-        $stockQty1 = $request->input('stock_qty_1');
-        $stockQty2 = $request->input('stock_qty_2');
-
-        $productColorIds = []; // Array to store color IDs to attach to the product
-
+        // Update Stocks and Accountant Entries
         foreach ($colorIds as $index => $colorId) {
-            $colorArray = json_decode($colorId, true);
-            if (is_array($colorArray)) {
-                $colorName = strtoupper($colorArray[0]['value'] ?? $colorId);
-
-                $color = ProductColor::firstOrCreate(
-                    ['color_name' => $colorName],
-                    ['color_slug' => Str::slug($colorName)]
-                );
-                $colorId = $color->id;
-            }
-
-            // Add the color ID to the array for attaching later
-            $productColorIds[] = $colorId;
-
-            // Fetch existing stock for branch 1 and branch 2
             $existingStock1 = Stock::where([
                 'product_id' => $product->id,
                 'product_color_id' => $colorId,
@@ -548,71 +493,68 @@ class ProductController extends Controller
                 'branch_id' => 2,
             ])->first();
 
-            // Get existing quantities or default to 0
-            $existingQty1 = $existingStock1 ? $existingStock1->purchase_qty : 0;
-            $existingQty2 = $existingStock2 ? $existingStock2->purchase_qty : 0;
+            $currentQty1 = $existingStock1 ? $existingStock1->purchase_qty : 0;
+            $currentQty2 = $existingStock2 ? $existingStock2->purchase_qty : 0;
 
-            // Get new quantities from request or default to 0
-            $newQty1 = $stockQty1[$index] ?? 0;
-            $newQty2 = $stockQty2[$index] ?? 0;
+            $newQty1 = $request->input('stock_qty_1')[$index] ?? 0;
+            $newQty2 = $request->input('stock_qty_2')[$index] ?? 0;
 
-            // Calculate the differences
-            $diffQty1 = $newQty1 - $existingQty1; // Quantity difference for branch 1
-            $diffQty2 = $newQty2 - $existingQty2; // Quantity difference for branch 2
-            $diffQtyTotal = $diffQty1 + $diffQty2; // Total quantity difference
+            $diffQty1 = $newQty1 - $currentQty1;
+            $diffQty2 = $newQty2 - $currentQty2;
 
-            // Update or create stock for branch 1
-            Stock::updateOrCreate(
-                [
+            if ($existingStock1) {
+                $existingStock1->update(['purchase_qty' => $newQty1]);
+            } else {
+                Stock::create([
                     'product_id' => $product->id,
                     'product_color_id' => $colorId,
                     'branch_id' => 1,
-                ],
-                [
                     'purchase_qty' => $newQty1,
-                    'brand_id' => 1,
-                ]
-            );
+                ]);
+            }
 
-            // Update or create stock for branch 2
-            Stock::updateOrCreate(
-                [
+            if ($existingStock2) {
+                $existingStock2->update(['purchase_qty' => $newQty2]);
+            } else {
+                Stock::create([
                     'product_id' => $product->id,
                     'product_color_id' => $colorId,
                     'branch_id' => 2,
-                ],
-                [
                     'purchase_qty' => $newQty2,
-                    'brand_id' => 1,
-                ]
-            );
+                ]);
+            }
 
-            // Store the accountant information if there's any change
-            if ($diffQtyTotal != 0) {
-                // Calculate total purchase price based on the quantity difference
-                $totalPurchasePrice = abs($diffQtyTotal) * $request->input('purchase_price');
+            $totalPurchaseQty = $diffQty1 + $diffQty2;
+            $totalReduceQty = $currentQty1 - $newQty1 + $currentQty2 - $newQty2;
+            $purchasePrice = $request->input('purchase_price');
 
-                // Create accountant record with total_purchase_qty and total_purchase_price
+            if ($totalPurchaseQty > 0) {
                 Accountant::create([
                     'product_id' => $product->id,
                     'brand_id' => $validatedData['brand_id'],
-                    'total_purchase_qty' => $diffQtyTotal,  // Store the total quantity difference
-                    'total_purchase_price' => $totalPurchasePrice,
-                    'purchase_date' => Carbon::now(),
+                    'total_purchase_qty' => $totalPurchaseQty,
+                    'total_purchase_price' => $totalPurchaseQty * $purchasePrice,
+                    'purchase_date' => Carbon::now()->toDateString(),
+                ]);
+            }
+
+            if ($totalReduceQty > 0) {
+                Accountant::create([
+                    'product_id' => $product->id,
+                    'brand_id' => $validatedData['brand_id'],
+                    'total_reduce_qty' => $totalReduceQty,
+                    'total_purchase_price' => -($totalReduceQty * $purchasePrice),
+                    'purchase_date' => Carbon::now()->toDateString(),
                 ]);
             }
         }
 
-        // Attach the product colors to the product
-        $product->productColor()->sync($productColorIds);
-
-        $notification = [
-            'message' => 'Product updated successfully!',
-            'alert-type' => 'success',
-        ];
-
-        return redirect()->route('all.product')->with($notification);
+        // Notify success
+        return redirect()->route('all.product')->with('message', 'Product updated successfully!');
     }
+
+
+
 
 
 

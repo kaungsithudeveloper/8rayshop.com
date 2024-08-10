@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id');
             $table->integer('total_purchase_price')->nullable();
             $table->integer('total_purchase_qty')->nullable();
+            $table->integer('total_reduce_qty')->nullable();
             $table->string('purchase_date')->nullable();
             $table->timestamps();
 
