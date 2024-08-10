@@ -98,7 +98,6 @@ class OrderController extends Controller
 
     return redirect()->route('admin.delivered.order')->with($notification);
 } // End Method
- // End Method
 
 
     public function ConfirmToProcess($order_id){

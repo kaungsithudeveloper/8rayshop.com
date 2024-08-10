@@ -128,7 +128,6 @@ class ProductController extends Controller
     {
         // Validate request
         //dd($request->all());
-
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|unique:products,product_code|string|max:255',
             'product_name' => 'required|unique:products,product_name|string|max:255',
@@ -219,6 +218,7 @@ class ProductController extends Controller
         $accountant->product_id = $product->id;
         $accountant->brand_id = $validatedData['brand_id'];
         $accountant->total_purchase_price = $total_purchase_price;
+        $accountant->total_purchase_qty = $total_qty;
         $accountant->purchase_date = Carbon::now();
         $accountant->save();
 
@@ -301,7 +301,7 @@ class ProductController extends Controller
             Stock::updateOrCreate(
                 [
                     'product_id' => $product->id,
-                    'brand_id' => 1, // Replace with actual brand id
+                    'brand_id' => $validatedData['brand_id'], // Replace with actual brand id
                     'branch_id' => 1,
                     'product_color_id' => $color->id,
                 ],
@@ -312,7 +312,7 @@ class ProductController extends Controller
             Stock::updateOrCreate(
                 [
                     'product_id' => $product->id,
-                    'brand_id' => 1, // Replace with actual brand id
+                    'brand_id' => $validatedData['brand_id'], // Replace with actual brand id
                     'branch_id' => 2,
                     'product_color_id' => $color->id,
                 ],
@@ -376,8 +376,6 @@ class ProductController extends Controller
     public function UpdateProduct(Request $request)
     {
         $id = $request->id;
-
-        //dd($request->all());
 
         $validator = Validator::make($request->all(), [
             'product_code' => 'required|string|max:255',
@@ -479,6 +477,27 @@ class ProductController extends Controller
             }
         }
 
+        // Handle product colors
+        $colorNames = $request->input('product_color_id');
+        $productColorIds = [];
+
+        foreach ($colorNames as $colorName) {
+            // Decode color name if it's JSON
+            $colorArray = json_decode($colorName, true);
+            $colorName = $colorArray[0]['value'] ?? $colorName;
+
+            // Find or create the color
+            $color = ProductColor::firstOrCreate(
+                ['color_name' => $colorName],
+                ['color_slug' => Str::slug($colorName)]
+            );
+
+            $productColorIds[] = $color->id;
+        }
+
+        $product->productColor()->attach($productColorIds);
+
+
         // Update Product Brand
         $product->brands()->sync($validatedData['brand_id']);
         $product->productCategory()->sync($validatedData['product_category_id']);
@@ -499,8 +518,9 @@ class ProductController extends Controller
         $stockQty1 = $request->input('stock_qty_1');
         $stockQty2 = $request->input('stock_qty_2');
 
+        $productColorIds = []; // Array to store color IDs to attach to the product
+
         foreach ($colorIds as $index => $colorId) {
-            // Decode color ID if needed
             $colorArray = json_decode($colorId, true);
             if (is_array($colorArray)) {
                 $colorName = strtoupper($colorArray[0]['value'] ?? $colorId);
@@ -512,6 +532,35 @@ class ProductController extends Controller
                 $colorId = $color->id;
             }
 
+            // Add the color ID to the array for attaching later
+            $productColorIds[] = $colorId;
+
+            // Fetch existing stock for branch 1 and branch 2
+            $existingStock1 = Stock::where([
+                'product_id' => $product->id,
+                'product_color_id' => $colorId,
+                'branch_id' => 1,
+            ])->first();
+
+            $existingStock2 = Stock::where([
+                'product_id' => $product->id,
+                'product_color_id' => $colorId,
+                'branch_id' => 2,
+            ])->first();
+
+            // Get existing quantities or default to 0
+            $existingQty1 = $existingStock1 ? $existingStock1->purchase_qty : 0;
+            $existingQty2 = $existingStock2 ? $existingStock2->purchase_qty : 0;
+
+            // Get new quantities from request or default to 0
+            $newQty1 = $stockQty1[$index] ?? 0;
+            $newQty2 = $stockQty2[$index] ?? 0;
+
+            // Calculate the differences
+            $diffQty1 = $newQty1 - $existingQty1; // Quantity difference for branch 1
+            $diffQty2 = $newQty2 - $existingQty2; // Quantity difference for branch 2
+            $diffQtyTotal = $diffQty1 + $diffQty2; // Total quantity difference
+
             // Update or create stock for branch 1
             Stock::updateOrCreate(
                 [
@@ -520,7 +569,7 @@ class ProductController extends Controller
                     'branch_id' => 1,
                 ],
                 [
-                    'purchase_qty' => $stockQty1[$index] ?? 0,
+                    'purchase_qty' => $newQty1,
                     'brand_id' => 1,
                 ]
             );
@@ -533,11 +582,29 @@ class ProductController extends Controller
                     'branch_id' => 2,
                 ],
                 [
-                    'purchase_qty' => $stockQty2[$index] ?? 0,
+                    'purchase_qty' => $newQty2,
                     'brand_id' => 1,
                 ]
             );
+
+            // Store the accountant information if there's any change
+            if ($diffQtyTotal != 0) {
+                // Calculate total purchase price based on the quantity difference
+                $totalPurchasePrice = abs($diffQtyTotal) * $request->input('purchase_price');
+
+                // Create accountant record with total_purchase_qty and total_purchase_price
+                Accountant::create([
+                    'product_id' => $product->id,
+                    'brand_id' => $validatedData['brand_id'],
+                    'total_purchase_qty' => $diffQtyTotal,  // Store the total quantity difference
+                    'total_purchase_price' => $totalPurchasePrice,
+                    'purchase_date' => Carbon::now(),
+                ]);
+            }
         }
+
+        // Attach the product colors to the product
+        $product->productColor()->sync($productColorIds);
 
         $notification = [
             'message' => 'Product updated successfully!',
@@ -546,6 +613,9 @@ class ProductController extends Controller
 
         return redirect()->route('all.product')->with($notification);
     }
+
+
+
 
     public function deleteMultiImage($id)
     {
@@ -632,7 +702,7 @@ class ProductController extends Controller
         );
 
         return redirect()->back()->with($notification);
-}
+    }
 
     public function index()
     {
@@ -1106,14 +1176,14 @@ class ProductController extends Controller
     }
 
     public function deleteStocksByColor($colorId)
-{
-    // Delete all stocks with the given color ID
-    DB::transaction(function () use ($colorId) {
-        Stock::where('product_color_id', $colorId)->delete();
-    });
+    {
+        // Delete all stocks with the given color ID
+        DB::transaction(function () use ($colorId) {
+            Stock::where('product_color_id', $colorId)->delete();
+        });
 
-    return response()->json(['message' => 'Stocks deleted successfully']);
-}
+        return response()->json(['message' => 'Stocks deleted successfully']);
+    }
 
 
 

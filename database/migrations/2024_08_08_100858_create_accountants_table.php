@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('brand_id');
             $table->integer('total_purchase_price')->nullable();
+            $table->integer('total_purchase_qty')->nullable();
             $table->string('purchase_date')->nullable();
-            $table->string('purchase_update')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
