@@ -43,47 +43,7 @@
                                     <abbr title="Email">Email: </abbr>8rayshop@gmail.com<br />
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xl-12">
-                                    <div class="contact-from-area padding-20-row-col">
-                                        <h5 class="text-brand mb-10">Contact form</h5>
-                                        <h2 class="mb-10">Drop Us a Line</h2>
-                                        <p class="text-muted mb-30 font-sm">Your email address will not be published. Required fields are marked *</p>
-                                        <form class="contact-form-style mt-30" id="contact-form" action="#" method="post">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="input-style mb-20">
-                                                        <input name="name" placeholder="First Name" type="text" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="input-style mb-20">
-                                                        <input name="email" placeholder="Your Email" type="email" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="input-style mb-20">
-                                                        <input name="telephone" placeholder="Your Phone" type="tel" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="input-style mb-20">
-                                                        <input name="subject" placeholder="Subject" type="text" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12 col-md-12">
-                                                    <div class="textarea-style mb-30">
-                                                        <textarea name="message" placeholder="Message"></textarea>
-                                                    </div>
-                                                    <button class="submit submit-auto-width" type="submit">Send message</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <p class="form-messege"></p>
-                                    </div>
-                                </div>
 
-                            </div>
                         </section>
                     </div>
                 </div>

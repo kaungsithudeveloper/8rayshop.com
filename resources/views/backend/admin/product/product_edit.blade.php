@@ -224,7 +224,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <label for="url" class="form-label">YouTube Link</label>
-                                <input type="url" class="form-control" id="url" name="url" value="{{ $product->productInfo->url ?? '' }}" required>
+                                <input type="url" class="form-control" id="url" name="url" value="{{ $product->productInfo->url ?? '' }}">
                             </div>
                         </div>
 

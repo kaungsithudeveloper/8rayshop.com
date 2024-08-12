@@ -133,7 +133,7 @@ class ProductController extends Controller
             'product_name' => 'required|unique:products,product_name|string|max:255',
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
-            'url' => 'required|url',
+            'url' => 'nullable|url',
             'product_size' => 'required|string|max:255',
             'purchase_price' => 'required|string|max:255',
             'selling_price' => 'required|string|max:255',
