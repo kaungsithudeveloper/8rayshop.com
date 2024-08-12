@@ -189,10 +189,10 @@ class ProfileController extends Controller
     public function ReturnOrder(Request $request, $order_id)
     {
         // Validate the request data
-        //dd($request->all());
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'return_qty' => 'required|integer|min:1',
+            'color' => 'nullable|string',
+            'return_qty' => 'required|integer|min:1', // Ensure a positive integer is provided
             'return_reason' => 'required|string',
         ]);
 
@@ -203,9 +203,20 @@ class ProfileController extends Controller
         $order->update([
             'return_date' => Carbon::now()->format('d F Y'),
             'return_reason' => $request->return_reason,
-            'return_qty' => $request->return_qty,
+            'return_pcolor' => $request->color,
             'return_order' => 1,
         ]);
+
+        // Update the order item with return quantity
+        $orderItem = $order->orderItems()
+            ->where('product_id', $request->product_id)
+            ->where('color', $request->color)
+            ->first();
+
+        if ($orderItem) {
+            $orderItem->return_qty = $request->return_qty;
+            $orderItem->save();
+        }
 
         // Create a notification
         $notification = array(
@@ -215,6 +226,8 @@ class ProfileController extends Controller
 
         return redirect()->route('8ray.user.order')->with($notification);
     }
+
+
 // End Method
 
     public function ReturnOrderPage(){

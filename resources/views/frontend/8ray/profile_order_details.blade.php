@@ -141,7 +141,14 @@
                                                             @else
                                                                 <td class="text-center">{{ $item->color }}</td>
                                                             @endif
-                                                            <td class="text-right"><label>{{ $item->qty }} </label></td>
+                                                            <td class="text-right">
+                                                                <label>
+                                                                    {{ $item->qty }}
+                                                                    @if($item->order->return_order == 1 && $item->return_qty > 0)
+                                                                        <span class="badge rounded-pill" style="background:red;">Return</span>
+                                                                    @endif
+                                                                </label>
+                                                            </td>
                                                             <td class="text-right">${{ $item->price }} <br> Total = ${{ $item->price * $item->qty }}</td>
 
                                                         </tr>
@@ -160,6 +167,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         @if($order->status === 'delivered')
                                             @php
                                                 $order = App\Models\Order::where('id', $order->id)->where('return_reason', '=', NULL)->first();
@@ -170,12 +178,21 @@
                                                         @csrf
 
                                                         <div class="form-group" style="font-weight: 600; font-size: initial; color: #000000;">
-                                                            <label>Select Error Product</label>
-                                                            <select class="form-control" name="product_id" required>
+                                                            <label>Select Product</label>
+                                                            <select class="form-control" id="productSelect" name="product_id" required>
                                                                 <option value="">Select Product</option>
-                                                                @foreach($orderItem as $item)
-                                                                    <option value="{{ $item->product->id }}">{{ $item->product->product_name }}</option>
+                                                                @foreach($order->orderItems as $item)
+                                                                    @if($item->return_qty == 0)
+                                                                        <option value="{{ $item->product->id }}" data-colors="{{ $item->color }}">{{ $item->product->product_name }}</option>
+                                                                    @endif
                                                                 @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group" style="font-weight: 600; font-size: initial; color: #000000;">
+                                                            <label>Select Color</label>
+                                                            <select class="form-control" id="colorSelect" name="color" required>
+                                                                <option value="">Select Color</option>
                                                             </select>
                                                         </div>
 
@@ -192,10 +209,37 @@
                                                         <button type="submit" class="btn-sm btn-danger" style="width:40%;">Order Return</button>
                                                     </form>
                                                 </div>
-                                            @else
-                                                <h5><span class="" style="color:red;">You have sent a return request for this product</span></h5><br><br>
+
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        const productSelect = document.getElementById('productSelect');
+                                                        const colorSelect = document.getElementById('colorSelect');
+
+                                                        productSelect.addEventListener('change', function() {
+                                                            const selectedOption = productSelect.options[productSelect.selectedIndex];
+                                                            const colors = selectedOption.getAttribute('data-colors');
+
+                                                            // Clear the color dropdown
+                                                            colorSelect.innerHTML = '<option value="">Select Color</option>';
+
+                                                            if (colors) {
+                                                                const colorArray = colors.split(',');
+
+                                                                // Populate the color dropdown with options
+                                                                colorArray.forEach(function(color) {
+                                                                    const option = document.createElement('option');
+                                                                    option.value = color;
+                                                                    option.text = color;
+                                                                    colorSelect.appendChild(option);
+                                                                });
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
                                             @endif
                                         @endif
+
+
 
                                     </div>
                                 </div>

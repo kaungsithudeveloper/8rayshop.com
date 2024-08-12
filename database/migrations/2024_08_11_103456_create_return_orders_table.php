@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('return_orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('product_id');
-            $table->string('color')->nullable();
-            $table->string('size')->nullable();
-            $table->string('qty');
-            $table->integer('return_qty')->nullable();
+            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->integer('return_qty');
             $table->float('price',8,2);
+            $table->string('color')->nullable();
+            $table->text('return_reason')->nullable();
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null'); // Foreign key constraint
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('return_orders');
     }
 };
