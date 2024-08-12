@@ -25,7 +25,7 @@
                                 <strong class="mr-10" style="width:60px;">Color : </strong>
                                 <select class="form-control unicase-form-control" id="color" name="color"></select>
                             </div>
-                            <div class="detail-extralink mb-30">
+                            <div class="detail-extralink mb-30" id="addtocart">
                                 <div class="detail-qty border radius">
                                     <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                     <input type="text" name="quantity" class="qty-val" id="qty" value="1" min="1">

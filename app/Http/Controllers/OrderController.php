@@ -58,22 +58,18 @@ class OrderController extends Controller
 {
     $order = Order::findOrFail($order_id);
 
-    // Update order status to 'delivered'
-    $order->update([
-        'status' => 'delivered',
-        'picked_date' => Carbon::now()->format('d F Y'),
-        'shipped_date' => Carbon::now()->format('d F Y'),
-        'delivered_date' => Carbon::now()->format('d F Y'),
-        'updated_at' => now(),
-    ]);
-
     // Retrieve order items
     $orderItems = $order->orderItems;
 
-    // Loop through each order item to update the stock quantity
+    // Initialize variables to track insufficient stock details
+    $insufficientStock = false;
+    $insufficientStockDetails = [];
+
+    // Loop through each order item to check stock quantity
     foreach ($orderItems as $item) {
-        // Get product color ID from color name if necessary
+        // Get product color ID from color name
         $productColor = ProductColor::where('color_name', $item->color)->first();
+
         if ($productColor) {
             // Find the stock record for the product, branch, and color
             $stock = Stock::where('product_id', $item->product_id)
@@ -82,22 +78,85 @@ class OrderController extends Controller
                           ->first();
 
             if ($stock) {
-                // Update the stock quantities
-                $stock->purchase_qty -= $item->qty;
-                $stock->sell_qty += $item->qty;
-                $stock->save();
+                // Check if order item quantity exceeds available stock
+                if ($item->qty > $stock->purchase_qty) {
+                    $insufficientStock = true;
+                    $insufficientStockDetails[] = [
+                        'product_name' => $item->product->product_name,
+                        'color' => $item->color,
+                        'requested_qty' => $item->qty,
+                        'available_qty' => $stock->purchase_qty
+                    ];
+                    break; // Exit loop if stock is insufficient
+                }
+            } else {
+                // If stock record doesn't exist, consider it as insufficient stock
+                $insufficientStock = true;
+                $insufficientStockDetails[] = [
+                    'product_name' => $item->product->product_name,
+                    'color' => $item->color,
+                    'requested_qty' => $item->qty,
+                    'available_qty' => 0 // No stock available
+                ];
+                break;
             }
         }
     }
 
-    // Notification
-    $notification = array(
-        'message' => 'Order Delivered Successfully',
-        'alert-type' => 'success'
-    );
+    if ($insufficientStock) {
+        // Create a detailed error message
+        $errorMessage = 'Error: Insufficient stock for one or more products in the order. Details: ';
 
-    return redirect()->route('admin.delivered.order')->with($notification);
-} // End Method
+        foreach ($insufficientStockDetails as $detail) {
+            $errorMessage .= "{$detail['product_name']} (Color: {$detail['color']}) - Requested: {$detail['requested_qty']}, Available: {$detail['available_qty']}. ";
+        }
+
+        // Notification for insufficient stock
+        $notification = array(
+            'message' => $errorMessage,
+            'alert-type' => 'error'
+        );
+
+        return redirect()->back()->with($notification);
+    } else {
+        // If stock is sufficient, proceed with updating stock and order status
+        foreach ($orderItems as $item) {
+            $productColor = ProductColor::where('color_name', $item->color)->first();
+
+            if ($productColor) {
+                $stock = Stock::where('product_id', $item->product_id)
+                              ->where('branch_id', 1)
+                              ->where('product_color_id', $productColor->id)
+                              ->first();
+
+                if ($stock) {
+                    // Update the stock quantities
+                    $stock->purchase_qty -= $item->qty;
+                    $stock->sell_qty += $item->qty;
+                    $stock->save();
+                }
+            }
+        }
+
+        // Update order status to 'delivered'
+        $order->update([
+            'status' => 'delivered',
+            'picked_date' => Carbon::now()->format('d F Y'),
+            'shipped_date' => Carbon::now()->format('d F Y'),
+            'delivered_date' => Carbon::now()->format('d F Y'),
+            'updated_at' => now(),
+        ]);
+
+        // Notification for successful delivery
+        $notification = array(
+            'message' => 'Order Delivered Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.delivered.order')->with($notification);
+    }
+}
+
 
 
     public function ConfirmToProcess($order_id){
@@ -167,6 +226,39 @@ class OrderController extends Controller
 
         return redirect()->route('admin.delivered.order')->with($notification);
     }
+
+
+    public function cancelOrder($order_id)
+{
+    $order = Order::findOrFail($order_id);
+
+    // Check if the order is in a cancellable state
+    if ($order->status == 'pending' || $order->status == 'confirm' || $order->status == 'processing') {
+        // Update the order status to 'cancelled'
+        $order->update([
+            'status' => 'cancelled',
+            'cancel_date' => Carbon::now()->format('d F Y'),
+            'updated_at' => now(),
+        ]);
+
+        // Notification
+        $notification = array(
+            'message' => 'Order Cancelled Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.dashboard')->with($notification);
+    } else {
+        // If the order cannot be cancelled, show an error
+        $notification = array(
+            'message' => 'Order Already cancelled at this stage.',
+            'alert-type' => 'error'
+        );
+
+        return redirect()->route('admin.dashboard')->with($notification);
+    }
+}
+
 
 
 

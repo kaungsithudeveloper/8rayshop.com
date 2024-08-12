@@ -139,6 +139,25 @@
         @endif
     </script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('alert-type') == 'success')
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('message') }}',
+            });
+        @elseif(session('alert-type') == 'error')
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('message') }}',
+            });
+        @endif
+    });
+</script>
+
     @stack('scripts')
 </body>
 

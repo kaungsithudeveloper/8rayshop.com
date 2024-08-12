@@ -153,20 +153,34 @@
                     var totalStock = 0;
                     if (data.product.stocks && data.product.stocks.length > 0) {
                         data.product.stocks.forEach(function(stock) {
-                            totalStock += stock.stock_qty;
+                            totalStock += stock.purchase_qty;
                         });
                     }
 
-                    // Display colors
+                    // Filter and display colors
                     $('#color').empty();
                     if (data.product.colors && data.product.colors.length > 0) {
                         data.product.colors.forEach(function(color) {
-                            var colorItem = '<option value="' + color.color_name + '">' + color.color_name + '</option>';
-                            $('#color').append(colorItem);
+                            // Check if color has stock in branch 1
+                            var branch1Stock = data.product.stocks.find(function(stock) {
+                                return stock.product_color_id === color.id && stock.branch_id === 1;
+                            });
+
+                            if (branch1Stock && branch1Stock.purchase_qty > 0) {
+                                var colorItem = '<option value="' + color.color_name + '">' + color.color_name + '</option>';
+                                $('#color').append(colorItem);
+                            }
                         });
-                        $('#colorArea').show();
+                        if ($('#color').children().length > 0) {
+                            $('#colorArea').show();
+                        } else {
+                            $('#colorArea').hide();
+                            $('#addtocart').hide();
+                        }
                     } else {
                         $('#colorArea').hide();
+
+
                     }
 
                     if (totalStock > 0) {
@@ -191,42 +205,57 @@
             });
         }
 
+
         function addToCart(){
-            var product_name = $('#pname').text();
-            var id = $('#product_id').val();
-            var color = $('#color option:selected').text();
-            var quantity = $('#qty').val();
-            $.ajax({
-                type: "POST",
-                dataType: 'json',
-                data: {
-                    color: color,
-                    quantity: quantity,
-                    product_name: product_name
-                },
-                url: "/cart/data/store/" + id,
-                success: function(data) {
-                    miniCart();
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                    if ($.isEmptyObject(data.error)) {
-                        Toast.fire({
-                            icon: 'success',
-                            title: data.success,
-                        });
-                    } else {
-                        Toast.fire({
-                            icon: 'error',
-                            title: data.error,
-                        });
-                    }
-                }
+    var product_name = $('#pname').text();
+    var id = $('#product_id').val();
+    var color = $('#color option:selected').text();
+    var quantity = $('#qty').val();
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        data: {
+            color: color,
+            quantity: quantity,
+            product_name: product_name
+        },
+        url: "/cart/data/store/" + id,
+        success: function(data) {
+            miniCart();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            if ($.isEmptyObject(data.error)) {
+                Toast.fire({
+                    icon: 'success',
+                    title: data.success,
+                });
+            } else {
+                Toast.fire({
+                    icon: 'error',
+                    title: data.error,
+                });
+            }
+        },
+        error: function(xhr) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            Toast.fire({
+                icon: 'error',
+                title: xhr.responseJSON.error,
             });
         }
+    });
+}
+
+
 
         function addToCartDetails(){
             var product_name = $('#dpname').text();
@@ -940,7 +969,24 @@
 
      <!--  ////////////// End Apply Coupon ////////////// -->
 
-
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('alert-type') == 'success')
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('message') }}',
+            });
+        @elseif(session('alert-type') == 'error')
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('message') }}',
+            });
+        @endif
+    });
+</script>
 
 
 

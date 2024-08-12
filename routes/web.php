@@ -71,7 +71,7 @@ Route::post('/datacentre/login', [AuthenticatedSessionController::class, 'store'
 Route::get('/datacentre/register', [FrontendController::class, 'DatacentreRegister'])->name('datacentre.register')->middleware('guest');
 Route::post('/datacentre/register', [RegisteredUserController::class, 'store'])->name('datacentre.register.post');
 Route::post('/datacentre/logout', [AuthenticatedSessionController::class, 'destroy'])->name('datacentre.logout');
-
+Route::get('/product/check-stock/{id}', [ProductController::class, 'checkStock']);
 Route::middleware(['auth','role:admin'])->group(function () {
 
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'AdminDashboard'])->name('admin.dashboard');
@@ -192,7 +192,6 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/product_infos', 'index');
     });
 
-
     Route::controller(AccountantController::class)->group(function(){
         Route::get('/accountant' , 'index')->name('accountant');
         Route::get('/accountant/brand/{brand_slug}', 'showBrandDetail')->name('brand.accountant');
@@ -217,6 +216,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/pending/confirm/{order_id}' , 'PendingToConfirm')->name('pending-confirm');
         Route::get('/confirm/processing/{order_id}' , 'ConfirmToProcess')->name('confirm-processing');
         Route::get('/processing/delivered/{order_id}' , 'ProcessToDelivered')->name('processing-delivered');
+        Route::get('/admin/order/cancel/{order_id}', 'cancelOrder')->name('processing-cancel');
+
 
     });
 
@@ -251,8 +252,6 @@ Route::middleware(['auth','role:admin'])->group(function () {
     });
 
     Route::get('/district/ajax/{division_id}', [ShippingAreaController::class, 'GetDistrict']);
-
-
 
     // Backend Role routes
     Route::controller(RoleController::class)->group(function(){
