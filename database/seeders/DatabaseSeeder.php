@@ -25,6 +25,12 @@ class DatabaseSeeder extends Seeder
         $this->call([BranchSeeder::class]);
         //$this->call([ProductSeeder::class]);
 
+        $this->call([
+            ShipDivisionSeeder::class,
+            ShipDistrictSeeder::class,
+            ShipStateSeeder::class,
+        ]);
+
         \App\Models\User::factory(7)->create();
 
 

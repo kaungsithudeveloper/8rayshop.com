@@ -49,12 +49,6 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="username" class="form-label">User Name<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" value="{{ $adminData->username }}" name="username" required>
-                                                        <small class="text text-danger">Remember this username, user will login using this username</small>
-                                                    </div>
-
-                                                    <div class="form-group">
                                                         <label for="exampleInputEmail1" class="form-label">Email address<span class="text-red">*</span></label>
                                                         <input name="email" class="form-control" type="email" value="{{ $adminData->email }}" required>
                                                     </div>

@@ -55,7 +55,7 @@
                                                     <td>
 
                                                         <div class="d-flex">
-                                                            <img src="{{ !empty($admin->photo) ? url('upload/admin_images/' . $admin->photo) : url('upload/profile.jpg') }}"
+                                                            <img src="{{ !empty($admin->photo) ? url('upload/user_images/' . $admin->photo) : url('upload/profile.jpg') }}"
                                                                 alt="Admin" style="width:30px; height: 30px;">
                                                             <div class="ms-3 mt-0 mt-sm-2 d-block">
                                                                 <h6 class="mb-0 fs-14 fw-semibold"> {{ $admin->name }}

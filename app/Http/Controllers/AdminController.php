@@ -196,7 +196,7 @@ class AdminController extends Controller
         if ($request->file('photo')) {
             $image = $request->file('photo');
             $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'upload/admin_images/' . $name_gen;
+            $imagePath = 'upload/user_images/' . $name_gen;
             Image::make($image)->resize(300, 300)->save(public_path($imagePath));
             $imageName = $name_gen;
             $user['photo'] = $imageName;
@@ -257,7 +257,7 @@ class AdminController extends Controller
             if ($request->hasFile('photo')) {
                 $image = $request->file('photo');
                 $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-                $imagePath = 'upload/admin_images/' . $imageName;
+                $imagePath = 'upload/user_images/' . $imageName;
 
                 // Save the image and update user's photo field
                 Image::make($image)->resize(300, 400)->save(public_path($imagePath));
@@ -265,7 +265,7 @@ class AdminController extends Controller
 
                 // Delete the old photo if it exists
                 if ($user->photo) {
-                    Storage::delete('upload/admin_images/' . $user->photo);
+                    Storage::delete('upload/user_images/' . $user->photo);
                 }
             }
 

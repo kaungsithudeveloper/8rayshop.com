@@ -49,12 +49,6 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="username" class="form-label">User Name<span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" value="{{ $userData->username }}" name="username" required>
-                                                        <small class="text text-danger">Remember this username, user will login using this username</small>
-                                                    </div>
-
-                                                    <div class="form-group">
                                                         <label for="exampleInputEmail1" class="form-label">Email address<span class="text-red">*</span></label>
                                                         <input name="email" class="form-control" type="email" value="{{ $userData->email }}" required>
                                                     </div>
@@ -74,6 +68,32 @@
 
                                                         </div>
                                                     </div>
+
+                                                    <div class="form-group">
+                                                        <label for="Assign Roles">Assign User Role</label>
+                                                        <select name="roles" class="form-select mb-3">
+                                                            <option value="">Open this select menu</option>
+                                                            @foreach($roles as $role)
+                                                                <option value="{{ $role }}" {{ $userData->role == $role ? 'selected' : '' }}>
+                                                                    {{ ucfirst($role) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="Assign Roles">Assign Roles</label>
+                                                        <select name="asignRoles" class="form-select mb-3" >
+                                                            <option selected="">Open this select menu</option>
+                                                            @foreach($asignRoles as $role)
+                                                                <option value="{{ $role->name }}"
+                                                                    {{ $userData->hasRole($role->name) ? 'selected' : '' }}>
+                                                                    {{ $role->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+
                                                     <div class="form-group">
                                                         <label class="form-label">About Me</label>
                                                         <textarea class="form-control" rows="5" name="aboutme">

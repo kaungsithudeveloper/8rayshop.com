@@ -92,7 +92,10 @@ class AdminUserController extends Controller
     public function EditAdminUser($id)
     {
         $userData = User::findOrFail($id);
-        return view('backend.admin.users.edit_user',compact('userData'));
+        $roles = ['employee', 'user'];
+
+        $asignRoles = Role::whereNotIn('name', ['SuperAdmin', 'Admin'])->get();
+        return view('backend.admin.users.edit_user',compact('userData', 'roles', 'asignRoles'));
     }// End Mehtod
 
     public function UpdateAdminUser(Request $request, $id)
@@ -100,11 +103,13 @@ class AdminUserController extends Controller
         try {
             // Validation rules
             $validator = Validator::make($request->all(), [
-                'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $id],
+
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
                 'phone' => ['required', 'string', 'max:15', 'unique:users,phone,' . $id],
                 'aboutme' => ['nullable', 'string', 'max:1000'],
+                'roles' => ['nullable', 'string'],
+                'asignRoles' => ['nullable', 'string'],
                 'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ]);
 
@@ -115,13 +120,16 @@ class AdminUserController extends Controller
             $user = User::findOrFail($id);
 
             // Update user data
-            $user->username = $request->username;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone = $request->phone;
             $user->aboutme = $request->aboutme;
-            $user->role = 'user'; // You may update this as needed
+            $user->role = $request->roles;
             $user->status = 'active'; // You may update this as needed
+
+            if ($request->asignRoles) {
+                $user->assignRole($request->asignRoles);
+            }
 
             // Handle photo upload
             if ($request->hasFile('photo')) {
