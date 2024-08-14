@@ -43,7 +43,7 @@
 <body class="app sidebar-mini ltr light-mode">
 
     <!-- GLOBAL-LOADER -->
-    @include('backend.admin.layout.apploader')
+    @include('backend.employees.layout.apploader')
     <!-- /GLOBAL-LOADER -->
 
     <!-- PAGE -->

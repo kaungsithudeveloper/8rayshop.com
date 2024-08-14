@@ -58,8 +58,6 @@
                                                                         <th class="border-bottom-0">Product Name</th>
                                                                         <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                         <th class="border-bottom-0">Total Stock</th>
-                                                                        <th class="border-bottom-0">Sold Stock</th>
-                                                                        <th class="border-bottom-0">Error Stock</th>
                                                                         <th class="border-bottom-0">Purchase Price</th>
                                                                         <th class="border-bottom-0">Selling Price</th>
                                                                         <th class="border-bottom-0">Status</th>
@@ -77,8 +75,6 @@
                                                                             <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                         </td>
                                                                         <td>{{ $product->total_stock }}</td>
-                                                                        <td>{{ $product->sold_quantity }}</td>
-                                                                        <td>{{ $product->error_quantity }}</td>
                                                                         <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
                                                                         <td>{{ $product->price ? $product->price->selling_price : 'No price' }}</td>
                                                                         <td>
@@ -130,8 +126,6 @@
                                                                                 <th class="border-bottom-0">Product Name</th>
                                                                                 <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                                 <th class="border-bottom-0">Total Stock</th>
-                                                                                <th class="border-bottom-0">Sold Stock</th>
-                                                                                <th class="border-bottom-0">Error Stock</th>
                                                                                 <th class="border-bottom-0">Purchase Price</th>
                                                                                 <th class="border-bottom-0">Selling Price</th>
                                                                                 <th class="border-bottom-0">Status</th>
@@ -150,8 +144,7 @@
                                                                                     <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                                 </td>
                                                                                 <td>{{ $product->total_stock }}</td>
-                                                                                <td>{{ $product->sold_quantity }}</td>
-                                                                                <td> {{ $product->error_quantity }}</td>
+
                                                                                 <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
                                                                                 <td>{{ $product->price ? $product->price->selling_price : 'No price' }}</td>
 
@@ -216,8 +209,6 @@
                                                                             <th class="border-bottom-0">Product Name</th>
                                                                             <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                             <th class="border-bottom-0">Total Stock</th>
-                                                                            <th class="border-bottom-0">Sold Stock</th>
-                                                                            <th class="border-bottom-0">Error Stock</th>
                                                                             <th class="border-bottom-0">Purchase Price</th>
                                                                             <th class="border-bottom-0">Selling Price</th>
                                                                             <th class="border-bottom-0">Status</th>
@@ -236,8 +227,6 @@
                                                                                 <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                             </td>
                                                                             <td>{{ $product->total_stock }}</td>
-                                                                            <td>{{ $product->sold_quantity }}</td>
-                                                                            <td>{{ $product->error_quantity }}</td>
                                                                             <td>{{ $product->price ? $product->price->purchase_price : 'No price' }}</td>
                                                                             <td>{{ $product->price ? $product->price->selling_price : 'No price' }}</td>
 

@@ -15,7 +15,7 @@ class BrandSeeder extends Seeder
     public function run(): void
     {
         $brands = [
-            'none', 'Telesin', 'Puluz', 'Digitkek', 'Shoot', 'Ulanzi', 'Gopro', 'Maono', 'Lilliput', 'Cineview',
+            'none', 'Telesin', 'Puluz', 'Digitkek', 'Shoot', 'Ulanzi', 'Gopro', 'Maono', 'Lilliput', 'Uniview',
             'Boya', 'Rode', 'Atem mini pro', 'Onten', 'Elgato', 'FoG Machine', 'Orico', 'Micropack',
             'Verbatim', 'Barmaso', 'Hik', 'Dahua', 'Imou', 'Hohem', 'Skullcandy', 'Aukey', 'Picun',
             'Tronsmart', 'Envie', 'Infinite', 'Kingma', 'Kimasing', 'Nanlite', 'Mars', 'Fantech', 'Ugreen',

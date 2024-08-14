@@ -614,9 +614,6 @@ class ProductController extends Controller
         return redirect()->route('all.product')->with($notification);
     }
 
-
-
-
     public function deleteMultiImage($id)
     {
         $image = MultiImg::findOrFail($id);

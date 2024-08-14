@@ -290,7 +290,7 @@ Route::middleware(['auth','role:employee'])->group(function () {
     Route::controller(EmployeeDashboardController::class)->group(function(){
 
         Route::get('/employee/page',  'EmployeePage')->name('employee.page');
-        Route::get('/employee/dashboard',  'EmployeeDashboard')->name('employee.dashboard');
+        //Route::get('/employee/dashboard',  'EmployeeDashboard')->name('employee.dashboard');
 
         //////////// Start 8Ray Route ////////////
         Route::get('/employee/8ray/dashboard',  'Employee8rayDashboard')->name('employee.8ray.dashboard');
@@ -354,6 +354,12 @@ Route::middleware(['auth','role:employee'])->group(function () {
 
         Route::get('/inactive/employee/product/{id}' ,  'ProductEmployeeInactive')->name('inactive.employee.product');
         Route::get('/active/employee/product/{id}' ,  'ProductEmployeeActive')->name('active.employee.product');
+
+        Route::get('/colors/search', 'search')->name('colors.search');
+        Route::post('/colors/add','store')->name('colors.store');
+        Route::delete('/stock/delete/{colorId}', 'deleteStock')->name('stock.delete');
+        Route::delete('/stocks/color/{colorId}', 'deleteStocksByColor')->name('stocks.deleteByColor');
+        Route::delete('/stocks/{id}', 'destroy');
     });
 
     Route::controller(EmployeeController::class)->group(function(){

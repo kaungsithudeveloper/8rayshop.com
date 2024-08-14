@@ -58,8 +58,6 @@
                                                                         <th class="border-bottom-0">Product Name</th>
                                                                         <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                         <th class="border-bottom-0">Total Stock</th>
-                                                                        <th class="border-bottom-0">8Ray Stock</th>
-                                                                        <th class="border-bottom-0">(GP)Stock</th>
                                                                         <th class="border-bottom-0">Selling Price</th>
                                                                         <th class="border-bottom-0">Status</th>
                                                                         <th class="border-bottom-0">Date</th>
@@ -77,18 +75,6 @@
                                                                             <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                         </td>
                                                                         <td>{{ $product->total_stock }}</td>
-                                                                        <td>
-                                                                            @php
-                                                                                $stock = $product->stocks->firstWhere('branch_id', 1);
-                                                                            @endphp
-                                                                            {{ $stock ? $stock->stock_qty : 'No stock' }}
-                                                                        </td>
-                                                                        <td>
-                                                                            @php
-                                                                                $stock = $product->stocks->firstWhere('branch_id', 2);
-                                                                            @endphp
-                                                                            {{ $stock ? $stock->stock_qty : 'No stock' }}
-                                                                        </td>
 
                                                                         <td> {{ $product->price->selling_price }}</td>
 
@@ -152,8 +138,6 @@
                                                                                 <th class="border-bottom-0">Product Name</th>
                                                                                 <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                                 <th class="border-bottom-0">Total Stock</th>
-                                                                                <th class="border-bottom-0">8Ray Stock</th>
-                                                                                <th class="border-bottom-0">(GP)Stock</th>
                                                                                 <th class="border-bottom-0">Selling Price</th>
                                                                                 <th class="border-bottom-0">Status</th>
                                                                                 <th class="border-bottom-0">Date</th>
@@ -171,18 +155,6 @@
                                                                                     <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                                 </td>
                                                                                 <td>{{ $product->total_stock }}</td>
-                                                                                <td>
-                                                                                    @php
-                                                                                        $stock = $product->stocks->firstWhere('branch_id', 1);
-                                                                                    @endphp
-                                                                                    {{ $stock ? $stock->stock_qty : 'No stock' }}
-                                                                                </td>
-                                                                                <td>
-                                                                                    @php
-                                                                                        $stock = $product->stocks->firstWhere('branch_id', 2);
-                                                                                    @endphp
-                                                                                    {{ $stock ? $stock->stock_qty : 'No stock' }}
-                                                                                </td>
 
                                                                                 <td> {{ $product->price->selling_price }}</td>
 
@@ -247,8 +219,6 @@
                                                                             <th class="border-bottom-0">Product Name</th>
                                                                             <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                             <th class="border-bottom-0">Total Stock</th>
-                                                                            <th class="border-bottom-0">8Ray Stock</th>
-                                                                            <th class="border-bottom-0">(GP)Stock</th>
                                                                             <th class="border-bottom-0">Selling Price</th>
                                                                             <th class="border-bottom-0">Status</th>
                                                                             <th class="border-bottom-0">Date</th>
@@ -266,18 +236,6 @@
                                                                                 <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
                                                                             </td>
                                                                             <td>{{ $product->total_stock }}</td>
-                                                                            <td>
-                                                                                @php
-                                                                                    $stock = $product->stocks->firstWhere('branch_id', 1);
-                                                                                @endphp
-                                                                                {{ $stock ? $stock->stock_qty : 'No stock' }}
-                                                                            </td>
-                                                                            <td>
-                                                                                @php
-                                                                                    $stock = $product->stocks->firstWhere('branch_id', 2);
-                                                                                @endphp
-                                                                                {{ $stock ? $stock->stock_qty : 'No stock' }}
-                                                                            </td>
 
                                                                             <td> {{ $product->price->selling_price }}</td>
 
