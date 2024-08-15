@@ -108,7 +108,7 @@
     <!-- CUSTOM JS -->
     <script src="{{ url('backend/js/custom1.js') }}"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ url('backend/js/toastr.min.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
