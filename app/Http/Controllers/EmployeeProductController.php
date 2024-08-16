@@ -570,7 +570,7 @@ class EmployeeProductController extends Controller
         return redirect()->route('all.product')->with($notification);
     }
 
-    public function ProductInactive($id)
+    public function ProductEmployeeInactive($id)
     {
         Product::findOrFail($id)->update(['status' => 'inactive']); // Use string value 'inactive'
         $notification = array(
@@ -581,7 +581,7 @@ class EmployeeProductController extends Controller
         return redirect()->back()->with($notification);
     }
 
-    public function ProductActive($id)
+    public function ProductEmployeeActive($id)
     {
         Product::findOrFail($id)->update(['status' => 'active']); // Use string value 'active'
         $notification = array(
