@@ -415,6 +415,9 @@ Route::controller(FrontendController::class)->group(function(){
     Route::get('/product/subcategory/{id}/{slug}', 'SubcategoryProductList')->name('8ray.productSubcategoryList');
     Route::get('/product/brandzone/{id}/{slug}', 'BrandZoneProductList')->name('8ray.brandzone.productList');
 
+    Route::post('/search' , 'ProductSearch')->name('products.search');
+    Route::post('/search-product' , 'SearchProduct');
+
     // Product View Modal With Ajax
     Route::get('/product/view/modal/{id}', 'ProductViewAjax');
 

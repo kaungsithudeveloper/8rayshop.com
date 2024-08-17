@@ -105,22 +105,14 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $existingUserInfo = UserInfo::where('user_id', Auth::id())
-            ->where('division_id', $request->division_id)
-            ->where('district_id', $request->district_id)
-            ->where('state_id', $request->state_id)
-            ->first();
-
-        if (!$existingUserInfo) {
-            UserInfo::create([
-                'user_id' => Auth::id(),
-                'division_id' => $request->division_id,
-                'district_id' => $request->district_id,
-                'state_id' => $request->state_id,
-                'adress' => $request->address,
-                'created_at' => Carbon::now(),
-            ]);
+        $UserInfo = User::where('id', Auth::id())->first();
+        if ($UserInfo) {
+            $UserInfo->adress = $request->address;
+            $UserInfo->updated_at = Carbon::now();
+            $UserInfo->save();
         }
+
+
 
         if (Session::has('coupon')) {
             Session::forget('coupon');

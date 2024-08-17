@@ -241,4 +241,35 @@ class FrontendController extends Controller
     {
         return view('frontend.datacentre.dashboard');
     }
+
+
+    public function ProductSearch(Request $request) {
+        $request->validate(['search' => "required"]);
+
+        $item = $request->search;
+        $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
+
+        // Paginate the products
+        $products = Product::where('product_name', 'LIKE', "%$item%")->paginate(10); // Adjust the per-page limit as needed
+
+        // Fetch the latest 3 products
+        $newProduct = Product::orderBy('id', 'DESC')->limit(3)->get();
+
+        return view('frontend.8ray.search', compact('products', 'item', 'categories', 'newProduct'));
+    }
+
+    public function SearchProduct(Request $request)
+    {
+        $request->validate(['search' => "required"]);
+
+        $item = $request->search;
+        $products = Product::where('product_name', 'LIKE', "%$item%")
+            ->select('product_name', 'product_slug', 'product_photo', 'id')
+            ->limit(6)
+            ->get();
+
+        dd($products); // Check what is returned
+
+        return view('frontend.8ray.search_product', compact('products'));
+    }
 }

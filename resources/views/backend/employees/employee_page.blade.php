@@ -33,8 +33,10 @@
     <!-- COLOR SKIN CSS -->
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ url('backend/colors/color1.css') }}" />
 
-    <!-- View Message CSS-->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('backend/plugins/custom/toastr.css') }}">
+    <script src="{{ url('backend/plugins/custom/toastr.min.js') }}"></script>
+    <script src="{{ url('backend/js/jquery-3.6.0.min.js') }}"></script>
+
 
     @stack('styles')
 
@@ -181,7 +183,6 @@
     <!-- CUSTOM JS -->
     <script src="{{ url('backend/js/custom.js') }}"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
         @if (Session::has('message'))

@@ -2,10 +2,11 @@
 
 @section('admin')
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ url('backend/js/jquery-3.6.0.min.js') }}"></script>
 
-    <link rel="stylesheet" href="{{ url('backend/plugins/tagify/tagify.min.css') }}">
+    <link rel="stylesheet" href="{{ url('backend/plugins/tagify/tagify.min.css') }}"  type="text/css" />
+
+<script src="{{ url('backend/plugins/tagify/tagify.min.js') }}"></script>
 
     <!-- Taginput CSS -->
     <link href="{{ url('backend/plugins/input-tags/css/tagsinput.css') }}" rel="stylesheet" />
@@ -542,18 +543,9 @@
 </script>
 
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-<link rel="stylesheet" href="{{ url('backend/plugins/tagify/tagify.min.js') }}">
-
 @endsection
 
 @push('scripts')
-<!-- SHOW PASSWORD JS -->
-<script src="{{ asset('backend/js/show-password.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.9.0/tagify.min.js"></script>
 
 <!-- tagsinput -->
 <script src="{{ url('backend/plugins/input-tags/js/tagsinput.js') }}"></script>

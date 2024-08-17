@@ -47,6 +47,48 @@
                                 <input required="" type="text" name="shipping_address" placeholder="Address*" value="{{ Auth::user()->adress ?? '' }}">
                             </div>
 
+
+                            <div class="row shipping_calculator">
+                                <div class="form-group col-lg-12">
+                                    <div class="custom_select">
+                                        <select name="division_id" class="form-control select-active">
+                                            <option value="">Select Division...</option>
+                                            @foreach($divisions as $item)
+                                                <option value="{{ $item->id }}" {{ (isset($userInfo) && $userInfo->division_id == $item->id) ? 'selected' : '' }}>{{ $item->division_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row shipping_calculator">
+                                <div class="form-group col-lg-12">
+                                    <div class="custom_select">
+                                        <select name="district_id" class="form-control select-active">
+                                            @if(isset($userInfo))
+                                                <option value="{{ $userInfo->district_id }}">{{ $userInfo->district->district_name }}</option>
+                                            @else
+                                                <option value="">Select District...</option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row shipping_calculator">
+                                <div class="form-group col-lg-12">
+                                    <div class="custom_select">
+                                        <select name="state_id" class="form-control select-active">
+                                            @if(isset($userInfo))
+                                                <option value="{{ $userInfo->state_id }}">{{ $userInfo->state->state_name }}</option>
+                                            @else
+                                                <option value="">Select State...</option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group mb-30">
                                 <textarea rows="5" placeholder="Additional information" name="notes"></textarea>
                             </div>

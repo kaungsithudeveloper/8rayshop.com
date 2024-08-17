@@ -193,7 +193,7 @@
                                                 <div class="form-group">
                                                     <label for="product_size" class="form-label">Product Size :<span
                                                             class="text-red">*</span></label>
-                                                    <input type="text" class="form-control"  name="product_size" required>
+                                                    <input type="text" class="form-control"  name="product_size">
                                                 </div>
                                             </div>
                                             <div class="col-md-12">

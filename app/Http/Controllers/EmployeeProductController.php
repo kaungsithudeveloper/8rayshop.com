@@ -317,7 +317,7 @@ class EmployeeProductController extends Controller
             'product_name' => 'required|string|max:255',
             'short_descp' => 'required|string',
             'long_descp' => 'required|string',
-            'product_size' => 'required|string|max:255',
+            'product_size' => 'nullable|string|max:255',
             'selling_price' => 'required|string|max:255',
             'discount_price' => 'required|string|max:255',
             'brand_id' => 'required|string|max:255',
