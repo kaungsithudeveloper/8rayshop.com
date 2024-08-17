@@ -20,8 +20,9 @@
     <link rel="stylesheet" href="{{ url('frontend/8ray/css/main.css') }}" />
     <link rel="stylesheet" href="{{ url('frontend/8ray/css/plugins/slider-range.css') }}" />
     <!-- View Message CSS-->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url('backend/plugins/custom/toastr.css') }}">
+    <script src="{{ url('backend/js/jquery-3.6.0.min.js') }}"></script>
+
 
 </head>
 
@@ -75,7 +76,7 @@
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <<script src="{{ url('backend/plugins/custom/toastr.min.js') }}"></script>
 
     <script>
 

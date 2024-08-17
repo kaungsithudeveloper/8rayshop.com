@@ -8,6 +8,17 @@
         use Illuminate\Support\Str;
     @endphp
 
+    @php
+        $categories = App\Models\ProductCategory::orderBy('product_category_name', 'ASC')->get();
+    @endphp
+
+    @php
+        $categoryIds = [2, 3, 4, 5];
+        $categorySlug = implode(',', $categoryIds); // Create a comma-separated string
+    @endphp
+
+
+
     <!--Start banners-->
     <section class="banners mt-40 mb-25">
         <div class="container">
@@ -20,7 +31,10 @@
                                 Microphones<br />Lighting and Accessories<br />
                                 Tripods & Selfie Sticks
                             </h4>
-                            <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
+                            <a href="{{ url('product/category/'.$categorySlug.'/multiple-categories') }}" class="btn btn-xs">
+                                Shop Now
+                                <i class="fi-rs-arrow-small-right"></i>
+                                </a>
                         </div>
                     </div>
                 </div>
@@ -32,7 +46,14 @@
                                Gopro Camera & <br />
                                  Action Cam <br /> Accessories
                             </h4>
-                            <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
+                            @foreach($categories as $category)
+                                @if($category->id == 8)
+                                    <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}" class="btn btn-xs">
+                                        Shop Now
+                                        <i class="fi-rs-arrow-small-right"></i>
+                                    </a>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -42,7 +63,16 @@
                         <div class="banner-text">
                             <h4>CCTV &<br />
                                 security system <br />Accessories</h4>
-                            <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
+
+                                @foreach($categories as $category)
+                                    @if($category->id == 11)
+                                        <a href="{{ url('product/category/'.$category->id.'/'.$category->product_category_slug) }}" class="btn btn-xs">
+                                            Shop Now
+                                            <i class="fi-rs-arrow-small-right"></i>
+                                        </a>
+                                    @endif
+                                @endforeach
+
                         </div>
                     </div>
                 </div>
@@ -50,8 +80,6 @@
         </div>
     </section>
     <!--End banners-->
-
-
 
     <section class="product-tabs section-padding position-relative">
         <div class="container">
@@ -157,7 +185,6 @@
                     <div class="banner-img style-2">
                         <div class="banner-text">
                             <h2 class="mb-100">Bring best into your home</h2>
-                            <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
                         </div>
                     </div>
                 </div>

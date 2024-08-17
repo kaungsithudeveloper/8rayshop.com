@@ -34,8 +34,8 @@
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ url('backend/colors/color1.css') }}" />
 
      <!-- View Message CSS-->
-     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+     <link rel="stylesheet" type="text/css" href="{{ url('backend/plugins/custom/toastr.css') }}">
+     <link rel="stylesheet" href="{{ url('backend/plugins/custom/flatpickr.min.css') }}">
 
     @stack('styles')
 
@@ -108,9 +108,9 @@
     <!-- CUSTOM JS -->
     <script src="{{ url('backend/js/custom1.js') }}"></script>
 
-    <script src="{{ url('backend/js/toastr.min.js') }}"></script>
+    <script src="{{ url('backend/plugins/custom/toastr.min.js') }}"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{ url('backend/plugins/custom/flatpickr.js') }}"></script>
 
     <script>
 

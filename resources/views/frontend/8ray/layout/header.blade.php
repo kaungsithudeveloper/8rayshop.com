@@ -7,9 +7,8 @@
                 <div class="col-xl-3 col-lg-4">
                     <div class="header-info">
                         <ul>
-                            <li><a href="page-account.html">My Cart</a></li>
-                            <li><a href="shop-wishlist.html">Checkout</a></li>
-                            <li><a href="shop-order.html">Order Tracking</a></li>
+                            <li><a href="{{ route('mycart') }}">My Cart</a></li>
+                            <li><a href="{{ route('checkout') }}">Checkout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -25,7 +24,7 @@
                 <div class="col-xl-3 col-lg-4">
                     <div class="header-info header-info-right">
                         <ul>
-                             <li> Call Us: <strong class="text-brand"> 09 450 127 303, 09450127304</strong></li>
+                             <li> Call Us: <strong class="text-brand"> 09 450 127 303, 09 450 127 304</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -38,7 +37,7 @@
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
-                    <a href="index.html">
+                    <a href="{{ route('8ray.frontend') }}">
                         <img src="{{ url('frontend/8ray/imgs/theme/logo-darks.png') }}" alt="logo" /></a>
                 </div>
                 <div class="header-right">
@@ -96,8 +95,8 @@
                                             <h4>Total <span id="cartSubTotal"> </span> </h4>
                                         </div>
                                         <div class="shopping-cart-button">
-                                            <a href="shop-cart.html" class="outline">View cart</a>
-                                            <a href="shop-checkout.html">Checkout</a>
+                                            <a href="{{ route('mycart') }}" class="outline">View cart</a>
+                                            <a href="{{ route('checkout') }}">Checkout</a>
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +149,9 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="{{ url('frontend/8ray/imgs/theme/logo-darks.png') }}" id="logo" alt="logo" /></a>
+                    <a href="{{ route('8ray.frontend') }}">
+                        <img src="{{ url('frontend/8ray/imgs/theme/logo-darks.png') }}" id="logo" alt="logo" />
+                    </a>
                 </div>
 
                 <!-- For Big Screen -->

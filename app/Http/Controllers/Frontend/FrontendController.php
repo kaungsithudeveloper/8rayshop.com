@@ -170,23 +170,26 @@ class FrontendController extends Controller
 
     }
 
-    public function CategoryProductList(Request $request, $id, $slug)
+    public function CategoryProductList(Request $request, $ids, $slug)
     {
         $productTypeId = 1;
+        $categoryIds = explode(',', $ids); // Convert the comma-separated string to an array
+
         $categoryProducts = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
                             ->where('status', 'active')
                             ->where('product_type_id', $productTypeId)
-                            ->whereHas('productCategory', function($query) use ($id) {
-                               $query->where('product_category_id', $id);
+                            ->whereHas('productCategory', function($query) use ($categoryIds) {
+                            $query->whereIn('product_category_id', $categoryIds); // Use whereIn for multiple IDs
                             })
                             ->orderBy('id', 'DESC')
                             ->paginate(16);
 
         $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
-        $breadcat = ProductCategory::findOrFail($id);
+        $breadcat = ProductCategory::findOrFail($categoryIds[0]); // Get the first category as breadcrumb
 
         return view('frontend.8ray.category_view', compact('categoryProducts', 'categories', 'breadcat'));
     }
+
 
     public function SubcategoryProductList(Request $request, $id, $slug)
     {
