@@ -84,8 +84,8 @@
                                             </div>
 
                                             <div class="d-flex justify-content-center mt-2">
-                                                <a href="shop-cart.html" class="btn btn-primary text-center w-100 custom-button hover-up">
-                                                    <i class="fi-rs-shopping-cart mr-2"></i>Add
+                                                <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}" class="btn btn-primary text-center w-100 custom-button hover-up">
+                                                    View Detail
                                                 </a>
                                             </div>
                                         </div>

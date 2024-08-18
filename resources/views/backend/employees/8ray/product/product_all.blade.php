@@ -54,7 +54,6 @@
                                                                 <thead class="border-top">
                                                                     <tr>
                                                                         <th class="border-bottom-0">ID</th>
-                                                                        <th class="border-bottom-0">Product Code</th>
                                                                         <th class="border-bottom-0">Product Name</th>
                                                                         <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                         <th class="border-bottom-0">Total Stock</th>
@@ -69,7 +68,6 @@
                                                                     @foreach ($products as $key => $product)
                                                                     <tr>
                                                                         <td>{{ $key + 1 }}</td>
-                                                                        <td>{{ $product->product_code }}</td>
                                                                         <td>{{ $product->product_name }}</td>
                                                                         <td>
                                                                             <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
@@ -134,7 +132,6 @@
                                                                         <thead class="border-top">
                                                                             <tr>
                                                                                 <th class="border-bottom-0">ID</th>
-                                                                                <th class="border-bottom-0">Product Code</th>
                                                                                 <th class="border-bottom-0">Product Name</th>
                                                                                 <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                                 <th class="border-bottom-0">Total Stock</th>
@@ -149,7 +146,6 @@
                                                                             @foreach ($activeProducts as $key => $product)
                                                                             <tr>
                                                                                 <td>{{ $key + 1 }}</td>
-                                                                                <td>{{ $product->product_code }}</td>
                                                                                 <td>{{ $product->product_name }}</td>
                                                                                 <td>
                                                                                     <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
@@ -215,7 +211,6 @@
                                                                     <thead class="border-top">
                                                                         <tr>
                                                                             <th class="border-bottom-0">ID</th>
-                                                                            <th class="border-bottom-0">Product Code</th>
                                                                             <th class="border-bottom-0">Product Name</th>
                                                                             <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
                                                                             <th class="border-bottom-0">Total Stock</th>
@@ -230,7 +225,6 @@
                                                                         @foreach ($inActiveProduct as $key => $product)
                                                                         <tr>
                                                                             <td>{{ $key + 1 }}</td>
-                                                                            <td>{{ $product->product_code }}</td>
                                                                             <td>{{ $product->product_name }}</td>
                                                                             <td>
                                                                                 <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">

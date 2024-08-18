@@ -47,13 +47,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="product_code" class="form-label">Product Code :<span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" name="product_code" value="{{ $product->product_code }}" autocomplete="product_code" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="product_name" class="form-label">Product Name:<span class="text-red">*</span></label>
                                             <input type="text" class="form-control" name="product_name" value="{{ $product->product_name }}" autocomplete="product_name" required>
@@ -103,10 +97,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
 
                         <div class="card">
                             <div class="card-body">
@@ -194,7 +184,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="product_size" class="form-label">Product Size :<span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" name="product_size" value="{{ $product->productInfo->product_size ?? '' }}" required>
+                                            <input type="text" class="form-control" name="product_size" value="{{ $product->productInfo->product_size ?? '' }}">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -207,6 +197,13 @@
                                         <div class="form-group">
                                             <label for="discount_price" class="form-label">Discount Price:<span class="text-red">*</span></label>
                                             <input type="text" class="form-control" name="discount_price" value="{{ $product->price->discount_price }}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="warranty" class="form-label">Warranty :<span class="text-red">*</span></label>
+                                            <input type="text" class="form-control" name="warranty" value="{{ $product->productInfo->warranty ?? '' }}">
                                         </div>
                                     </div>
                                 </div>
@@ -241,7 +238,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <button type="submit" class="btn btn-primary">Update Product</button>
-                                <a href="" class="btn btn-danger float-end">Discard</a>
+                                <a href="{{ route('all.employee.product') }}" class="btn btn-danger float-end">Discard</a>
                             </div>
                         </div>
                     </div>

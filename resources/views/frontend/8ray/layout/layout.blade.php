@@ -152,7 +152,7 @@
                         $('#offprice').hide();
                     }
 
-                    $('#pprice').text(finalPrice + ' Ks');
+                    $('#pprice').text( 'Price - '+ finalPrice + ' Ks');
 
                     // Display stock information
                     var totalStock = 0;

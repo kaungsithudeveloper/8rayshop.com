@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->string('product_size')->nullable();
-            $table->text('short_descp');
-            $table->text('long_descp');
-            $table->string('url')->nullable();;
+            $table->text('short_descp')->nullable();
+            $table->text('long_descp')->nullable();
+            $table->string('warranty')->nullable();
+            $table->string('url')->nullable();
             $table->integer('new')->nullable();
             $table->integer('hot')->nullable();
             $table->integer('sale')->nullable();

@@ -91,8 +91,8 @@
                                             </div>
 
                                             <div class="d-flex justify-content-center mt-2">
-                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{ $product->id }}" onclick="productView(this.id)">
-                                                    <i class="fi-rs-shopping-cart mr-2"></i>Add
+                                                <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}" class="btn btn-primary text-center w-100 custom-button hover-up">
+                                                    View Detail
                                                 </a>
                                             </div>
                                         </div>

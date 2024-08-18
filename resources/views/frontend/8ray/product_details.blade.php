@@ -58,12 +58,10 @@
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info pr-30 pl-30">
-                                        @if($product->total_stock > 0)
-                                            <span class="stock-status in-stock">In Stock </span>
-                                        @else
-                                            <span class="stock-status out-stock">Out Of Stock </span>
-                                        @endif
+
                                         <h2 class="title-detail" id="dpname"> {{ $product->product_name }} </h2>
+
+
 
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
@@ -74,7 +72,7 @@
                                                             @php
                                                                 $finalPrice = $product->price->selling_price - $product->price->discount_price;
                                                             @endphp
-                                                            {{ $finalPrice }}Ks
+                                                            Price - {{ $finalPrice }}Ks
                                                         </span>
                                                         <span>
                                                             <span class="save-price font-md color3 ml-15">
@@ -87,16 +85,20 @@
                                                     @else
                                                         <!-- Show only the selling price -->
                                                         <span class="current-price text-brand">
-                                                            {{ $product->price->selling_price }}Ks
+                                                            Price - {{ $product->price->selling_price }}Ks
                                                         </span>
                                                     @endif
                                                 @endif
                                             </div>
                                         </div>
+                                        <p class="text-danger">
+                                            Warranty - {{ $product->productInfo->warranty }}
+                                        </p>
 
-                                        <div class="short-desc mb-30">
+                                        <div class="short-desc mt-30 mb-30">
                                             <p class="font-lg">{{ $product->productInfo->short_descp }}</p>
                                         </div>
+
 
                                         <div class="attr-detail attr-size mb-30">
                                             <strong class="mr-10" style="width:60px;">Color :</strong>
@@ -143,7 +145,11 @@
                                             <ul class="float-start">
                                                 <li class="mb-5">Product Code: <a href="#">{{ $product->product_code }}</a></li>
                                                 <li>Stock:
-                                                    <span class="in-stock text-brand ml-5">({{ $product->total_stock }}) Items In Stock</span>
+                                                    @if($product->total_stock > 0)
+                                                        <span class="in-stock text-brand ml-5">Items In Stock</span>
+                                                    @else
+                                                        <span class="out-of-stock text-danger ml-5">Out of Stock</span>
+                                                    @endif
                                                 </li>
 
 

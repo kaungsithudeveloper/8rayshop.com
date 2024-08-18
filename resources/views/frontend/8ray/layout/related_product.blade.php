@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="product-content-wrap">
-                    <h2><a href="shop-product-right.html" tabindex="0">{{ $related_product->product_name }}</a></h2>
+                    <h2><a href="{{ url('product/details/'.$related_product->id.'/'.$related_product->product_slug) }}" tabindex="0">{{ $related_product->product_name }}</a></h2>
                     <div class="product-price">
                         @if (!empty($related_product->price->discount_price))
                             <span class="old-price">${{ $related_product->price->selling_price }}</span>
