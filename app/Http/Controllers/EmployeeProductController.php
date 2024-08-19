@@ -543,7 +543,7 @@ class EmployeeProductController extends Controller
         return redirect()->route('all.product')->with($notification);
     }
 
-    public function DestoryProduct($id)
+    public function DestoryEmployeeProduct($id)
     {
         $product = Product::findOrFail($id);
 
@@ -571,7 +571,7 @@ class EmployeeProductController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect()->route('all.product')->with($notification);
+        return redirect()->route('all.employee.product')->with($notification);
     }
 
     public function ProductEmployeeInactive($id)

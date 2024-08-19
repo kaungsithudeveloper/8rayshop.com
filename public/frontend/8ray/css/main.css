@@ -5181,7 +5181,7 @@ table .product-thumbnail img {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: 15px 0 15px 0;
+  margin: 15px 0 15px 0 !important;
 }
 
 .detail-info .product-price .current-price {

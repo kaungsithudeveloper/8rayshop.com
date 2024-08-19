@@ -91,9 +91,16 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <p class="text-danger">
-                                            Warranty - {{ $product->productInfo->warranty }}
-                                        </p>
+
+                                        @if(is_null($product->productInfo->warranty))
+                                            <p class="text-danger">
+
+                                            </p>
+                                        @else
+                                            <p class="text-danger">
+                                                Warranty - {{ $product->productInfo->warranty }}
+                                            </p>
+                                        @endif
 
                                         <div class="short-desc mt-30 mb-30">
                                             <p class="font-lg">{{ $product->productInfo->short_descp }}</p>

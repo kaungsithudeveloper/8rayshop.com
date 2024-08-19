@@ -391,57 +391,39 @@
                 </div>
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
+                        <!-- Wishlist Icon for Mobile View -->
                         <div class="header-action-icon-2">
-                            <a href="shop-wishlist.html">
+                            <a href="{{ route('wishlist') }}">
                                 <img alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-heart.svg') }}" />
-                                <span class="pro-count white">4</span>
+                                <span class="pro-count white" id="wishQtyMobile">0 </span>
                             </a>
                         </div>
+
+                        <!-- Cart Icon for Mobile View -->
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="#">
                                 <img alt="Nest" src="{{ url('frontend/8ray/imgs/theme/icons/icon-cart.svg') }}" />
-                                <span class="pro-count white">2</span>
+                                <span class="pro-count blue" id="cartQtyMobile">0</span>
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                <ul>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Nest" src="{{ url('frontend/8ray/imgs/shop/thumbnail-3.jpg') }}" /></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
-                                            <h3><span>1 × </span>$800.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Nest" src="{{ url('frontend/8ray/imgs/shop/thumbnail-4.jpg') }}" /></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
-                                            <h3><span>1 × </span>$3500.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <!-- Mini Cart Start for Mobile View -->
+                                <div id="miniCartMobile"></div>
+                                <!-- End Mini Cart Start for Mobile View -->
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>Total <span>$383.00</span></h4>
+                                        <h4>Total <span id="cartSubTotalMobile"></span></h4>
                                     </div>
                                     <div class="shopping-cart-button">
-                                        <a href="shop-cart.html">View cart</a>
-                                        <a href="shop-checkout.html">Checkout</a>
+                                        <a href="{{ route('mycart') }}" class="outline">View cart</a>
+                                        <a href="{{ route('checkout') }}">Checkout</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>

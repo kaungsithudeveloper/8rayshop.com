@@ -311,7 +311,9 @@
                 dataType: 'json',
                 success: function(response) {
                     $('span[id="cartSubTotal"]').text('Ks ' + response.cartTotal);
+                    $('span[id="cartSubTotalMobile"]').text('Ks ' + response.cartTotal); // Mobile
                     $('#cartQty').text(response.cartQty);
+                    $('#cartQtyMobile').text(response.cartQty); // Mobile
 
                     var miniCart = "";
                     $.each(response.carts, function(key, value) {
@@ -320,7 +322,7 @@
                                 <li>
                                     <div class="shopping-cart-img">
                                         <a href="shop-product-right.html">
-                                            <img style=max-width:70px;" src="/upload/product_images/${value.options.image}" alt="Product" />
+                                            <img style="max-width:70px;" src="/upload/product_images/${value.options.image}" alt="Product" />
                                         </a>
                                     </div>
                                     <div class="shopping-cart-title" style="margin: -73px 74px 14px; width: 146px;">
@@ -339,11 +341,15 @@
                     });
 
                     $('#miniCart').html(miniCart);
+                    $('#miniCartMobile').html(miniCart); // Mobile
                 }
             });
         }
 
+
         miniCart();
+
+
 
         function miniCartRemove(rowId){
             $.ajax({
@@ -424,8 +430,8 @@
                 dataType: 'json',
                 url: "/get-wishlist-product/",
                 success: function(response) {
-
                     $('#wishQty').text(response.wishQty);
+                    $('#wishQtyMobile').text(response.wishQty); // Mobile
 
                     var rows = "";
                     $.each(response.wishlist, function(key, value) {
@@ -463,10 +469,13 @@
                                     </td>
                                 </tr>`;
                     });
+
                     $('#wishlist').html(rows);
+                    // If you have a similar wishlist section in mobile view, update it here.
                 }
             });
         }
+
 
         wishlist();
 

@@ -13,8 +13,9 @@
         </div>
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
-                <form action="#">
-                    <input type="text" placeholder="Search for items…" />
+                <form action="{{ route('products.search') }}" method="post">
+                    @csrf
+                    <input name="search" id="search" placeholder="Search for items..." />
                     <button type="submit"><i class="fi-rs-search"></i></button>
                 </form>
             </div>
@@ -53,6 +54,7 @@
                                         @endif
                                     @endif
                                 @endforeach
+
                                 @foreach($categories as $category)
                                     @if($category->id == 3)
                                         @if($category->productSubCategories->count() > 0)
@@ -69,6 +71,7 @@
                                         @endif
                                     @endif
                                 @endforeach
+
                                 @foreach($categories as $category)
                                     @if($category->id == 4)
                                         @if($category->productSubCategories->count() > 0)
@@ -200,23 +203,6 @@
                                         @endif
                                     @endif
                                 @endforeach
-                            </ul>
-                        </li>
-                        <li class="menu-item-has-children">
-                            <a href="blog-category-fullwidth.html">Blog</a>
-                            <ul class="dropdown">
-                                <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
-                                <li><a href="blog-category-list.html">Blog Category List</a></li>
-                                <li><a href="blog-category-big.html">Blog Category Big</a></li>
-                                <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
-                                <li class="menu-item-has-children">
-                                    <a href="#">Single Product Layout</a>
-                                    <ul class="dropdown">
-                                        <li><a href="blog-post-left.html">Left Sidebar</a></li>
-                                        <li><a href="blog-post-right.html">Right Sidebar</a></li>
-                                        <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
-                                    </ul>
-                                </li>
                             </ul>
                         </li>
                         <li class="menu-item-has-children">
