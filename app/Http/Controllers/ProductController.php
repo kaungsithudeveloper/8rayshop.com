@@ -129,13 +129,13 @@ class ProductController extends Controller
         // Validate request
         //dd($request->all());
         $validator = Validator::make($request->all(), [
-            'product_code' => 'required|unique:products,product_code|string|max:255',
+            'product_code' => 'nullable|unique:products,product_code|string|max:255',
             'product_name' => 'required|unique:products,product_name|string|max:255',
-            'short_descp' => 'required|string',
-            'long_descp' => 'required|string',
+            'short_descp' => 'nullable|string',
+            'long_descp' => 'nullable|string',
             'url' => 'nullable|url',
-            'product_size' => 'required|string|max:255',
-            'purchase_price' => 'required|string|max:255',
+            'product_size' => 'nullable|string|max:255',
+            'warranty' => 'nullable|string|max:255',
             'selling_price' => 'required|string|max:255',
             'discount_price' => 'required|string|max:255',
             'brand_id' => 'required|string|max:255',
@@ -192,6 +192,7 @@ class ProductController extends Controller
         $product_info->short_descp = $request->input('short_descp');
         $product_info->long_descp = $request->input('long_descp');
         $product_info->url = $this->convertToEmbedUrl($request->input('url'));
+        $product_info->warranty = $request->input('warranty');
         $product_info->product_size = $request->input('product_size');
         $product_info->new = $request->input('new');
         $product_info->hot = $request->input('hot');
@@ -378,12 +379,13 @@ class ProductController extends Controller
         $id = $request->id;
 
         $validator = Validator::make($request->all(), [
-            'product_code' => 'required|string|max:255',
-            'product_name' => 'required|string|max:255',
-            'short_descp' => 'required|string',
-            'long_descp' => 'required|string',
-            'product_size' => 'required|string|max:255',
-            'purchase_price' => 'required|string|max:255',
+            'product_code' => 'nullable|unique:products,product_code|string|max:255',
+            'product_name' => 'required|unique:products,product_name|string|max:255',
+            'short_descp' => 'nullable|string',
+            'long_descp' => 'nullable|string',
+            'url' => 'nullable|url',
+            'product_size' => 'nullable|string|max:255',
+            'warranty' => 'nullable|string|max:255',
             'selling_price' => 'required|string|max:255',
             'discount_price' => 'required|string|max:255',
             'brand_id' => 'required|string|max:255',
@@ -441,6 +443,7 @@ class ProductController extends Controller
         $product_info->long_descp = $request->input('long_descp');
         $product_info->product_size = $request->input('product_size');
         $product_info->url = $this->convertToEmbedUrl($request->input('url'));
+        $product_info->warranty = $request->input('warranty');
         $product_info->new = $request->input('new');
         $product_info->hot = $request->input('hot');
         $product_info->sale = $request->input('sale');
