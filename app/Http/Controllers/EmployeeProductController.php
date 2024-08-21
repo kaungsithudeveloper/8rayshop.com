@@ -175,37 +175,29 @@ class EmployeeProductController extends Controller
         $product_price->save();
 
         // Store product multi image
-        if ($request->file('multi_img')) {
-            // Remove old images
-            foreach ($product->multiImages as $img) {
-                $oldImagePath = public_path('upload/product_multi_images/' . $img->photo_name);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-                $img->delete();
-            }
+        if ($request->hasFile('multi_img')) {
+            foreach ($request->file('multi_img') as $img) {
+                $imageName = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
+                $imagePath = 'upload/product_multi_images/' . $imageName;
 
-            // Upload and save new images
-            foreach ($request->file('multi_img') as $file) {
-                $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-                $filePath = 'upload/product_multi_images/' . $filename;
-
-                // Resize and save the image
-                Image::make($file)
+                // Compress and save the image with exact size 800x800
+                Image::make($img)
                     ->resize(800, 800, function ($constraint) {
                         $constraint->aspectRatio(); // Maintain aspect ratio
                         $constraint->upsize(); // Prevent enlarging smaller images
                     })
                     ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
-                    ->save(public_path($filePath), 75);
+                    ->save(public_path($imagePath), 75);
 
-                // Save image information to the database
-                MultiImg::create([
-                    'product_id' => $product->id,
-                    'photo_name' => $filename,
-                ]);
+                // Save the image info to the database.
+                $product_multiImage = new MultiImg();
+                $product_multiImage->product_id = $product->id;
+                $product_multiImage->photo_name = $imageName;
+                $product_multiImage->created_at = Carbon::now();
+                $product_multiImage->save();
             }
         }
+
 
         // Handle product colors
         $colorNames = $request->input('product_color_id');
@@ -360,33 +352,30 @@ class EmployeeProductController extends Controller
         $product->user_id = auth()->user()->id;
         $product->product_type_id = 1;
         $product->status = 'inactive';
-
         if ($request->hasFile('product_photo')) {
-            // Remove old photo if it exists
-            if ($product->product_photo) {
-                $oldImagePath = public_path('upload/product_images/' . $product->product_photo);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
+
+            $oldPhoto = $product->product_photo;
+            // Delete the old image from the filesystem if it exists
+            if ($oldPhoto && file_exists(public_path('upload/product_images/' . $oldPhoto))) {
+                unlink(public_path('upload/product_images/' . $oldPhoto));
             }
 
-            // Handle new photo upload
             $image = $request->file('product_photo');
             $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
             $imagePath = 'upload/product_images/' . $imageName;
 
-            // Compress and save the image
+            // Compress and save the new image
             Image::make($image)
-                ->fit(800, 800, function ($constraint) {
-                    $constraint->upsize();
+                ->resize(800, 800, function ($constraint) {
+                    $constraint->aspectRatio(); // Maintain aspect ratio
+                    $constraint->upsize(); // Prevent enlarging smaller images
                 })
+                ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
                 ->save(public_path($imagePath), 75);
 
-            // Update product with new photo
+            // Update the product with the new image name
             $product->product_photo = $imageName;
-            $product->save();
         }
-
         $product->updated_at = Carbon::now();
         $product->save();
 
@@ -415,6 +404,27 @@ class EmployeeProductController extends Controller
         $product_price->discount_price = $request->input('discount_price');
         $product_price->updated_at = Carbon::now();
         $product_price->save();
+
+        if ($request->file('multi_img')) {
+            // Remove old images
+            foreach ($product->multiImages as $img) {
+                if (file_exists(public_path('upload/product_multi_images/' . $img->photo_name))) {
+                    unlink(public_path('upload/product_multi_images/' . $img->photo_name));
+                }
+                $img->delete();
+            }
+
+            // Upload new images
+            foreach ($request->file('multi_img') as $file) {
+                $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/product_multi_images'), $filename);
+
+                MultiImg::create([
+                    'product_id' => $product->id,
+                    'photo_name' => $filename,
+                ]);
+            }
+        }
 
         // Handle product colors
         $colorNames = $request->input('product_color_id');
@@ -512,7 +522,7 @@ class EmployeeProductController extends Controller
         return redirect()->route('all.employee.product')->with($notification);
     }
 
-    public function deleteMultiImage($id)
+    public function EmployeedeleteMultiImage($id)
     {
         $image = MultiImg::findOrFail($id);
         if (file_exists(public_path('upload/product_multi_images/'.$image->photo_name))) {
@@ -522,38 +532,30 @@ class EmployeeProductController extends Controller
         return response()->json(['success' => 'Image deleted successfully!']);
     }
 
-    public function updateMultiImages(Request $request)
+    public function EmployeeupdateMultiImages(Request $request)
     {
         $productId = $request->product_id;
 
         if ($request->hasFile('multi_img')) {
-            // Remove old images
-            foreach (MultiImg::where('product_id', $productId)->get() as $img) {
-                $oldImagePath = public_path('upload/product_multi_images/' . $img->photo_name);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-                $img->delete();
-            }
-
-            // Upload and process new images
             foreach ($request->file('multi_img') as $file) {
+                // Generate a unique filename
                 $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-                $filePath = 'upload/product_multi_images/' . $filename;
+                $filePath = public_path('upload/product_multi_images/' . $filename);
 
-                // Resize and save the image
+                // Process and save the image
                 Image::make($file)
                     ->resize(800, 800, function ($constraint) {
                         $constraint->aspectRatio(); // Maintain aspect ratio
                         $constraint->upsize(); // Prevent enlarging smaller images
                     })
-                    ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add padding if needed
-                    ->save(public_path($filePath), 75);
+                    ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
+                    ->save($filePath, 75); // Save with quality of 75
 
-                // Save image information to the database
+                // Store the filename in the database
                 MultiImg::create([
                     'product_id' => $productId,
                     'photo_name' => $filename,
+                    'updated_at' => Carbon::now(),
                 ]);
             }
         }

@@ -173,13 +173,14 @@ class ProductController extends Controller
             $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
             $imagePath = 'upload/product_images/' . $imageName;
 
-            // Compress and save the image
+            // Resize and save the image
             Image::make($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
+                ->resize(800, 800, function ($constraint) {
+                    $constraint->aspectRatio(); // Maintain aspect ratio
+                    $constraint->upsize(); // Prevent enlarging smaller images
                 })
-                ->save(public_path($imagePath), 75); // Adjust the quality to compress
+                ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
+                ->save(public_path($imagePath), 75);
 
             $product->product_photo = $imageName;
         }
@@ -229,15 +230,16 @@ class ProductController extends Controller
                 $imageName = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
                 $imagePath = 'upload/product_multi_images/' . $imageName;
 
-                // Compress and save the image
+                // Compress and save the image with exact size 800x800
                 Image::make($img)
-                    ->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
+                    ->resize(800, 800, function ($constraint) {
+                        $constraint->aspectRatio(); // Maintain aspect ratio
+                        $constraint->upsize(); // Prevent enlarging smaller images
                     })
-                    ->save(public_path($imagePath), 75); // Adjust the quality to compress
+                    ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
+                    ->save(public_path($imagePath), 75);
 
-                // Save the image info to the database
+                // Save the image info to the database.
                 $product_multiImage = new MultiImg();
                 $product_multiImage->product_id = $product->id;
                 $product_multiImage->photo_name = $imageName;
@@ -415,18 +417,27 @@ class ProductController extends Controller
         $product->product_type_id = 1;
         $product->status = 'inactive';
         if ($request->hasFile('product_photo')) {
+
+            $oldPhoto = $product->product_photo;
+            // Delete the old image from the filesystem if it exists
+            if ($oldPhoto && file_exists(public_path('upload/product_images/' . $oldPhoto))) {
+                unlink(public_path('upload/product_images/' . $oldPhoto));
+            }
+
             $image = $request->file('product_photo');
             $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
             $imagePath = 'upload/product_images/' . $imageName;
 
-            // Compress and save the image
+            // Compress and save the new image
             Image::make($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
+                ->resize(800, 800, function ($constraint) {
+                    $constraint->aspectRatio(); // Maintain aspect ratio
+                    $constraint->upsize(); // Prevent enlarging smaller images
                 })
+                ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
                 ->save(public_path($imagePath), 75);
 
+            // Update the product with the new image name
             $product->product_photo = $imageName;
         }
         $product->updated_at = Carbon::now();
@@ -628,28 +639,40 @@ class ProductController extends Controller
     }
 
     public function updateMultiImages(Request $request)
-    {
-        $productId = $request->product_id;
+{
+    $productId = $request->product_id;
 
-        if ($request->hasFile('multi_img')) {
-            foreach ($request->file('multi_img') as $file) {
-                $filename = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-                $file->move(public_path('upload/product_multi_images'), $filename);
+    if ($request->hasFile('multi_img')) {
+        foreach ($request->file('multi_img') as $file) {
+            // Generate a unique filename
+            $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+            $filePath = public_path('upload/product_multi_images/' . $filename);
 
-                MultiImg::create([
-                    'product_id' => $productId,
-                    'photo_name' => $filename,
-                ]);
-            }
+            // Process and save the image
+            Image::make($file)
+                ->resize(800, 800, function ($constraint) {
+                    $constraint->aspectRatio(); // Maintain aspect ratio
+                    $constraint->upsize(); // Prevent enlarging smaller images
+                })
+                ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
+                ->save($filePath, 75); // Save with quality of 75
+
+            // Store the filename in the database
+            MultiImg::create([
+                'product_id' => $productId,
+                'photo_name' => $filename,
+                'updated_at' => Carbon::now(),
+            ]);
         }
-
-        $notification = [
-            'message' => 'Product created successfully!',
-            'alert-type' => 'success',
-        ];
-
-        return redirect()->route('all.product')->with($notification);
     }
+
+    $notification = [
+        'message' => 'Product images updated successfully!',
+        'alert-type' => 'success',
+    ];
+
+    return redirect()->route('all.employee.product')->with($notification);
+}
 
     public function DestoryProduct($id)
     {

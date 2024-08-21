@@ -452,7 +452,7 @@ $(document).ready(function () {
 
         if (imageId) {
             $.ajax({
-                url: '/delete-multi-image/' + imageId,
+                url: '/employee/delete-multi-image/' + imageId,
                 type: 'DELETE',
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content')
@@ -479,7 +479,7 @@ $(document).ready(function () {
         formData.append('product_id', '{{ $product->id }}');
 
         $.ajax({
-            url: '/update-multi-images',
+            url: '/employee/update-multi-images',
             type: 'POST',
             data: formData,
             processData: false,

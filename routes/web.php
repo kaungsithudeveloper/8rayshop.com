@@ -373,8 +373,13 @@ Route::middleware(['auth'],['role'=>'admin','employee'])->group(function () {
 });
 
 Route::get('/subcategory/ajax/{product_category_id}', [ProductSubCategoryController::class, 'getSubCategory'])->name('getSubCategory');
+
 Route::delete('/delete-multi-image/{id}', [ProductController::class, 'deleteMultiImage']);
 Route::post('/update-multi-images', [ProductController::class,'updateMultiImages']);
+
+Route::delete('/employee/delete-multi-image/{id}', [EmployeeProductController::class, 'EmployeedeleteMultiImage']);
+Route::post('/employee/update-multi-images', [EmployeeProductController::class,'EmployeeupdateMultiImages']);
+
 Route::post('/fetch-prices', [StockController::class, 'fetchPrices'])->name('fetch.prices');
 Route::post('/fetch-stock', [StockController::class,'fetchStock'])->name('fetch.stock');
 Route::post('/fetch-products-by-brand', [StockController::class,'fetchProductsByBrand'])->name('fetch.products.by.brand');
