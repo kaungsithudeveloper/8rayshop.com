@@ -74,7 +74,7 @@
                                                                         </td>
                                                                         <td>{{ $product->total_stock }}</td>
 
-                                                                        <td> {{ $product->price->selling_price }}</td>
+                                                                        <td>{{ $product->price->selling_price ?? 'Not Available' }}</td>
 
                                                                         <td>
                                                                             @if ($product->status == 'active')
@@ -152,7 +152,7 @@
                                                                                 </td>
                                                                                 <td>{{ $product->total_stock }}</td>
 
-                                                                                <td> {{ $product->price->selling_price }}</td>
+                                                                                <td>{{ $product->price->selling_price ?? 'Not Available' }}</td>
 
                                                                                 <td>
                                                                                     @if ($product->status == 'active')
@@ -231,7 +231,7 @@
                                                                             </td>
                                                                             <td>{{ $product->total_stock }}</td>
 
-                                                                            <td> {{ $product->price->selling_price }}</td>
+                                                                            <td>{{ $product->price->selling_price ?? 'Not Available' }}</td>
 
                                                                             <td>
                                                                                 @if ($product->status == 'active')
