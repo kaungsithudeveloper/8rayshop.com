@@ -136,16 +136,18 @@ class EmployeeProductController extends Controller
             $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
             $imagePath = 'upload/product_images/' . $imageName;
 
-            // Compress and save the image
+            // Resize and save the image
             Image::make($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
+                ->resize(800, 800, function ($constraint) {
+                    $constraint->aspectRatio(); // Maintain aspect ratio
+                    $constraint->upsize(); // Prevent enlarging smaller images
                 })
-                ->save(public_path($imagePath), 75); // Adjust the quality to compress
+                ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
+                ->save(public_path($imagePath), 75);
 
             $product->product_photo = $imageName;
         }
+
         $product->created_at = Carbon::now();
         $product->save();
 
@@ -173,25 +175,35 @@ class EmployeeProductController extends Controller
         $product_price->save();
 
         // Store product multi image
-        if ($request->hasFile('multi_img')) {
-            foreach ($request->file('multi_img') as $img) {
-                $imageName = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-                $imagePath = 'upload/product_multi_images/' . $imageName;
+        if ($request->file('multi_img')) {
+            // Remove old images
+            foreach ($product->multiImages as $img) {
+                $oldImagePath = public_path('upload/product_multi_images/' . $img->photo_name);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+                $img->delete();
+            }
 
-                // Compress and save the image
-                Image::make($img)
-                    ->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
+            // Upload and save new images
+            foreach ($request->file('multi_img') as $file) {
+                $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+                $filePath = 'upload/product_multi_images/' . $filename;
+
+                // Resize and save the image
+                Image::make($file)
+                    ->resize(800, 800, function ($constraint) {
+                        $constraint->aspectRatio(); // Maintain aspect ratio
+                        $constraint->upsize(); // Prevent enlarging smaller images
                     })
-                    ->save(public_path($imagePath), 75); // Adjust the quality to compress
+                    ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
+                    ->save(public_path($filePath), 75);
 
-                // Save the image info to the database
-                $product_multiImage = new MultiImg();
-                $product_multiImage->product_id = $product->id;
-                $product_multiImage->photo_name = $imageName;
-                $product_multiImage->created_at = Carbon::now();
-                $product_multiImage->save();
+                // Save image information to the database
+                MultiImg::create([
+                    'product_id' => $product->id,
+                    'photo_name' => $filename,
+                ]);
             }
         }
 
@@ -348,21 +360,33 @@ class EmployeeProductController extends Controller
         $product->user_id = auth()->user()->id;
         $product->product_type_id = 1;
         $product->status = 'inactive';
+
         if ($request->hasFile('product_photo')) {
+            // Remove old photo if it exists
+            if ($product->product_photo) {
+                $oldImagePath = public_path('upload/product_images/' . $product->product_photo);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+
+            // Handle new photo upload
             $image = $request->file('product_photo');
             $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
             $imagePath = 'upload/product_images/' . $imageName;
 
             // Compress and save the image
             Image::make($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
+                ->fit(800, 800, function ($constraint) {
                     $constraint->upsize();
                 })
                 ->save(public_path($imagePath), 75);
 
+            // Update product with new photo
             $product->product_photo = $imageName;
+            $product->save();
         }
+
         $product->updated_at = Carbon::now();
         $product->save();
 
@@ -391,27 +415,6 @@ class EmployeeProductController extends Controller
         $product_price->discount_price = $request->input('discount_price');
         $product_price->updated_at = Carbon::now();
         $product_price->save();
-
-        if ($request->file('multi_img')) {
-            // Remove old images
-            foreach ($product->multiImages as $img) {
-                if (file_exists(public_path('upload/product_multi_images/' . $img->photo_name))) {
-                    unlink(public_path('upload/product_multi_images/' . $img->photo_name));
-                }
-                $img->delete();
-            }
-
-            // Upload new images
-            foreach ($request->file('multi_img') as $file) {
-                $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('upload/product_multi_images'), $filename);
-
-                MultiImg::create([
-                    'product_id' => $product->id,
-                    'photo_name' => $filename,
-                ]);
-            }
-        }
 
         // Handle product colors
         $colorNames = $request->input('product_color_id');
@@ -524,10 +527,30 @@ class EmployeeProductController extends Controller
         $productId = $request->product_id;
 
         if ($request->hasFile('multi_img')) {
-            foreach ($request->file('multi_img') as $file) {
-                $filename = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-                $file->move(public_path('upload/product_multi_images'), $filename);
+            // Remove old images
+            foreach (MultiImg::where('product_id', $productId)->get() as $img) {
+                $oldImagePath = public_path('upload/product_multi_images/' . $img->photo_name);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+                $img->delete();
+            }
 
+            // Upload and process new images
+            foreach ($request->file('multi_img') as $file) {
+                $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+                $filePath = 'upload/product_multi_images/' . $filename;
+
+                // Resize and save the image
+                Image::make($file)
+                    ->resize(800, 800, function ($constraint) {
+                        $constraint->aspectRatio(); // Maintain aspect ratio
+                        $constraint->upsize(); // Prevent enlarging smaller images
+                    })
+                    ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add padding if needed
+                    ->save(public_path($filePath), 75);
+
+                // Save image information to the database
                 MultiImg::create([
                     'product_id' => $productId,
                     'photo_name' => $filename,
@@ -536,11 +559,11 @@ class EmployeeProductController extends Controller
         }
 
         $notification = [
-            'message' => 'Product created successfully!',
+            'message' => 'Product images updated successfully!',
             'alert-type' => 'success',
         ];
 
-        return redirect()->route('all.product')->with($notification);
+        return redirect()->route('all.employee.product')->with($notification);
     }
 
     public function DestoryEmployeeProduct($id)
