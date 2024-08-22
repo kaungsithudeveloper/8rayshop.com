@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="{{ url('backend/plugins/tagify/tagify.min.css') }}"  type="text/css" />
 <script src="{{ url('backend/plugins/tagify/tagify.min.js') }}"></script>
 
+<script src="{{ url('backend/plugins/custom/sortable.min.js') }}"></script>
+
 <!-- Taginput CSS -->
 <link href="{{ url('backend/plugins/input-tags/css/tagsinput.css') }}" rel="stylesheet" />
 <link href="{{ url('backend/plugins/typeahead/typeaheadjs.min.css') }}" rel="stylesheet" />
@@ -124,10 +126,10 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="mb-3">
-                                                <label for="inputProductTitle" class="form-label">Multiple Image :</label>
+                                                <label for="inputProductTitle" class="form-label">Multiple Images:</label>
                                                 <input class="form-control" name="multi_img[]" type="file" id="multiImg" multiple="">
 
-                                                <div class="row" id="preview_img"></div>
+                                                <div class="row sortable" id="preview_img"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -469,38 +471,52 @@ $(document).ready(function(){
 </script>
 
 <script>
-$(document).ready(function(){
+
+$(document).ready(function() {
     var fileList = [];
 
-    $('#multiImg').on('change', function(){ //on file input change
-        if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
-        {
-            var data = $(this)[0].files; //this file data
+    $('#multiImg').on('change', function() {
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            var data = $(this)[0].files;
 
-            $.each(data, function(index, file){ //loop though each file
-                if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)){ //check supported file type
-                    fileList.push(file); //add file to the fileList
-                    var fRead = new FileReader(); //new filereader
-                    fRead.onload = (function(file, index){ //trigger function on successful read
-                    return function(e) {
-                        var container = $('<div/>').addClass('col-md-3 mt-2 text-center').attr('data-index', index); //create container element with data-index attribute and center the content
-                        var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120); //create image element
-                        var deleteBtn = $('<button/>').addClass('btn btn-danger btn-sm mt-2 mb-2').text('Delete').on('click', function(){
-                            var idx = $(this).parent().data('index');
-                            fileList.splice(idx, 1); //remove file from fileList
-                            $(this).parent().remove(); //remove container on delete button click
-                            updateFileInput(); //update file input
-                        });
-                        container.append(img).append('<br>').append(deleteBtn); //append image and delete button to container, with a line break
-                        $('#preview_img').append(container); //append container to output element
-                    };
+            $.each(data, function(index, file) {
+                if (/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)) {
+                    fileList.push(file);
+                    var fRead = new FileReader();
+                    fRead.onload = (function(file, index) {
+                        return function(e) {
+                            var container = $('<div/>').addClass('col-md-3 mt-2 text-center').attr('data-index', index);
+                            var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120);
+                            var deleteBtn = $('<button/>').addClass('btn btn-danger btn-sm mt-2 mb-2').text('Delete').on('click', function() {
+                                var idx = $(this).parent().data('index');
+                                fileList.splice(idx, 1);
+                                $(this).parent().remove();
+                                updateFileInput();
+                            });
+                            container.append(img).append('<br>').append(deleteBtn);
+                            $('#preview_img').append(container);
+                        };
                     })(file, fileList.length - 1);
-                    fRead.readAsDataURL(file); //URL representing the file's data.
+                    fRead.readAsDataURL(file);
                 }
             });
+        } else {
+            alert("Your browser doesn't support File API!");
+        }
+    });
 
-        }else{
-            alert("Your browser doesn't support File API!"); //if File API is absent
+    // Initialize Sortable on the preview container
+    new Sortable(document.getElementById('preview_img'), {
+        animation: 150,
+        onEnd: function(evt) {
+            // When sorting is finished, update the fileList order
+            var newOrder = [];
+            $('#preview_img div').each(function() {
+                var idx = $(this).data('index');
+                newOrder.push(fileList[idx]);
+            });
+            fileList = newOrder;
+            updateFileInput();
         }
     });
 
@@ -509,9 +525,10 @@ $(document).ready(function(){
         fileList.forEach(function(file) {
             dataTransfer.items.add(file);
         });
-        $('#multiImg')[0].files = dataTransfer.files; //update input element with the new fileList
+        $('#multiImg')[0].files = dataTransfer.files;
     }
 });
+
 </script>
 
 <script type="text/javascript">

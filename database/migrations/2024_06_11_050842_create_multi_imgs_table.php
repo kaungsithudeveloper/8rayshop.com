@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('product_id');
             $table->string('photo_name');
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
         });
     }

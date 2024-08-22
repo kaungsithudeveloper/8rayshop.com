@@ -5,13 +5,6 @@ $("body").on("keyup","#search", function(){
 	let text = $("#search").val();
 	//console.log(text);
 
-
-
-
-
-
-
-
 	if (text.length > 0) {
 		$.ajax({
 			data: {search:text},

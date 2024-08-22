@@ -145,16 +145,17 @@ class FrontendController extends Controller
         return view('frontend.8ray.product_view', compact('productsList'));
     }
 
-    public function ProductDetails($id,$slug)
+    public function ProductDetails($id, $slug)
     {
-
         $product = Product::with([
             'productInfo',
             'productColor',
             'brands',
             'categories',
             'productSubCategory',
-            'multiImages',
+            'multiImages' => function ($query) {
+                $query->orderBy('sort_order', 'asc'); // Order by sort_order column
+            },
             'price',
             'stocks.branch',
             'comments' => function($query) {
@@ -166,9 +167,9 @@ class FrontendController extends Controller
 
         $commentCount = $product->comments->count();
 
-        return view('frontend.8ray.product_details',compact('product', 'commentCount'));
-
+        return view('frontend.8ray.product_details', compact('product', 'commentCount'));
     }
+
 
     public function CategoryProductList(Request $request, $ids, $slug)
     {

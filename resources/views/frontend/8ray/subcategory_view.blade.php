@@ -71,9 +71,7 @@
                                                 @endforeach
                                             </div>
                                             <h2><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">{{ $product->product_name }}</a></h2>
-                                            <div class="product-rate d-inline-block">
-                                                <div class="product-rating" style="width: 80%"></div>
-                                            </div>
+
                                             <div class="product-price">
                                                 @if (!empty($product->price->discount_price) && $product->price->discount_price > 0)
                                                     <span class="old-price">${{ $product->price->selling_price }}</span>

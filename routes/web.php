@@ -379,6 +379,8 @@ Route::post('/update-multi-images', [ProductController::class,'updateMultiImages
 
 Route::delete('/employee/delete-multi-image/{id}', [EmployeeProductController::class, 'EmployeedeleteMultiImage']);
 Route::post('/employee/update-multi-images', [EmployeeProductController::class,'EmployeeupdateMultiImages']);
+Route::post('/employee/update-image-order', [EmployeeProductController::class, 'employeeUpdateImageOrder'])->name('update.image.order');
+
 
 Route::post('/fetch-prices', [StockController::class, 'fetchPrices'])->name('fetch.prices');
 Route::post('/fetch-stock', [StockController::class,'fetchStock'])->name('fetch.stock');

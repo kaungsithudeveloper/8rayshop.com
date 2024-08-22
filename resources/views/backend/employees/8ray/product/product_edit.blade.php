@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="{{ url('backend/plugins/tagify/tagify.min.css') }}"  type="text/css" />
 <script src="{{ url('backend/plugins/tagify/tagify.min.js') }}"></script>
 
+<script src="{{ url('backend/plugins/custom/sortable.min.js') }}"></script>
+
 <!-- Taginput CSS -->
 <link href="{{ url('backend/plugins/input-tags/css/tagsinput.css') }}" rel="stylesheet" />
 <link href="{{ url('backend/plugins/typeahead/typeaheadjs.min.css') }}" rel="stylesheet" />
@@ -275,6 +277,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
 
@@ -410,87 +413,118 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script>
-$(document).ready(function () {
-    var fileList = []; // Initialize fileList array
+    $(document).ready(function () {
+        var fileList = []; // Initialize fileList array
 
-    // Handle image selection
-    $('#multiImg').on('change', function () {
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var data = $(this)[0].files;
+        // Handle image selection
+        $('#multiImg').on('change', function () {
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                var data = $(this)[0].files;
 
-            $.each(data, function(index, file) { // Loop through each file
-                if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)) { // Check supported file type
-                    fileList.push(file); // Add file to the fileList
-                    var fRead = new FileReader(); // New FileReader
-                    fRead.onload = (function(file, index) { // Trigger function on successful read
-                        return function(e) {
-                            var container = $('<div/>').addClass('col-md-2 text-center').attr('data-index', index); // Create container element with data-index attribute
-                            var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120); // Create image element
-                            var deleteBtn = $('<button/>').addClass('btn btn-danger btn-sm mt-2').text('Delete').on('click', function() {
-                                var idx = $(this).parent().data('index');
-                                fileList.splice(idx, 1); // Remove file from fileList
-                                $(this).parent().remove(); // Remove container on delete button click
-                                updateFileInput(); // Update file input
-                            });
-                            container.append(img).append('<br>').append(deleteBtn); // Append image and delete button to container
-                            $('#preview_img').append(container); // Append container to output element
-                        };
-                    })(file, fileList.length - 1);
-                    fRead.readAsDataURL(file); // Read the file as data URL
-                }
-            });
-        } else {
-            alert("Your browser doesn't support File API!");
-        }
-    });
-
-    // Handle image deletion
-    $('#preview_img').on('click', '.delete_btn', function (e) {
-        e.preventDefault();
-        var thumbWrapper = $(this).closest('.thumb-wrapper');
-        var imageId = thumbWrapper.data('id');
-
-        if (imageId) {
-            $.ajax({
-                url: '/employee/delete-multi-image/' + imageId,
-                type: 'DELETE',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    thumbWrapper.remove();
-                }
-            });
-        } else {
-            thumbWrapper.remove();
-        }
-    });
-
-    // Update images on button click
-    $('#updateImages').on('click', function (e) {
-        e.preventDefault();
-
-        var formData = new FormData();
-        var files = $('#multiImg')[0].files;
-        for (var i = 0; i < files.length; i++) {
-            formData.append('multi_img[]', files[i]);
-        }
-        formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
-        formData.append('product_id', '{{ $product->id }}');
-
-        $.ajax({
-            url: '/employee/update-multi-images',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                alert("Images updated successfully!");
+                $.each(data, function(index, file) { // Loop through each file
+                    if(/(\.|\/)(gif|jpe?g|png|webp|jfif)$/i.test(file.type)) { // Check supported file type
+                        fileList.push(file); // Add file to the fileList
+                        var fRead = new FileReader(); // New FileReader
+                        fRead.onload = (function(file, index) { // Trigger function on successful read
+                            return function(e) {
+                                var container = $('<div/>').addClass('col-md-2 text-center thumb-wrapper').attr('data-index', index); // Create container element with data-index attribute
+                                var img = $('<img/>').addClass('thumb').attr('src', e.target.result).width(150).height(120); // Create image element
+                                var deleteBtn = $('<button/>').addClass('btn btn-danger btn-sm mt-2').text('Delete').on('click', function() {
+                                    var idx = $(this).parent().data('index');
+                                    fileList.splice(idx, 1); // Remove file from fileList
+                                    $(this).parent().remove(); // Remove container on delete button click
+                                    updateFileInput(); // Update file input
+                                });
+                                container.append(img).append('<br>').append(deleteBtn); // Append image and delete button to container
+                                $('#preview_img').append(container); // Append container to output element
+                            };
+                        })(file, fileList.length - 1);
+                        fRead.readAsDataURL(file); // Read the file as data URL
+                    }
+                });
+            } else {
+                alert("Your browser doesn't support File API!");
             }
         });
+
+        // Handle image deletion
+        $('#preview_img').on('click', '.delete_btn', function (e) {
+            e.preventDefault();
+            var thumbWrapper = $(this).closest('.thumb-wrapper');
+            var imageId = thumbWrapper.data('id');
+
+            if (imageId) {
+                $.ajax({
+                    url: '/employee/delete-multi-image/' + imageId,
+                    type: 'DELETE',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        thumbWrapper.remove();
+                    }
+                });
+            } else {
+                thumbWrapper.remove();
+            }
+        });
+
+        // Initialize sortable functionality
+        Sortable.create(document.getElementById('preview_img'), {
+            animation: 150,
+            onEnd: function (evt) {
+                updateImageOrder(); // Update image order after sorting
+            }
+        });
+
+        // Update images on button click
+        $('#updateImages').on('click', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData();
+            var files = $('#multiImg')[0].files;
+            for (var i = 0; i < files.length; i++) {
+                formData.append('multi_img[]', files[i]);
+            }
+            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+            formData.append('product_id', '{{ $product->id }}');
+
+            $.ajax({
+                url: '/employee/update-multi-images',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    alert("Images updated successfully!");
+                }
+            });
+        });
+
+        // Function to update image order
+        function updateImageOrder() {
+            var imageOrder = [];
+            $('#preview_img .thumb-wrapper').each(function(index, element) {
+                var imageId = $(element).data('id');
+                imageOrder.push({id: imageId, sort_order: index});
+            });
+
+            $.ajax({
+                url: '/employee/update-image-order',
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    image_order: imageOrder,
+                    product_id: '{{ $product->id }}'
+                },
+                success: function (response) {
+                    console.log("Image order updated successfully!");
+                }
+            });
+        }
     });
-});
 </script>
+
 
 
 <script type="text/javascript">
