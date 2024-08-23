@@ -83,6 +83,15 @@
                             <div class="card-body">
                                 <label for="inputProductTitle" class="form-label">Product Color :</label>
                                 <div id="color-input-container">
+                                    <div class="d-flex">
+                                        <a href="javascript:void(0)" class="btn text-danger btn-sm ms-2 add-color-btn" data-bs-toggle="tooltip" data-bs-original-title="Add Color">
+                                            <span class="fe fe-edit fs-14"></span>
+                                        </a>
+                                        <a href="javascript:void(0)" class="btn text-danger btn-sm delete-color-btn ms-2" data-color-id="">
+                                            <span class="fe fe-trash-2 fs-14"></span>
+                                        </a>
+                                    </div>
+
                                     @foreach($stocksGroupedByColor as $groupedStock)
                                         <div class="d-flex">
                                             <input type="text" name="product_color_id[]" class="form-control m-1" value="{{ $groupedStock['product_color_id'] }}" hidden>
