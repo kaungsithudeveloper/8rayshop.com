@@ -37,6 +37,8 @@ use App\Http\Controllers\Frontend\CompareController;
 use App\Http\Controllers\Frontend\CheckoutController;
 
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\ImageCompressController;
+
 
 use App\Models\Brand;
 use App\Models\ProductCategory;
@@ -360,6 +362,7 @@ Route::middleware(['auth','role:employee'])->group(function () {
         Route::delete('/stock/delete/{colorId}', 'deleteStock')->name('stock.delete');
         Route::delete('/stocks/color/{colorId}', 'deleteStocksByColor')->name('stocks.deleteByColor');
         Route::delete('/stocks/{id}', 'destroy');
+
     });
 
     Route::controller(EmployeeController::class)->group(function(){
@@ -367,6 +370,9 @@ Route::middleware(['auth','role:employee'])->group(function () {
         Route::get('/employee/logout',  'EmployeeLogOut')->name('employee.logout');
     });
 });
+
+Route::get('/imagecompress', [ImageCompressController::class, 'showCompressForm'])->name('image.compress.form');
+Route::post('/imagecompressq', [ImageCompressController::class, 'compressImage'])->name('image.compress');
 
 Route::middleware(['auth'],['role'=>'admin','employee'])->group(function () {
     Route::get('/pos', [PosController::class, 'PosIndex'])->name('pos.page');

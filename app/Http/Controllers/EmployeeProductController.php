@@ -646,4 +646,5 @@ class EmployeeProductController extends Controller
         $productInfos = Product::with(['productInfo'])->get();
         return view('backend.admin.product.product_youtube_link_test', compact('productInfos'));
     }
+
 }
