@@ -197,25 +197,6 @@ class EmployeeProductController extends Controller
             }
         }
 
-        // Handle product colors
-        $colorNames = $request->input('product_color_id');
-        $productColorIds = [];
-
-        foreach ($colorNames as $colorName) {
-            // Decode color name if it's JSON
-            $colorArray = json_decode($colorName, true);
-            $colorName = $colorArray[0]['value'] ?? $colorName;
-
-            // Find or create the color
-            $color = ProductColor::firstOrCreate(
-                ['color_name' => $colorName],
-                ['color_slug' => Str::slug($colorName)]
-            );
-
-            $productColorIds[] = $color->id;
-        }
-
-        $product->productColor()->attach($productColorIds);
 
         $product->brands()->attach($validatedData['brand_id']);
         $product->productCategory()->attach($validatedData['product_category_id']);
@@ -248,6 +229,8 @@ class EmployeeProductController extends Controller
                 ['color_slug' => Str::slug($colorName)]
             );
 
+            $productColorIds[] = $color->id;
+
             // Store stock for branch 1
             Stock::updateOrCreate(
                 [
@@ -259,6 +242,8 @@ class EmployeeProductController extends Controller
                 ['purchase_qty' => (int)$stockQuantities1[$index] ?? 0, 'sell_qty' => 0]
             );
         }
+
+        $product->productColor()->attach($productColorIds);
 
 
         $notification = [
