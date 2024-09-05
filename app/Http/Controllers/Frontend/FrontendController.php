@@ -251,7 +251,7 @@ class FrontendController extends Controller
         $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
 
         // Paginate the products
-        $products = Product::where('product_name', 'LIKE', "%$item%")->paginate(10); // Adjust the per-page limit as needed
+        $products = Product::where('product_name', 'LIKE', "%$item%")->paginate(1000); // Adjust the per-page limit as needed
 
         // Fetch the latest 3 products
         $newProduct = Product::orderBy('id', 'DESC')->limit(3)->get();
