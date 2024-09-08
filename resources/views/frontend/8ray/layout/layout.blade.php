@@ -76,7 +76,7 @@
     <script src="{{ url('frontend/8ray/js/main.js') }}"></script>
     <script src="{{ url('frontend/8ray/js/shop.js') }}"></script>
 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url('frontend/8ray/js/sweetalert2.js') }}"></script>
 
     <script src="{{ url('backend/plugins/custom/toastr.min.js') }}"></script>
 
