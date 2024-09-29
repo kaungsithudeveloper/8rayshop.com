@@ -51,7 +51,7 @@ class FrontendController extends Controller
         $newProducts = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])->where('product_type_id', $productTypeId)
         ->where('status','active')
         ->orderByDesc('updated_at')
-        ->take(10)
+        ->take(12)
         ->get();
 
         $featureProducts = Product::whereHas('productInfo', function ($query) {
@@ -73,7 +73,7 @@ class FrontendController extends Controller
             ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
             ->where('product_type_id', $productTypeId)
             ->orderByDesc('updated_at')
-            ->take(10)
+            ->take(12)
             ->get();
 
 
@@ -87,7 +87,7 @@ class FrontendController extends Controller
                 ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
                 ->where('product_type_id', $productTypeId)
                 ->orderByDesc('updated_at')
-                ->take(10)
+                ->take(12)
                 ->get();
 
         $productPhotographyId = 7; // Specify the category ID you want to include
@@ -99,7 +99,7 @@ class FrontendController extends Controller
         ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
         ->where('product_type_id', $productTypeId)
         ->orderByDesc('updated_at')
-        ->take(10)
+        ->take(12)
         ->get();
 
         return view('frontend.8ray.dashboard', compact('newProducts','featureProducts','productCategories','soundProductCategories','productPhotographys'));

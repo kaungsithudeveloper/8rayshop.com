@@ -25,9 +25,22 @@ class EmployeeProductController extends Controller
 {
     public function AllEmployeeProduct()
     {
-        $products = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
-        $activeProducts = Product::where('status', 'active')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
-        $inActiveProduct = Product::where('status', 'inactive')->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages','price'])->with(['stocks.branch'])->latest()->get();
+        // Fetch all products ordered by updated_at
+        $products = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price', 'stocks.branch'])
+            ->orderBy('updated_at', 'desc') // Order by updated_at
+            ->get();
+
+        // Fetch active products ordered by updated_at
+        $activeProducts = Product::where('status', 'active')
+            ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price', 'stocks.branch'])
+            ->orderBy('updated_at', 'desc') // Order by updated_at
+            ->get();
+
+        // Fetch inactive products ordered by updated_at
+        $inActiveProduct = Product::where('status', 'inactive')
+            ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price', 'stocks.branch'])
+            ->orderBy('updated_at', 'desc') // Order by updated_at
+            ->get();
 
         return view('backend.employees.8ray.product.product_all', compact('products', 'activeProducts', 'inActiveProduct'));
     }
@@ -41,7 +54,6 @@ class EmployeeProductController extends Controller
         return view('backend.employees.8ray.product.product_add',compact('product_type','brands','product_categories','product_subCategories'));
 
     } // End Method
-
 
     public function search(Request $request)
     {
@@ -58,7 +70,6 @@ class EmployeeProductController extends Controller
         ]);
         return response()->json($color);
     }
-
 
     private function convertToEmbedUrl($url)
     {
@@ -255,50 +266,50 @@ class EmployeeProductController extends Controller
     }
 
     public function EditEmployeeProduct($slug)
-{
-    $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price', 'stocks', 'colors'])
-        ->where('product_slug', $slug)
-        ->firstOrFail();
+    {
+        $product = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price', 'stocks', 'colors'])
+            ->where('product_slug', $slug)
+            ->firstOrFail();
 
-    // Order images by sort_order
-    $product->multiImages = $product->multiImages->sortBy('sort_order');
+        // Order images by sort_order
+        $product->multiImages = $product->multiImages->sortBy('sort_order');
 
-    // Retrieve all necessary related data
-    $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();
-    $brands = Brand::orderBy('brand_name', 'ASC')->get();
-    $branches = Branch::latest()->get();
-    $product_categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
-    $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name', 'ASC')->get();
+        // Retrieve all necessary related data
+        $product_type = ProductType::orderBy('product_type_name', 'ASC')->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->get();
+        $branches = Branch::latest()->get();
+        $product_categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
+        $product_subCategories = ProductSubCategory::orderBy('product_subcategory_name', 'ASC')->get();
 
-    // Group stocks by color ID and include color name
-    $stocksGroupedByColor = $product->stocks->groupBy('product_color_id')
-        ->map(function ($group) {
-            $color = $group->first()->color; // Assuming each stock has a related color
-            return [
-                'product_color_id' => $color->id,
-                'color_name' => $color->color_name,
-                'stock_qty_1' => $group->where('branch_id', 1)->sum('purchase_qty'),
-                'stock_qty_2' => $group->where('branch_id', 2)->sum('purchase_qty'),
-                'stocks' => $group->map(function ($stock) {
-                    return [
-                        'id' => $stock->id,
-                        'branch_id' => $stock->branch_id,
-                        'purchase_qty' => $stock->purchase_qty,
-                    ];
-                })->all()
-            ];
-        });
+        // Group stocks by color ID and include color name
+        $stocksGroupedByColor = $product->stocks->groupBy('product_color_id')
+            ->map(function ($group) {
+                $color = $group->first()->color; // Assuming each stock has a related color
+                return [
+                    'product_color_id' => $color->id,
+                    'color_name' => $color->color_name,
+                    'stock_qty_1' => $group->where('branch_id', 1)->sum('purchase_qty'),
+                    'stock_qty_2' => $group->where('branch_id', 2)->sum('purchase_qty'),
+                    'stocks' => $group->map(function ($stock) {
+                        return [
+                            'id' => $stock->id,
+                            'branch_id' => $stock->branch_id,
+                            'purchase_qty' => $stock->purchase_qty,
+                        ];
+                    })->all()
+                ];
+            });
 
-    return view('backend.employees.8ray.product.product_edit', [
-        'product' => $product,
-        'stocksGroupedByColor' => $stocksGroupedByColor,
-        'product_type' => $product_type,
-        'brands' => $brands,
-        'branches' => $branches,
-        'product_categories' => $product_categories,
-        'product_subCategories' => $product_subCategories,
-    ]);
-}
+        return view('backend.employees.8ray.product.product_edit', [
+            'product' => $product,
+            'stocksGroupedByColor' => $stocksGroupedByColor,
+            'product_type' => $product_type,
+            'brands' => $brands,
+            'branches' => $branches,
+            'product_categories' => $product_categories,
+            'product_subCategories' => $product_subCategories,
+        ]);
+    }
 
 
     public function UpdateEmployeeProduct(Request $request)
@@ -524,7 +535,7 @@ class EmployeeProductController extends Controller
         $productId = $request->product_id;
 
         if ($request->hasFile('multi_img')) {
-            foreach ($request->file('multi_img') as $file) {
+            foreach ($request->file('multi_img') as $index => $file) { // Add $index to track the order
                 // Generate a unique filename
                 $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
                 $filePath = public_path('upload/product_multi_images/' . $filename);
@@ -538,10 +549,11 @@ class EmployeeProductController extends Controller
                     ->resizeCanvas(800, 800, 'center', false, 'ffffff') // Add white padding if needed
                     ->save($filePath, 75); // Save with quality of 75
 
-                // Store the filename in the database
+                // Store the filename in the database with sort_order
                 MultiImg::create([
                     'product_id' => $productId,
                     'photo_name' => $filename,
+                    'sort_order' => $index, // Store the index as sort_order
                     'updated_at' => Carbon::now(),
                 ]);
             }
@@ -554,6 +566,7 @@ class EmployeeProductController extends Controller
 
         return redirect()->route('all.employee.product')->with($notification);
     }
+
 
     public function employeeUpdateImageOrder(Request $request)
     {

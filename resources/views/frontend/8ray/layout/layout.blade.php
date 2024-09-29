@@ -22,10 +22,6 @@
     <!-- View Message CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url('backend/plugins/custom/toastr.css') }}">
 
-    <script src="{{ url('backend/js/jquery-3.6.0.min.js') }}"></script>
-
-
-
 </head>
 
 <body>
@@ -212,55 +208,53 @@
 
 
         function addToCart(){
-    var product_name = $('#pname').text();
-    var id = $('#product_id').val();
-    var color = $('#color option:selected').text();
-    var quantity = $('#qty').val();
-    $.ajax({
-        type: "POST",
-        dataType: 'json',
-        data: {
-            color: color,
-            quantity: quantity,
-            product_name: product_name
-        },
-        url: "/cart/data/store/" + id,
-        success: function(data) {
-            miniCart();
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-            });
-            if ($.isEmptyObject(data.error)) {
-                Toast.fire({
-                    icon: 'success',
-                    title: data.success,
-                });
-            } else {
-                Toast.fire({
-                    icon: 'error',
-                    title: data.error,
-                });
-            }
-        },
-        error: function(xhr) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-            });
-            Toast.fire({
-                icon: 'error',
-                title: xhr.responseJSON.error,
+            var product_name = $('#pname').text();
+            var id = $('#product_id').val();
+            var color = $('#color option:selected').text();
+            var quantity = $('#qty').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    color: color,
+                    quantity: quantity,
+                    product_name: product_name
+                },
+                url: "/cart/data/store/" + id,
+                success: function(data) {
+                    miniCart();
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    if ($.isEmptyObject(data.error)) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.success,
+                        });
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.error,
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    Toast.fire({
+                        icon: 'error',
+                        title: xhr.responseJSON.error,
+                    });
+                }
             });
         }
-    });
-}
-
-
 
         function addToCartDetails(){
             var product_name = $('#dpname').text();

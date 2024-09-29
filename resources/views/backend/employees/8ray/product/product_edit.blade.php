@@ -273,7 +273,7 @@
                                 </div>
                             </div>
                             <div class="mb-3 mt-2">
-                                <div class="row" id="preview_img">
+                                <div class="row sortable" id="preview_img">
                                     @foreach($product->multiImages as $img)
                                     <div class="col-md-2 text-center thumb-wrapper" data-id="{{ $img->id }}">
                                         <img src="{{ (!empty($img->photo_name)) ? url('upload/product_multi_images/'.$img->photo_name) : url('upload/profile.jpg') }}" alt="Product" style="width:100px; height: 100px;" class="thumb">
