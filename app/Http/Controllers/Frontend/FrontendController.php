@@ -102,7 +102,9 @@ class FrontendController extends Controller
         ->take(12)
         ->get();
 
-        return view('frontend.8ray.dashboard', compact('newProducts','featureProducts','productCategories','soundProductCategories','productPhotographys'));
+        $brand = Brand::orderBy('brand_name', 'ASC')->get();
+
+        return view('frontend.8ray.dashboard', compact('newProducts','featureProducts','productCategories','soundProductCategories','productPhotographys', 'brand'));
     }
 
     public function contactUs()
@@ -121,7 +123,7 @@ class FrontendController extends Controller
         return view('frontend.8ray.brandzone', compact('brands'));
     }
 
-    public function BrandZoneProductList(Request $request, $id, $slug)
+    public function BrandZoneProductList(Request $request, $id)
     {
         $productTypeId = 1;
         $breadbrands = Brand::findOrFail($id);

@@ -969,81 +969,52 @@
                 <h3> Best Of Gadget </h3>
             </div>
             <!--End nav-tabs-->
-            @php
-                $brands = App\Models\Brand::orderBy('brand_name', 'ASC')->get();
-            @endphp
 
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-md-6" >
-
+                    <div class="col-lg-4 col-md-6">
                         <div class="banner-img wow animate__animated animate__fadeInUp" data-wow-delay="0">
-                            @foreach ($brands as $brand)
-                                @if($brand->id == 7)
-                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
-                                        <img src="{{ url('frontend/8ray/imgs/banner/customer-1.jpg') }}" alt="" />
-                                    </a>
-                                @endif
-                            @endforeach
-
-
+                            <a href="{{ url('product/brandzone/7') }}">
+                                <img src="{{ url('frontend/8ray/imgs/banner/customer-1.jpg') }}" alt="" />
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="banner-img wow animate__animated animate__fadeInUp" data-wow-delay=".2s">
-                            @foreach ($brands as $brand)
-                                @if($brand->id == 24)
-                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
-                                        <img src="{{ url('frontend/8ray/imgs/banner/customer-2.jpg') }}" alt="" />
-                                    </a>
-                                @endif
-                            @endforeach
+                            <a href="{{ url('product/brandzone/24') }}">
+                                <img src="{{ url('frontend/8ray/imgs/banner/customer-2.jpg') }}" alt="" />
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-md-none d-lg-flex">
                         <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".3s">
-                            @foreach ($brands as $brand)
-                                @if($brand->id == 3)
-                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
-                                        <img src="{{ url('frontend/8ray/imgs/banner/customer-3.jpg') }}" alt="" />
-                                    </a>
-                                @endif
-                            @endforeach
+                            <a href="{{ url('product/brandzone/3') }}">
+                                <img src="{{ url('frontend/8ray/imgs/banner/customer-3.jpg') }}" alt="" />
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-md-none d-lg-flex">
                         <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
-                            @foreach ($brands as $brand)
-                                @if($brand->id == 6)
-                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
-                                        <img src="{{ url('frontend/8ray/imgs/banner/customer-4.jpg') }}" alt="" />
-                                    </a>
-                                @endif
-                            @endforeach
+                            <a href="{{ url('product/brandzone/6') }}">
+                                <img src="{{ url('frontend/8ray/imgs/banner/customer-4.jpg') }}" alt="" />
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-md-none d-lg-flex">
                         <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".5s">
-                            @foreach ($brands as $brand)
-                                @if($brand->id == 8)
-                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
-                                        <img src="{{ url('frontend/8ray/imgs/banner/customer-5.jpg') }}" alt="" />
-                                    </a>
-                                @endif
-                            @endforeach
+                            <a href="{{ url('product/brandzone/8') }}">
+                                <img src="{{ url('frontend/8ray/imgs/banner/customer-5.jpg') }}" alt="" />
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-md-none d-lg-flex">
                         <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".6s">
-                            @foreach ($brands as $brand)
-                                @if($brand->id == 20)
-                                    <a href="{{ url('product/brandzone/'.$brand->id.'/'.$brand->brand_slug) }}">
-                                        <img src="{{ url('frontend/8ray/imgs/banner/customer-6.jpg') }}" alt="" />
-                                    </a>
-                                @endif
-                            @endforeach
+                            <a href="{{ url('product/brandzone/20') }}">
+                                <img src="{{ url('frontend/8ray/imgs/banner/customer-6.jpg') }}" alt="" />
+                            </a>
                         </div>
                     </div>
+
 
                 </div>
             </div>
