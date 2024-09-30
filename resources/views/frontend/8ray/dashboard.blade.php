@@ -973,42 +973,42 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
-                        <div class="banner-img wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
+                        <div class="banner-img wow animate__animated animate__fadeIn">
                             <a href="{{ url('product/brandzone/7') }}">
                                 <img src="{{ url('frontend/8ray/imgs/banner/customer-1.jpg') }}" alt="" />
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                        <div class="banner-img wow animate__animated animate__fadeInUp" data-wow-delay=".5s">
+                        <div class="banner-img wow animate__animated animate__fadeIn">
                             <a href="{{ url('product/brandzone/24') }}">
                                 <img src="{{ url('frontend/8ray/imgs/banner/customer-2.jpg') }}" alt="" />
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-md-none d-lg-flex">
-                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".6s">
+                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeIn">
                             <a href="{{ url('product/brandzone/3') }}">
                                 <img src="{{ url('frontend/8ray/imgs/banner/customer-3.jpg') }}" alt="" />
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-md-none d-lg-flex">
-                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".7s">
+                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeIn">
                             <a href="{{ url('product/brandzone/6') }}">
                                 <img src="{{ url('frontend/8ray/imgs/banner/customer-4.jpg') }}" alt="" />
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-md-none d-lg-flex">
-                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".8s">
+                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeIn">
                             <a href="{{ url('product/brandzone/8') }}">
                                 <img src="{{ url('frontend/8ray/imgs/banner/customer-5.jpg') }}" alt="" />
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-md-none d-lg-flex">
-                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".9s">
+                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeIn">
                             <a href="{{ url('product/brandzone/20') }}">
                                 <img src="{{ url('frontend/8ray/imgs/banner/customer-6.jpg') }}" alt="" />
                             </a>
