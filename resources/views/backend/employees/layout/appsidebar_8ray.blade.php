@@ -63,6 +63,31 @@
                         </a>
                     </li>
 
+                    <li class="slide">
+                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                            <i class="side-menu__icon fe fe-layers"></i>
+                            <span class="side-menu__label">Order Management</span>
+                            <i class="angle fe fe-chevron-right"></i></a>
+                        <ul class="slide-menu">
+                            <li class="side-menu-label1"><a href="javascript:void(0)">Order Management</a></li>
+                            <li><a href="{{ route('employee.pending.order') }}" class="slide-item"> Pending Order  </a></li>
+                            <li><a href="{{ route('employee.delivered.order') }}" class="slide-item"> Delivered Order  </a></li>
+                            <li><a href="{{ route('employee.cancel.order') }}" class="slide-item"> Cancled Order  </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="slide">
+                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                            <i class="side-menu__icon fe fe-layers"></i>
+                            <span class="side-menu__label">Return Order</span>
+                            <i class="angle fe fe-chevron-right"></i></a>
+                        <ul class="slide-menu">
+                            <li class="side-menu-label1"><a href="javascript:void(0)">Return Order</a></li>
+                            <li><a href="{{ route('employee.return.request') }}" class="slide-item"> Return Request  </a></li>
+                            <li><a href="{{ route('employee.complete.return.request') }}" class="slide-item">Complete Request</a></li>
+                        </ul>
+                    </li>
+
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"/></svg></div>
         </div>

@@ -28,6 +28,7 @@ use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\AccountantController;
+use App\Http\Controllers\EmployeeOrderController;
 
 
 use App\Http\Controllers\Frontend\FrontendController;
@@ -217,8 +218,6 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/confirm/processing/{order_id}' , 'ConfirmToProcess')->name('confirm-processing');
         Route::get('/processing/delivered/{order_id}' , 'ProcessToDelivered')->name('processing-delivered');
         Route::get('/admin/order/cancel/{order_id}', 'cancelOrder')->name('processing-cancel');
-
-
     });
 
     Route::controller(ReturnController::class)->group(function(){
@@ -360,6 +359,26 @@ Route::middleware(['auth','role:employee'])->group(function () {
         Route::delete('/stock/delete/{colorId}', 'deleteStock')->name('stock.delete');
         Route::delete('/stocks/color/{colorId}', 'deleteStocksByColor')->name('stocks.deleteByColor');
         Route::delete('/stocks/{id}', 'destroy');
+    });
+
+
+    Route::controller(EmployeeOrderController::class)->group(function(){
+        Route::get('/employee/pending/order' , 'EmployeePendingOrder')->name('employee.pending.order');
+        Route::get('/employee/order/details/{order_id}' , 'EmployeeOrderDetails')->name('employee.order.details');
+        Route::get('/employee/confirmed/order' , 'EmployeeConfirmedOrder')->name('employee.confirmed.order');
+        Route::get('/employee/processing/order' , 'EmployeeProcessingOrder')->name('employee.processing.order');
+        Route::get('/employee/delivered/order' , 'EmployeeDeliveredOrder')->name('employee.delivered.order');
+        Route::get('/employee/cancel/order' , 'EmployeeOrderCancel')->name('employee.cancel.order');
+        Route::get('/employee/pending/confirm/{order_id}' , 'EmployeePendingToConfirm')->name('employee.pending-confirm');
+        Route::get('/employee/confirm/processing/{order_id}' , 'EmployeeConfirmToProcess')->name('employee.confirm-processing');
+        Route::get('/employee/processing/delivered/{order_id}' , 'EmployeeProcessToDelivered')->name('employee.processing-delivered');
+        Route::get('/employee/order/cancel/{order_id}', 'EmployeeCancelOrder')->name('employee.processing-cancel');
+    });
+
+    Route::controller(ReturnController::class)->group(function(){
+        Route::get('/employee/return/request' , 'EmployeeReturnRequest')->name('employee.return.request');
+        Route::get('/employee/return/request/approved/{order_id}' , 'EmployeeReReturnRequestApproved')->name('employee.return.request.approved');
+        Route::get('/employee/complete/return/request' , 'EmployeeReCompleteReturnRequest')->name('employee.complete.return.request');
     });
 
     Route::controller(EmployeeController::class)->group(function(){

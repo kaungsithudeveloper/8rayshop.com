@@ -144,4 +144,9 @@ class Product extends Model
             'loss' => $totalLoss,
         ];
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
