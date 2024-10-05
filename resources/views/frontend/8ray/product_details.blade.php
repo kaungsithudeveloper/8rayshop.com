@@ -2,6 +2,8 @@
 
 @section('8ray')
 
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <main class="main pages">
     <div class="page-header breadcrumb-wrap">
         <div class="container">
@@ -39,6 +41,7 @@
                                                     </figure>
                                                 @endforeach
                                             @endif
+
                                         </div>
                                         <!-- THUMBNAILS -->
                                         <div class="slider-nav-thumbnails">
@@ -178,14 +181,18 @@
                                         </li>
                                     </ul>
                                     <div class="tab-content shop_info_tab entry-main-content">
-                                        <div class="tab-pane fade show active" id="Description">
-                                            <div class="">
 
+                                        <div class="tab-pane fade show active" id="Description">
+                                            @if (!empty($product->productInfo->url))
+
+                                                <iframe id="youtube-player" src="{{ $product->productInfo->url }}" title="YouTube video" style="width: 100%; height:450px" allowfullscreen ></iframe>
+
+                                            @endif
+
+                                            <div class="">
                                                 {!! html_entity_decode($product->productInfo->long_descp) !!}
                                             </div>
                                         </div>
-
-
 
                                         <div class="tab-pane fade" id="Reviews">
                                             <div class="comments-area">
@@ -312,6 +319,49 @@
             document.getElementById('reply-form-' + commentId).style.display = 'block';
         }
     </script>
+
+<script>
+    var player;
+
+    // This function is called when the YouTube IFrame API is ready
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-player', {
+            events: {
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.PLAYING) {
+            // Check if the player is in view
+            if (!isElementInViewport(document.getElementById('youtube-player'))) {
+                player.pauseVideo();
+            }
+        }
+    }
+
+    // Function to check if the player is in the viewport
+    function isElementInViewport(el) {
+        var rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    // Event listener for scroll, only checks if player is initialized
+    window.addEventListener('scroll', function() {
+        if (player && typeof player.getPlayerState === 'function' && player.getPlayerState() === YT.PlayerState.PLAYING) {
+            if (!isElementInViewport(document.getElementById('youtube-player'))) {
+                player.pauseVideo();
+            }
+        }
+    });
+</script>
+
 </main>
 
 @endsection

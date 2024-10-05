@@ -51,7 +51,7 @@ class FrontendController extends Controller
         $newProducts = Product::with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])->where('product_type_id', $productTypeId)
         ->where('status','active')
         ->orderByDesc('updated_at')
-        ->take(10)
+        ->take(12)
         ->get();
 
         $featureProducts = Product::whereHas('productInfo', function ($query) {
@@ -73,7 +73,7 @@ class FrontendController extends Controller
             ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
             ->where('product_type_id', $productTypeId)
             ->orderByDesc('updated_at')
-            ->take(10)
+            ->take(12)
             ->get();
 
 
@@ -87,7 +87,7 @@ class FrontendController extends Controller
                 ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
                 ->where('product_type_id', $productTypeId)
                 ->orderByDesc('updated_at')
-                ->take(10)
+                ->take(12)
                 ->get();
 
         $productPhotographyId = 7; // Specify the category ID you want to include
@@ -99,10 +99,12 @@ class FrontendController extends Controller
         ->with(['productInfo', 'productColor', 'brands', 'categories', 'productSubCategory', 'multiImages', 'price'])
         ->where('product_type_id', $productTypeId)
         ->orderByDesc('updated_at')
-        ->take(10)
+        ->take(12)
         ->get();
 
-        return view('frontend.8ray.dashboard', compact('newProducts','featureProducts','productCategories','soundProductCategories','productPhotographys'));
+        $brand = Brand::orderBy('brand_name', 'ASC')->get();
+
+        return view('frontend.8ray.dashboard', compact('newProducts','featureProducts','productCategories','soundProductCategories','productPhotographys', 'brand'));
     }
 
     public function contactUs()
@@ -121,7 +123,7 @@ class FrontendController extends Controller
         return view('frontend.8ray.brandzone', compact('brands'));
     }
 
-    public function BrandZoneProductList(Request $request, $id, $slug)
+    public function BrandZoneProductList(Request $request, $id)
     {
         $productTypeId = 1;
         $breadbrands = Brand::findOrFail($id);
@@ -251,7 +253,7 @@ class FrontendController extends Controller
         $categories = ProductCategory::orderBy('product_category_name', 'ASC')->get();
 
         // Paginate the products
-        $products = Product::where('product_name', 'LIKE', "%$item%")->paginate(10); // Adjust the per-page limit as needed
+        $products = Product::where('product_name', 'LIKE', "%$item%")->paginate(1000); // Adjust the per-page limit as needed
 
         // Fetch the latest 3 products
         $newProduct = Product::orderBy('id', 'DESC')->limit(3)->get();

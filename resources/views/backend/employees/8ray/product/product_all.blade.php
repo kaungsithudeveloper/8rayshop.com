@@ -87,7 +87,7 @@
                                                                                 </span>
                                                                             @endif
                                                                         </td>
-                                                                        <td>{{ date('F j, Y', strtotime($product['created_at'])) }}</td>
+                                                                        <td>{{ date('F j, Y', strtotime($product['updated_at'])) }}</td>
                                                                         <td>
                                                                             <a href="{{ route('edit.employee.product', $product->product_slug) }}"
                                                                                 class="btn text-primary btn-sm" data-bs-toggle="tooltip"
@@ -127,86 +127,6 @@
                                                     <div class="tab-pane" id="tab6">
                                                         <div class="table-responsive">
                                                             <div class="table-responsive">
-                                                                <div class="table-responsive">
-                                                                    <table id="example3" class="table table-bordered text-nowrap border-bottom">
-                                                                        <thead class="border-top">
-                                                                            <tr>
-                                                                                <th class="border-bottom-0">ID</th>
-                                                                                <th class="border-bottom-0">Product Name</th>
-                                                                                <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
-                                                                                <th class="border-bottom-0">Total Stock</th>
-                                                                                <th class="border-bottom-0">Selling Price</th>
-                                                                                <th class="border-bottom-0">Status</th>
-                                                                                <th class="border-bottom-0">Date</th>
-                                                                                <th class="border-bottom-0">Action</th>
-                                                                            </tr>
-                                                                        </thead>
-
-                                                                        <tbody>
-                                                                            @foreach ($activeProducts as $key => $product)
-                                                                            <tr>
-                                                                                <td>{{ $key + 1 }}</td>
-                                                                                <td>{{ $product->product_name }}</td>
-                                                                                <td>
-                                                                                    <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
-                                                                                </td>
-                                                                                <td>{{ $product->total_stock }}</td>
-
-                                                                                <td>{{ $product->price->selling_price ?? 'Not Available' }}</td>
-
-                                                                                <td>
-                                                                                    @if ($product->status == 'active')
-                                                                                        <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
-                                                                                            {{ $product->status }}
-                                                                                        </span>
-                                                                                    @else
-                                                                                        <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
-                                                                                            {{ $product->status }}
-                                                                                        </span>
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td>{{ date('F j, Y', strtotime($product['created_at'])) }}</td>
-                                                                                <td>
-                                                                                    <a href="{{ route('edit.employee.product', $product->product_slug) }}"
-                                                                                        class="btn text-primary btn-sm" data-bs-toggle="tooltip"
-                                                                                        data-bs-original-title="Edit">
-                                                                                        <span class="fe fe-edit fs-14"></span>
-                                                                                    </a>
-
-                                                                                    @if ($product->status == 'active')
-                                                                                        <a href="{{ route('inactive.employee.product', $product->id) }}"
-                                                                                            class="btn text-primary btn-sm"
-                                                                                            data-bs-toggle="tooltip"
-                                                                                            data-bs-original-title="Inactive">
-                                                                                            <span class="fa fa-toggle-on fs-14"></span>
-                                                                                        </a>
-                                                                                    @else
-                                                                                        <a href="{{ route('active.employee.product', $product->id) }}"
-                                                                                            class="btn text-primary btn-sm"
-                                                                                            data-bs-toggle="tooltip"
-                                                                                            data-bs-original-title="Active">
-                                                                                            <span class="fa fa-toggle-off fs-14"></span>
-                                                                                        </a>
-                                                                                    @endif
-
-                                                                                    <a href="{{ route('delete.employee.product', $product->id) }}"
-                                                                                        class="btn text-danger btn-sm" id="delete"
-                                                                                        data-bs-toggle="tooltip"
-                                                                                        data-bs-original-title="Delete">
-                                                                                        <span class="fe fe-trash-2 fs-14"></span>
-                                                                                    </a>
-                                                                                </td>
-                                                                            </tr>
-                                                                            @endforeach
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane" id="tab7">
-                                                        <div class="table-responsive">
-                                                            <div class="table-responsive">
                                                                 <table id="example3" class="table table-bordered text-nowrap mb-0 table-striped">
                                                                     <thead class="border-top">
                                                                         <tr>
@@ -222,7 +142,7 @@
                                                                     </thead>
 
                                                                     <tbody>
-                                                                        @foreach ($inActiveProduct as $key => $product)
+                                                                        @foreach ($activeProducts as $key => $product)
                                                                         <tr>
                                                                             <td>{{ $key + 1 }}</td>
                                                                             <td>{{ $product->product_name }}</td>
@@ -244,7 +164,7 @@
                                                                                     </span>
                                                                                 @endif
                                                                             </td>
-                                                                            <td>{{ date('F j, Y', strtotime($product['created_at'])) }}</td>
+                                                                            <td>{{ date('F j, Y', strtotime($product['updated_at'])) }}</td>
                                                                             <td>
                                                                                 <a href="{{ route('edit.employee.product', $product->product_slug) }}"
                                                                                     class="btn text-primary btn-sm" data-bs-toggle="tooltip"
@@ -280,6 +200,82 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane" id="tab7">
+                                                        <div class="table-responsive">
+                                                            <table id="example3" class="table table-bordered text-nowrap mb-0 table-striped">
+                                                                <thead class="border-top">
+                                                                    <tr>
+                                                                        <th class="border-bottom-0">ID</th>
+                                                                        <th class="border-bottom-0">Product Name</th>
+                                                                        <th class="border-bottom-0" style="width: 5%;">Product Photo</th>
+                                                                        <th class="border-bottom-0">Total Stock</th>
+                                                                        <th class="border-bottom-0">Selling Price</th>
+                                                                        <th class="border-bottom-0">Status</th>
+                                                                        <th class="border-bottom-0">Date</th>
+                                                                        <th class="border-bottom-0">Action</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+                                                                    @foreach ($inActiveProduct as $key => $product)
+                                                                    <tr>
+                                                                        <td>{{ $key + 1 }}</td>
+                                                                        <td>{{ $product->product_name }}</td>
+                                                                        <td>
+                                                                            <img src="{{ !empty($product->product_photo) ? url('upload/product_images/' . $product->product_photo) : url('upload/blog_images.png') }}">
+                                                                        </td>
+                                                                        <td>{{ $product->total_stock }}</td>
+
+                                                                        <td>{{ $product->price->selling_price ?? 'Not Available' }}</td>
+
+                                                                        <td>
+                                                                            @if ($product->status == 'active')
+                                                                                <span class="badge bg-success badge-sm  me-1 mb-1 mt-1">
+                                                                                    {{ $product->status }}
+                                                                                </span>
+                                                                            @else
+                                                                                <span class="badge bg-danger badge-sm  me-1 mb-1 mt-1">
+                                                                                    {{ $product->status }}
+                                                                                </span>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>{{ date('F j, Y', strtotime($product['updated_at'])) }}</td>
+                                                                        <td>
+                                                                            <a href="{{ route('edit.employee.product', $product->product_slug) }}"
+                                                                                class="btn text-primary btn-sm" data-bs-toggle="tooltip"
+                                                                                data-bs-original-title="Edit">
+                                                                                <span class="fe fe-edit fs-14"></span>
+                                                                            </a>
+
+                                                                            @if ($product->status == 'active')
+                                                                                <a href="{{ route('inactive.employee.product', $product->id) }}"
+                                                                                    class="btn text-primary btn-sm"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-original-title="Inactive">
+                                                                                    <span class="fa fa-toggle-on fs-14"></span>
+                                                                                </a>
+                                                                            @else
+                                                                                <a href="{{ route('active.employee.product', $product->id) }}"
+                                                                                    class="btn text-primary btn-sm"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-original-title="Active">
+                                                                                    <span class="fa fa-toggle-off fs-14"></span>
+                                                                                </a>
+                                                                            @endif
+
+                                                                            <a href="{{ route('delete.employee.product', $product->id) }}"
+                                                                                class="btn text-danger btn-sm" id="delete"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-original-title="Delete">
+                                                                                <span class="fe fe-trash-2 fs-14"></span>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>

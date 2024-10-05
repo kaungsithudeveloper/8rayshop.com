@@ -139,7 +139,7 @@
         @endif
     </script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ url('frontend/8ray/js/sweetalert2.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         @if(session('alert-type') == 'success')

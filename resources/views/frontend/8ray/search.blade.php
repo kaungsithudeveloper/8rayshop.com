@@ -100,61 +100,6 @@
 
                         </div>
                         <!--product grid-->
-                        <!-- Pagination Area -->
-                        <div class="pagination-area mt-20 mb-20">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <!-- Previous Page Link -->
-                                    @if ($products->onFirstPage())
-                                        <li class="page-item disabled">
-                                            <span class="page-link"><i class="fi-rs-arrow-small-left"></i></span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $products->previousPageUrl() }}" rel="prev"><i class="fi-rs-arrow-small-left"></i></a>
-                                        </li>
-                                    @endif
-
-                                    <!-- First Page -->
-                                    @if ($products->currentPage() > 2)
-                                        <li class="page-item"><a class="page-link" href="{{ $products->url(1) }}">1</a></li>
-                                        @if ($products->currentPage() > 3)
-                                            <li class="page-item"><span class="page-link dot">...</span></li>
-                                        @endif
-                                    @endif
-
-                                    <!-- Pages around the Current Page -->
-                                    @for ($i = max(1, $products->currentPage() - 1); $i <= min($products->lastPage(), $products->currentPage() + 1); $i++)
-                                        @if ($i == $products->currentPage())
-                                            <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
-                                        @else
-                                            <li class="page-item"><a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a></li>
-                                        @endif
-                                    @endfor
-
-                                    <!-- Last Page -->
-                                    @if ($products->currentPage() < $products->lastPage() - 1)
-                                        @if ($products->currentPage() < $products->lastPage() - 2)
-                                            <li class="page-item"><span class="page-link dot">...</span></li>
-                                        @endif
-                                        <li class="page-item"><a class="page-link" href="{{ $products->url($products->lastPage()) }}">{{ $products->lastPage() }}</a></li>
-                                    @endif
-
-                                    <!-- Next Page Link -->
-                                    @if ($products->hasMorePages())
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $products->nextPageUrl() }}" rel="next"><i class="fi-rs-arrow-small-right"></i></a>
-                                        </li>
-                                    @else
-                                        <li class="page-item disabled">
-                                            <span class="page-link"><i class="fi-rs-arrow-small-right"></i></span>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </nav>
-                        </div>
-
-
 
                         <div class="row mt-60">
                             <div class="col-12">
